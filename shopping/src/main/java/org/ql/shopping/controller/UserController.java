@@ -138,6 +138,22 @@ public class UserController {
 		}
 		return result;
 	}
+	
+	@RequestMapping("/deleteAll")
+	@ResponseBody
+	public Result deleteAllUser(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		Result res = new Result();
+		if(session == null || session.getAttribute("token") == null){
+			res.setCode(Code.ERROR);
+			res.setMessage("账号没有登陆");
+		}else{
+			mUserService.deleteAllUser();
+			res.setCode(Code.SUCCESS);
+		}
+		
+		return res;
+	}
 
 	private void checkRegisterUser(User regUser) throws LotteryException {
 		if (regUser == null) {

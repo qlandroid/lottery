@@ -13,7 +13,8 @@
 <body>
 	<div class="search-btn">
 		<button class="layui-btn">查询</button>
-		<button class="layui-btn " data-method="notice" data-type="auto"  id="btn-add-user">添加</button>
+		<button class="layui-btn">添加用户</button>
+		<button class="layui-btn layui-btn-danger" id="del-all-user">删除全部用户</button>
 	</div>
 	<div class="layui-side-scroll table-body" id="table"></div>
 

@@ -58,5 +58,8 @@
 	<delete id="deleteUserById" parameterType="long">
 		DELETE FROM user_s where id = #{id}
 	</delete>
+	<delete id="deletAllUser" >
+		DELETE FROM user_s
+	</delete>
 
 </mapper>

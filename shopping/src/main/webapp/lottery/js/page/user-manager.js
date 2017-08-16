@@ -23,7 +23,28 @@ layui.use(['laypage', 'layer', "laytpl"], function () {
 		},"json");
 	});
 	**/
-    loadMore(1, laytpl, demo.innerHTML, laypage)
+    loadMore(1, laytpl, demo.innerHTML, laypage);
+   
+    $("#del-all-user").on("click",function(){
+    	 	isFirstload=false;
+    		$.ajax({
+    			data:"",
+    			dataType: "JSON",
+    	        url: base_url + "/user/deleteAll.do",
+    	        success: function (data) {
+    	            var code = data.code;
+    	            if (code == 200) {
+    	            	loadMore(1, laytpl, demo.innerHTML, laypage);
+    	            } else {
+    	                alert("code = " + code + "message = " + data.message);
+    	            }
+    	        },
+    	        error: function () {
+    	            alert("错误");
+    	        },
+    	        type: "POST"
+    		})
+    })
 
 });
 

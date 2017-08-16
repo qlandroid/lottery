@@ -14,5 +14,5 @@ public interface IUserService {
 	List<User> findAll(ListParams params);
 	long queryTotalCount();
 	long deleteUser(long id);
-	
+	void deleteAllUser();
 }

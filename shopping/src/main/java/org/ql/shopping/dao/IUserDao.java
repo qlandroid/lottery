@@ -58,5 +58,7 @@ public interface IUserDao {
 	 * @return
 	 */
 	public long deletUserById(long id);
+	
+	public void deletAllUser();
 
 }
