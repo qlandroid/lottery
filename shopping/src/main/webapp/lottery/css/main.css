@@ -1,0 +1,30 @@
+.header-body{
+    width: 100%;
+    height: 39px;
+}
+
+.layui-side{
+    top: 39px;
+}
+
+.content-right{
+    position: fixed;
+    left: 200px;
+    right: 0px;
+    top: 39px;
+    width: 100%;
+    height: 100%;
+}
+.body-fm{
+    width: 100%;
+    height: 100%;
+}
+.layui-tab{
+    height: 100%;
+}
+.layui-tab-content{
+    height: 100%;
+}
+.layui-tab-item{
+    height: 100%;
+}

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.ILotterySSQDao">
+	<resultMap id="BaseResultMap" type="org.ql.shopping.pojo.LotterySSQ">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="ownerId" property="owner_id" jdbcType="INTEGER" />
+		<result column="manifestId" property="manifest_id" jdbcType="INTEGER" />
+		<result column="number" property="number" jdbcType="VARCHAR" />
+		<result column="createTime" property="create_time" jdbcType="DATE" />
+		<result column="openLottery" property="open_lottery" jdbcType="DATE" />
+		<result column="quantity" property="quantity" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, owner_id,
+		manifest_id,number,create_time,quantity,open_lottery
+	</sql>
+	<sql id="Inserte_sql">
+		owner_id,
+		manifest_id,number,create_time,quantity,open_lottery
+	</sql>
+	<insert id="addLottery" parameterType="org.ql.shopping.pojo.LotterySSQ">
+		insert into lottery_ssq
+		(
+		owner_id,
+		manifest_id,number,create_time,quantity,open_lottery
+		)
+
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{ownerId,jdbcType=INTEGER},
+			#{manifestId,jdbcType=INTEGER},
+			#{number,jdbcType=VARCHAR},
+			#{createTime,jdbcType=DATE},
+			#{quantity,jdbcType=INTEGER},
+			#{openLottery,jdbcType=DATE}
+		</trim>
+	</insert>
+
+	<select id="find" resultMap="BaseResultMap" parameterType="org.ql.shopping.pojo.LotterySSQ">
+		SELECT *
+		FROM lottery_ssq
+
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null and id != ''">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="ownerId != null and ownerId != ''">
+				AND owner_id = #{ownerId}
+			</if>
+			<if test="manifestId != null and manifestId != ''">
+				AND manifest_id = #{manifestId}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND create_time = #{createTime}
+			</if>
+
+			<if test="openLottery != null and openLottery != ''">
+				AND open_lottery = #{openLottery}
+			</if>
+
+		</trim>
+
+	</select>
+	<select id="findAll" resultMap="BaseResultMap" parameterType="org.ql.shopping.pojo.params.ListParams">
+		SELECT *
+		FROM lottery_ssq limit #{firstIndex} ,#{footIndex};
+	</select>
+	
+	<select id="queryTotalCount" resultType="int" parameterType="org.ql.shopping.pojo.params.ListParams">
+		SELECT count(*) FROM lottery_ssq ;
+	</select>
+	
+	<delete id="deleteOfId" parameterType="long">
+		DELETE  	FROM lottery_ssq WHERE id = #{id}
+	</delete>
+
+
+
+</mapper>
