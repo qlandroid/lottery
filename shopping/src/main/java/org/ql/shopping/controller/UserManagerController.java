@@ -1,5 +1,6 @@
 package org.ql.shopping.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,8 +16,10 @@ import org.ql.shopping.pojo.UserLogin;
 import org.ql.shopping.pojo.UserManager;
 import org.ql.shopping.pojo.params.ListParams;
 import org.ql.shopping.pojo.result.LoginResult;
+import org.ql.shopping.pojo.result.MainLeftNav;
 import org.ql.shopping.service.IUserClientService;
 import org.ql.shopping.service.IUserManagerService;
+import org.ql.shopping.util.MainNavFactroy;
 import org.ql.shopping.service.IUserLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/manager")
+@RequestMapping
 public class UserManagerController {
 	private Logger logger = LoggerFactory
 			.getLogger(UserManagerController.class);
@@ -78,7 +81,7 @@ public class UserManagerController {
 		return result;
 	}
 
-	@RequestMapping(value = "/main")
+	@RequestMapping(value ="/main")
 	public ModelAndView showMainView(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("main.jsp");
@@ -119,5 +122,17 @@ public class UserManagerController {
 		mav.addObject("userList",userList);
 		return mav;
 	}
+	
+	@RequestMapping("/page/mainLeftNav")
+	@ResponseBody
+	public List<MainLeftNav> mainLeftNav(){
+		return MainNavFactroy.getInstans().getMianNavList();
+	}
+
+	@RequestMapping("/index")
+	public String index(){
+		return "page/index.jsp";
+	}
+	
 
 }

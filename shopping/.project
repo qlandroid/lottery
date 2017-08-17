@@ -45,4 +45,11 @@
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/webapp/lottery/imgs/face.jpg</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Downloads/face.jpg</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

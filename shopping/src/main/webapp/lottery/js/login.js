@@ -22,7 +22,7 @@ layui.config({
     	var index = layer.load();
     	
     	 $.ajax( {
-   		  url:"http://localhost:8080/lottery/manager/toLogin.do"
+   		  url:"http://localhost:8080/lottery/toLogin.do"
    		  ,type:"POST"
    			  ,data: {account:$("#account").val(),pw:$("#pw").val()}
    			  ,
