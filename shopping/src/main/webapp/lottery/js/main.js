@@ -5,7 +5,7 @@ $(document).ready(function(){
 	layui.use(['element',"layer"], function () {
 		
         var element = layui.element(),layer = layui.layer;
-       
+        
         //触发事件
         var active = {
             tabAdd: function (othis) {

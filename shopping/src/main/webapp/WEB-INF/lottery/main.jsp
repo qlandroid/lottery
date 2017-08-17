@@ -85,22 +85,23 @@
 			</ul>
 		</div>
 	</div>
-</div>
-<div class="content-right">
-	<div class="layui-tab" lay-filter="tab" lay-allowclose="true">
-		<ul class="layui-tab-title">
-			<li class="layui-this" lay-id="0" id="label-main" lay-close="false">首页</li>
-		</ul>
-		<div class="layui-tab-content">
-			<div class="layui-tab-item layui-show">
-				<iframe id="fmContent" src="${contextPath}/page/index.do"
-					name="ifrname" class="body-fm" marginwidth="0" marginheight="0"
-					frameborder="0" scrolling="auto" width="100%"></iframe>
-			</div>
+	<div class="content-right">
+		<div class="layui-tab" lay-filter="tab" lay-allowclose="true">
+			<ul class="layui-tab-title">
+				<li class="layui-this" lay-id="0" id="label-main" lay-close="false">首页</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<iframe id="fmContent" src="${contextPath}/page/index.do"
+						name="ifrname" class="body-fm" marginwidth="0" marginheight="0"
+						frameborder="0" scrolling="auto" width="100%"></iframe>
+				</div>
 
+			</div>
 		</div>
 	</div>
 </div>
+
 <script src="${contextPath}/lottery/js/jquery.js"></script>
 <script src="${contextPath}/lottery/layui/layui.js"></script>
 <script src="${contextPath }/lottery/js/main.js"></script>

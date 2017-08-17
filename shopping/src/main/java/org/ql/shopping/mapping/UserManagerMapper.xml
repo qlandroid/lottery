@@ -34,7 +34,7 @@
 	<select id="findAll" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.UserManager">
 		SELECT *
-		FROM user_manager limit ($page -1),$pageSize
+		FROM user_manager limit #{firstIndex},#{pageSize}
 	</select>
 
 	<update id="updateUser" parameterType="org.ql.shopping.pojo.UserManager">

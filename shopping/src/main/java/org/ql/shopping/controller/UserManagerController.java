@@ -86,8 +86,38 @@ public class UserManagerController {
 	}
 	
 	@RequestMapping("/page/user")
-	public String showUserManger(){
-		return "page/user_manager.jsp";
+	public ModelAndView showUserManger(HttpServletRequest request){
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("page/user_manager.jsp");
+		Long page= null;
+		Integer pageSize = null;
+		try{
+		 page  =  (Long) request.getAttribute("page");
+		 pageSize = (Integer)request.getAttribute("pageSize");
+		}catch(NullPointerException e){
+			page = 1L;
+			pageSize = 20;
+		}
+		if(page == null){
+			page = 1L;
+		}
+		if(pageSize == null){
+			pageSize = 20;
+		}
+		
+		UserManager userPager = new  UserManager();
+		long firstIndex = (page - 1 )*pageSize;
+		userPager.setFirstIndex(firstIndex);
+		userPager.setPageSize(pageSize);
+		List<UserManager> userList =mUserManagerService.findPage(userPager);
+		Long total = mUserManagerService.getUserTotalCount();
+				
+		if(total != null && pageSize != null){
+			total = total % pageSize +1;
+		}
+		mav.addObject("total",total);
+		mav.addObject("userList",userList);
+		return mav;
 	}
 
 }

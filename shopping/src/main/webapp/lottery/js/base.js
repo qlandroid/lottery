@@ -2,7 +2,6 @@
  * Created by mrqiu on 2017/8/13.
  */
 var base_url = "http://localhost:8080/lottery"
-
 var cookieUtils = {
     get: function(name){
         var cookieName=encodeURIComponent(name) + "=";

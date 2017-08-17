@@ -9,22 +9,23 @@ public class UserManager {
 	private String name;
 	private String phone;
 	private String address;
-	private Long page;
+	private Long firstIndex;
 	private Integer pageSize;
 	
 	
 	
 	
-	public Long getPage() {
-		return page;
+
+	public Long getFirstIndex() {
+		return firstIndex;
 	}
-	public void setPage(Long page) {
-		this.page = page;
+	public void setFirstIndex(Long firstIndex) {
+		this.firstIndex = firstIndex;
 	}
 	public int getPageSize() {
 		return pageSize;
 	}
-	public void setPageSize(int pageSize) {
+	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
 	}
 	public String getAddress() {
