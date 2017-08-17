@@ -14,11 +14,11 @@ import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.exception.PasswordErrorException;
 import org.ql.shopping.pojo.Result;
 import org.ql.shopping.pojo.Rows;
-import org.ql.shopping.pojo.User;
+import org.ql.shopping.pojo.UserLogin;
 import org.ql.shopping.pojo.UserClient;
 import org.ql.shopping.pojo.params.ListParams;
 import org.ql.shopping.service.IUserClientService;
-import org.ql.shopping.service.IUserService;
+import org.ql.shopping.service.IUserLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
@@ -31,21 +31,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
-	private Logger logger = LoggerFactory.getLogger(UserController.class);
+public class UserLoginController {
+	private Logger logger = LoggerFactory.getLogger(UserLoginController.class);
 
 	@Resource
-	IUserService mUserService;
+	IUserLoginService mUserService;
 	@Resource
 	IUserClientService mUserClientService;
 
 	@RequestMapping("/toLogin")
-	public ModelAndView toLogin(HttpServletRequest request, User user, Model model) {
+	public ModelAndView toLogin(HttpServletRequest request, UserLogin user, Model model) {
 		ModelAndView modelAndView = new ModelAndView();
 		try {
 			checkLoginParams(user);
 
-			List<User> queryUser = mUserService.queryUserOfAccount(user.getAccount());
+			List<UserLogin> queryUser = mUserService.queryUserOfAccount(user.getAccount());
 			if (queryUser == null || queryUser.size() == 0) {
 				throw new AccountNotFindException("账号不存在");
 			}
@@ -53,7 +53,7 @@ public class UserController {
 			if (queryUser == null || queryUser.size() == 0) {
 				throw new PasswordErrorException("密码不正确");
 			}
-			User queryU = queryUser.get(0);
+			UserLogin queryU = queryUser.get(0);
 			HttpSession session = request.getSession();
 			session.setAttribute("token", queryU.getAccount());
 			modelAndView.setViewName("redirect:/user/main.do");
@@ -89,7 +89,7 @@ public class UserController {
 		return "login.jsp";
 	}
 
-	private void checkLoginParams(User user) throws LotteryException {
+	private void checkLoginParams(UserLogin user) throws LotteryException {
 		if (user == null || StringUtils.isEmpty(user.getAccount()) || StringUtils.isEmpty(user.getPw())) {
 			throw new LotteryException("参数不正确");
 		}
@@ -104,12 +104,12 @@ public class UserController {
 
 	@RequestMapping("/register.do")
 	@ResponseBody
-	public Result registerUser(User regUser) {
+	public Result registerUser(UserLogin regUser) {
 		Result result = new Result();
 		try {
 			checkRegisterUser(regUser);
 
-			List<User> list = mUserService.queryUserOfAccount(regUser.getAccount());
+			List<UserLogin> list = mUserService.queryUserOfAccount(regUser.getAccount());
 			if (list != null && list.size() > 0) {
 				result.setCode(Code.ACCOUNT_HAVE);
 				result.setMessage("账号已经存在");
@@ -119,8 +119,8 @@ public class UserController {
 			String account = regUser.getAccount();
 			mUserService.inserteUser(regUser);
 			// 查询当前用户；
-			List<User> userList = mUserService.queryUserOfAccount(account);
-			User u = userList.get(0);
+			List<UserLogin> userList = mUserService.queryUserOfAccount(account);
+			UserLogin u = userList.get(0);
 			// 创建当前用户个人详情，并设置当前账号的唯一账号ID；
 			UserClient client = new UserClient();
 			client.setUserId(u.getId());
@@ -155,7 +155,7 @@ public class UserController {
 		return res;
 	}
 
-	private void checkRegisterUser(User regUser) throws LotteryException {
+	private void checkRegisterUser(UserLogin regUser) throws LotteryException {
 		if (regUser == null) {
 			throw new LotteryException("参数不正确");
 		}

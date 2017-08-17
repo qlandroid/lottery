@@ -16,7 +16,7 @@
 		id, account, pw
 	</sql>
 
-	<insert id="addUser" parameterType="org.ql.shopping.pojo.User">
+	<insert id="addUser" parameterType="org.ql.shopping.pojo.UserClient">
 		insert into user_client
 		(name
 		,zhifubao

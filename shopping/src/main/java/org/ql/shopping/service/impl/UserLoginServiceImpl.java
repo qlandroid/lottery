@@ -5,42 +5,42 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.ql.shopping.dao.IUserDao;
-import org.ql.shopping.pojo.User;
+import org.ql.shopping.pojo.UserLogin;
 import org.ql.shopping.pojo.params.ListParams;
-import org.ql.shopping.service.IUserService;
+import org.ql.shopping.service.IUserLoginService;
 import org.springframework.stereotype.Service;
 
 @Service("userService")
-public class UserServiceImpl implements IUserService {
+public class UserLoginServiceImpl implements IUserLoginService {
 
 	@Resource
 	private IUserDao userDao;
 
 	
-	public List<User> queryUserOfAccount(String account) {
-		User user = new User();
+	public List<UserLogin> queryUserOfAccount(String account) {
+		UserLogin user = new UserLogin();
 		user.setAccount(account);
 		return userDao.queryUserOfAccount(user);
 	}
 
-	public long updateUserPassword(User user) {
+	public long updateUserPassword(UserLogin user) {
 		int rows = userDao.updateUserPassword(user);
 		return rows;
 	}
 
 	
-	public long inserteUser(User user) {
+	public long inserteUser(UserLogin user) {
 		int row = userDao.inserte(user);
 		return row;
 	}
 
 	
-	public List<User> queryUser(User user) {
+	public List<UserLogin> queryUser(UserLogin user) {
 		return userDao.queryUser(user);
 	}
 
 
-	public List<User> findAll(ListParams params) {
+	public List<UserLogin> findAll(ListParams params) {
 		int firstIndex = (params.getPage() -1 )* params.getPageSize();
 		int footIndex = params.getPage() * params.getPageSize();
 		params.setFirstIndex(firstIndex);

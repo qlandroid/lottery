@@ -4,66 +4,90 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.Service.Mode;
 
+import org.ql.shopping.HttpUrl;
 import org.ql.shopping.code.Code;
 import org.ql.shopping.pojo.Result;
 import org.ql.shopping.pojo.Rows;
-import org.ql.shopping.pojo.User;
+import org.ql.shopping.pojo.UserLogin;
+import org.ql.shopping.pojo.UserManager;
 import org.ql.shopping.pojo.params.ListParams;
+import org.ql.shopping.pojo.result.LoginResult;
 import org.ql.shopping.service.IUserClientService;
-import org.ql.shopping.service.IUserService;
+import org.ql.shopping.service.IUserManagerService;
+import org.ql.shopping.service.IUserLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/page/user")
+@RequestMapping("/manager")
 public class UserManagerController {
-	private Logger logger = LoggerFactory.getLogger(UserManagerController.class);
+	private Logger logger = LoggerFactory
+			.getLogger(UserManagerController.class);
 
 	@Resource
-	IUserService mUserService;
+	private IUserLoginService mUserService;
 	@Resource
-	IUserClientService mUserClientService;
+	private IUserClientService mUserClientService;
+	@Resource
+	private IUserManagerService mUserManagerService;
 
-	@RequestMapping("/manager")
-	public String userMangerView(HttpServletRequest request,Model model){
-		
-		return "/page/user_manager.jsp";
+	@RequestMapping("/login")
+	public String userManagerLogin() {
+		return "login.jsp";
 	}
-	
-	@RequestMapping("/addUser")
-	public String addUserView(HttpServletRequest requset,Model model){
-		return "/page/add_user.jsp";
-	}
-	
-	@RequestMapping("findAll.do")
-	@ResponseBody
-	public Rows findAll(ListParams params) {
-		Rows result = new Rows();
-		List<User> list = mUserService.findAll(params);
-		result.setCode(Code.SUCCESS);
-		long total = mUserService.queryTotalCount();
-		System.out.println("total" + total);
-		total = total % params.getPageSize() + 1;
-		result.setTotal(total);
 
-		result.setList(list);
-		return result;
-	}
-	
-	@RequestMapping("deleteUser")
+	@RequestMapping(value = "/toLogin", method = RequestMethod.POST)
 	@ResponseBody
-	public Result deleteById(HttpServletRequest request,User user){
+	public Result userManagerLogin(HttpServletRequest request,
+			UserManager userParams) {
 		Result result = new Result();
+
 		
-		long deleteRows = mUserService.deleteUser(user.getId());
-		result.setCode(Code.SUCCESS);
+		String account = userParams.getAccount();
+		String pw = userParams.getPw();
+		if (StringUtils.isEmpty(account) || StringUtils.isEmpty(pw)) {
+			result.setCode(Code.ERROR);
+			result.setMessage("账号或密码不能为空");
+		} else {
+
+			UserManager userLogin = mUserManagerService
+					.findUserOfAccount(account);
+
+			if (userLogin == null || !pw.equals(userLogin.getPw())) {
+				result.setCode(Code.ACCOUNT_OR_PW_ERROR);
+			} else {
+				result.setCode(Code.SUCCESS);
+				LoginResult login = new LoginResult();
+				login.setUrl("main.do");
+				result.setData(login);
+				HttpSession s = request.getSession();
+				s.setAttribute("token", account);
+				s.setAttribute("power", userLogin.getPower());
+			}
+		}
 		return result;
 	}
+
+	@RequestMapping(value = "/main")
+	public ModelAndView showMainView(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("main.jsp");
+		return mav;
+	}
+	
+	@RequestMapping("/page/user")
+	public String showUserManger(){
+		return "page/user_manager.jsp";
+	}
+
 }

@@ -4,6 +4,7 @@
 layui.config({
     base : "js/"
 }).use(['form','layer'],function(){
+	
     var form = layui.form(),
         layer = parent.layer === undefined ? layui.layer : parent.layer,
         $ = layui.jquery;
@@ -14,5 +15,36 @@ layui.config({
             $(".video-player").css({"width":$(window).width(),"height":"auto","left":-($(".video-player").width()-$(window).width())/2});
         }
     }).resize();
-
+   
+    //监听提交
+   $("#login-btn").click(function(){
+    	//加载层
+    	var index = layer.load();
+    	
+    	 $.ajax( {
+   		  url:"http://localhost:8080/lottery/manager/toLogin.do"
+   		  ,type:"POST"
+   			  ,data: {account:$("#account").val(),pw:$("#pw").val()}
+   			  ,
+			dataType:"json"
+   			 ,
+   			 success:function(data){
+   				console.log(data);
+   				if(200 === data.code){
+   					
+   					setTimeout(function(){
+   					  layer.closeAll('loading');
+   					},0);
+   					window.location.href = data.data.url;
+   				}else {
+					aler(data.message);
+				}
+   			 },
+   			 error:function(data){
+   				 console.log("error"  + JSON.stringify(data));
+   			 }
+   	  });
+    	 
+    	  });
+     
 })

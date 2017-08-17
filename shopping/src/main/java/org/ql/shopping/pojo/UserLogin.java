@@ -1,6 +1,6 @@
 package org.ql.shopping.pojo;
 
-public class User {
+public class UserLogin {
 	private Long id;
 	private String account;
 	private String pw;

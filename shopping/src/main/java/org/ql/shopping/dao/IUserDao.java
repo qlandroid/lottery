@@ -2,7 +2,7 @@ package org.ql.shopping.dao;
 
 import java.util.List;
 
-import org.ql.shopping.pojo.User;
+import org.ql.shopping.pojo.UserLogin;
 import org.ql.shopping.pojo.params.ListParams;
 
 public interface IUserDao {
@@ -12,7 +12,7 @@ public interface IUserDao {
 	 * @param user
 	 * @return
 	 */
-	public int inserte(User user);
+	public int inserte(UserLogin user);
 
 	/**
 	 * 通过账号和密码查询
@@ -20,7 +20,7 @@ public interface IUserDao {
 	 * @param user
 	 * @return
 	 */
-	public List<User> queryUser(User user);
+	public List<UserLogin> queryUser(UserLogin user);
 
 	/**
 	 * 通过账号查询
@@ -28,7 +28,7 @@ public interface IUserDao {
 	 * @param account
 	 * @return
 	 */
-	public List<User> queryUserOfAccount(User account);
+	public List<UserLogin> queryUserOfAccount(UserLogin account);
 
 	/**
 	 * 更改密码
@@ -36,7 +36,7 @@ public interface IUserDao {
 	 * @param changePw
 	 * @return
 	 */
-	public int updateUserPassword(User changePw);
+	public int updateUserPassword(UserLogin changePw);
 
 	/**
 	 * 分页查询
@@ -44,7 +44,7 @@ public interface IUserDao {
 	 * @param params
 	 * @return
 	 */
-	public List<User> findAll(ListParams params);
+	public List<UserLogin> findAll(ListParams params);
 
 	/**
 	 * 查询用户数量

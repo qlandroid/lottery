@@ -11,28 +11,31 @@
 	media="all" />
 </head>
 <body>
-	
+
 	<div class="video_mask"></div>
 	<div class="login">
 		<h1>layuiCMS-管理登录</h1>
-		<h1>${ errorMsg }</h1>
-		<form action="${contextPath}/user/toLogin.do" method="post"
+
+		<div
 			class="layui-form">
 			<div class="layui-form-item">
-				<input class="layui-input" value="admin" name="account" placeholder="用户名"
-					lay-verify="required" type="text" autocomplete="off">
+				<input class="layui-input" id="account"value="admin" name="account"
+					placeholder="用户名" lay-verify="required" type="text"
+					autocomplete="off">
 			</div>
 			<div class="layui-form-item">
-				<input class="layui-input" value="admin" name="pw" placeholder="密码"
+				<input class="layui-input"  id="pw"value="admin" name="pw" placeholder="密码"
 					lay-verify="required" type="password" autocomplete="off">
 			</div>
-
-			<button class="layui-btn login_btn" lay-submit="" lay-filter="login">登录</button>
-		</form>
+			
+			<button class="layui-btn login-btn" lay-submit=""  id="login-btn" lay-filter="login">登录</button>
+		</div>
 	</div>
+
 	<script type="text/javascript"
-		src="${contextPath}/lottery/js/jquery.js"></script> <script
-		type="text/javascript" src="${contextPath}/lottery/layui/layui.js"></script>
+		src="${contextPath}/lottery/js/jquery.js"></script>
+	<script type="text/javascript"
+		src="${contextPath}/lottery/layui/layui.js"></script>
 	<script type="text/javascript" src="${contextPath}/lottery/js/login.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.ql.shopping.dao.IUserDao">
-	<resultMap id="BaseResultMap" type="org.ql.shopping.pojo.User">
+	<resultMap id="BaseResultMap" type="org.ql.shopping.pojo.UserLogin">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="account" property="account" jdbcType="VARCHAR" />
 		<result column="pw" property="pw" jdbcType="VARCHAR" />
@@ -10,40 +10,40 @@
 		id, account, pw
 	</sql>
 
-	<insert id="inserte" parameterType="org.ql.shopping.pojo.User">
-		insert into user_s
+	<insert id="inserte" parameterType="org.ql.shopping.pojo.UserLogin">
+		insert into user_login
 		(account,pw) values( #{account,jdbcType=VARCHAR},#{pw,jdbcType=VARCHAR});
 	</insert>
 
 	<select id="queryUserOfAccount" resultMap="BaseResultMap"
-		parameterType="org.ql.shopping.pojo.User">
-		SELECT user_s.id,
-		user_s.account,
-		user_s.pw
-		FROM user_s
+		parameterType="org.ql.shopping.pojo.UserLogin">
+		SELECT user_login.id,
+		user_login.account,
+		user_login.pw
+		FROM user_login
 		WHERE account = #{account,jdbcType=VARCHAR}
 	</select>
 	<select id="findAll" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.params.ListParams">
 		SELECT *
-		FROM user_s limit #{firstIndex}, #{footIndex};
+		FROM user_login limit #{firstIndex}, #{footIndex};
 	</select>
 
-	<select id="queryUser" resultMap="BaseResultMap" parameterType="org.ql.shopping.pojo.User">
-		SELECT user_s.id,
-		user_s.account,
-		user_s.pw
-		FROM user_s
+	<select id="queryUser" resultMap="BaseResultMap" parameterType="org.ql.shopping.pojo.UserLogin">
+		SELECT user_login.id,
+		user_login.account,
+		user_login.pw
+		FROM user_login
 		WHERE account = #{account,jdbcType=VARCHAR} and pw = #{pw,jdbcType=VARCHAR}
 	</select>
 
 	<select id="queryTotalCount" resultType="int">
-		SELECT count(*) FROM user_s ;
+		SELECT count(*) FROM user_login ;
 	</select>
 
-	<update id="updateUserpw" parameterType="org.ql.shopping.pojo.User">
+	<update id="updateUserpw" parameterType="org.ql.shopping.pojo.UserLogin">
 
-		update user_s
+		update user_login
 		<set>
 			<if test="account != null">
 				account = #{account,jdbcType=VARCHAR},
@@ -56,10 +56,10 @@
 	</update>
 	
 	<delete id="deleteUserById" parameterType="long">
-		DELETE FROM user_s where id = #{id}
+		DELETE FROM user_login where id = #{id}
 	</delete>
 	<delete id="deletAllUser" >
-		DELETE FROM user_s
+		DELETE FROM user_login
 	</delete>
 
 </mapper>

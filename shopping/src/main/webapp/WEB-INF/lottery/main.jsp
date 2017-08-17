@@ -17,7 +17,7 @@
 
 			<ul class="layui-nav layui-nav-tree site-demo-nav">
 				<li class="layui-nav-item layui-this"><a href="javascript:;"
-					title="首页" tab-id="0" data-url="${contextPath}/page/main.do"
+					title="首页" tab-id="0" data-url="${contextPath}/page/index.do"
 					data-type="tabAdd">首页</a></li>
 				<li class="layui-nav-item layui-nav-itemed"><a
 					class="javascript:;" href="javascript:;">用户管理</a>
@@ -29,7 +29,7 @@
 						</dd>
 						<dd>
 							<a href="javascript:;" title="服务端管理" tab-id="12"
-								data-url="${contextPath}/page/user/addUser.do"
+								data-url="${contextPath}/manager/page/user.do"
 								data-type="tabAdd">服务端管理</a>
 						</dd>
 					</dl></li>
@@ -93,7 +93,7 @@
 		</ul>
 		<div class="layui-tab-content">
 			<div class="layui-tab-item layui-show">
-				<iframe id="fmContent" src="${contextPath}/page/user/manager.do"
+				<iframe id="fmContent" src="${contextPath}/page/index.do"
 					name="ifrname" class="body-fm" marginwidth="0" marginheight="0"
 					frameborder="0" scrolling="auto" width="100%"></iframe>
 			</div>
