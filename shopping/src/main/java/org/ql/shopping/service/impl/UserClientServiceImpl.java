@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.ql.shopping.dao.IUserClientDao;
 import org.ql.shopping.pojo.UserClient;
+import org.ql.shopping.pojo.UserManager;
 import org.ql.shopping.service.IUserClientService;
 import org.springframework.stereotype.Service;
 @Service("userClientService")
@@ -29,5 +30,7 @@ public class UserClientServiceImpl implements IUserClientService{
 	public long deleteUser(long id) {
 		return mUserClientDao.deleteUser(id);
 	}
+
+
 
 }

@@ -10,6 +10,8 @@ import javax.xml.ws.Service.Mode;
 
 import org.ql.shopping.HttpUrl;
 import org.ql.shopping.code.Code;
+import org.ql.shopping.exception.AccountHaveException;
+import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.pojo.Result;
 import org.ql.shopping.pojo.Rows;
 import org.ql.shopping.pojo.UserLogin;
@@ -34,8 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping
 public class UserManagerController {
-	private Logger logger = LoggerFactory
-			.getLogger(UserManagerController.class);
+	private Logger logger = LoggerFactory.getLogger(UserManagerController.class);
 
 	@Resource
 	private IUserLoginService mUserService;
@@ -51,11 +52,9 @@ public class UserManagerController {
 
 	@RequestMapping(value = "/toLogin", method = RequestMethod.POST)
 	@ResponseBody
-	public Result userManagerLogin(HttpServletRequest request,
-			UserManager userParams) {
+	public Result userManagerLogin(HttpServletRequest request, UserManager userParams) {
 		Result result = new Result();
 
-		
 		String account = userParams.getAccount();
 		String pw = userParams.getPw();
 		if (StringUtils.isEmpty(account) || StringUtils.isEmpty(pw)) {
@@ -63,8 +62,7 @@ public class UserManagerController {
 			result.setMessage("账号或密码不能为空");
 		} else {
 
-			UserManager userLogin = mUserManagerService
-					.findUserOfAccount(account);
+			UserManager userLogin = mUserManagerService.findUserOfAccount(account);
 
 			if (userLogin == null || !pw.equals(userLogin.getPw())) {
 				result.setCode(Code.ACCOUNT_OR_PW_ERROR);
@@ -81,58 +79,85 @@ public class UserManagerController {
 		return result;
 	}
 
-	@RequestMapping(value ="/main")
+	@RequestMapping(value = "/main")
 	public ModelAndView showMainView(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("main.jsp");
 		return mav;
 	}
-	
-	@RequestMapping("/page/user")
-	public ModelAndView showUserManger(HttpServletRequest request){
+////userService/userServiceManagerSerach.do?account=&name=&power=&phone=
+	@RequestMapping("/userServiceManager")
+	public ModelAndView showUserManger(HttpServletRequest request,UserManager queryUser) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("page/user_manager.jsp");
-		Long page= null;
-		Integer pageSize = null;
-		try{
-		 page  =  (Long) request.getAttribute("page");
-		 pageSize = (Integer)request.getAttribute("pageSize");
-		}catch(NullPointerException e){
-			page = 1L;
-			pageSize = 20;
+		mav.setViewName("page/user_service_manager.jsp");
+		Integer page = queryUser.getPage();
+		if(queryUser.getPageSize() == null){
+			queryUser.setPageSize(20);
 		}
+		int firstIndex ;
 		if(page == null){
-			page = 1L;
+			firstIndex =0 ;
+		}else{
+			firstIndex = (page -1 ) * queryUser.getPageSize();
 		}
-		if(pageSize == null){
-			pageSize = 20;
-		}
-		
-		UserManager userPager = new  UserManager();
-		long firstIndex = (page - 1 )*pageSize;
-		userPager.setFirstIndex(firstIndex);
-		userPager.setPageSize(pageSize);
-		List<UserManager> userList =mUserManagerService.findPage(userPager);
+		queryUser.setFirstIndex(new Long(firstIndex));
+		List<UserManager> userList = mUserManagerService.findPage(queryUser);
 		Long total = mUserManagerService.getUserTotalCount();
-				
-		if(total != null && pageSize != null){
-			total = total % pageSize +1;
-		}
-		mav.addObject("total",total);
-		mav.addObject("userList",userList);
+
+		total = total/ queryUser.getPageSize() +1;
+		mav.addObject("total", total);
+		mav.addObject("userList", userList);
 		return mav;
 	}
-	
+
 	@RequestMapping("/page/mainLeftNav")
 	@ResponseBody
-	public List<MainLeftNav> mainLeftNav(){
+	public List<MainLeftNav> mainLeftNav() {
 		return MainNavFactroy.getInstans().getMianNavList();
 	}
 
 	@RequestMapping("/index")
-	public String index(){
+	public String index() {
 		return "page/index.jsp";
 	}
+//userService/userServiceManagerSearch.jsp
+	@RequestMapping("/userService/userServiceManagerSearch")
+	public String userServiceSearch() {
+		return "page/user_service_search.jsp";
+	}
+	@RequestMapping("/userService/userServiceManagerAdd")
+	public String userServiceAdd() {
+		return "page/user_service_add.jsp";
+	}
 	
-
+	@RequestMapping("/userService/add")
+	@ResponseBody
+	 public Result userServiceAdd(UserManager userManager){
+		 Result result = new Result();
+		 try{
+			 
+			String account =  userManager.getAccount();
+			UserManager acc = mUserManagerService.findUserByAccount(account);
+			if(acc != null){
+				throw new AccountHaveException("账号已经存在");
+			}
+			UserManager u = mUserManagerService.inserteUser(userManager);
+			if(u == null){
+				throw new LotteryException("注册失败");
+			}
+			result.setCode(Code.SUCCESS);
+		 }catch(AccountHaveException e){
+			 result.setCode(Code.ACCOUNT_HAVE);
+			 result.setMessage(e.getMessage());
+		 }catch(LotteryException e){
+			 result.setCode(Code.ERROR);
+			 result.setMessage(e.getMessage());
+		 }catch(Exception e){
+			 logger.error("userServiceAdd",e);
+			 result.setCode(Code.ERROR);
+			 result.setMessage("系统内部错误");
+		 }
+		 return result;
+	 }
+	
 }

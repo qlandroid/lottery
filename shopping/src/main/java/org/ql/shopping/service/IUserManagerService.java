@@ -33,6 +33,9 @@ public interface IUserManagerService {
 	 * @return
 	 */
 	public List<UserManager> findPage(UserManager page);
+
+
+	public UserManager findUserByAccount(String account);
 	
 
 }

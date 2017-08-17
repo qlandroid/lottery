@@ -34,7 +34,7 @@ public class UserManagerServiceImpl implements IUserManagerService{
 		mUserManagerDao.inserte(user);
 		UserManager accountUser = new UserManager();
 		accountUser.setAccount(user.getAccount());
-		List<UserManager> list = mUserManagerDao.findAll(accountUser);
+		List<UserManager> list = mUserManagerDao.findUser(accountUser);
 		return list.get(0);
 	}
 
@@ -52,6 +52,17 @@ public class UserManagerServiceImpl implements IUserManagerService{
 
 	public long getUserTotalCount() {
 		return mUserManagerDao.queryTotalCount();
+	}
+
+	public UserManager findUserByAccount(String account) {
+		UserManager acc = new UserManager();
+		acc.setAccount(account);
+		List<UserManager> list = mUserManagerDao.findUser(acc);
+		if(list == null || list.size() == 0){
+			return null;
+		}
+		
+		return list.get(0);
 	}
 
 }

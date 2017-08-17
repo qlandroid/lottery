@@ -134,9 +134,9 @@ public class MainNavFactroy {
 		userManagerList.add(userClient);
 
 		MainLeftNav userManagerClient = new MainLeftNav();
-		userManagerClient.setTitle("客户端用户");
+		userManagerClient.setTitle("服务端用户");
 		userManagerClient.setIcon("&#xe612;");// &#xe612;
-		userManagerClient.setHref("#");
+		userManagerClient.setHref("userServiceManager.do");
 		userManagerList.add(userManagerClient);
 
 		userManager.setChildren(userManagerList);

@@ -11,18 +11,25 @@ public class UserManager {
 	private String address;
 	private Long firstIndex;
 	private Integer pageSize;
+	private Integer page;
 	
 	
 	
 	
 
+	public Integer getPage() {
+		return page;
+	}
+	public void setPage(Integer page) {
+		this.page = page;
+	}
 	public Long getFirstIndex() {
 		return firstIndex;
 	}
 	public void setFirstIndex(Long firstIndex) {
 		this.firstIndex = firstIndex;
 	}
-	public int getPageSize() {
+	public Integer getPageSize() {
 		return pageSize;
 	}
 	public void setPageSize(Integer pageSize) {

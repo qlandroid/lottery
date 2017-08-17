@@ -34,7 +34,9 @@
 	<select id="findAll" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.UserManager">
 		SELECT *
-		FROM user_manager limit #{firstIndex},#{pageSize}
+		FROM user_manager 
+		<include refid="where"></include>
+		 limit #{firstIndex},#{pageSize}
 	</select>
 
 	<update id="updateUser" parameterType="org.ql.shopping.pojo.UserManager">
