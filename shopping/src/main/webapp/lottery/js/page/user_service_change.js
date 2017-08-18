@@ -6,7 +6,7 @@ $(document).ready(function() {
 	});
 	// 给父页面传值
 	$('.btn-yes').on('click', function() {
-		var account = $("#account").val();
+		var id = $("#account").data("id");
 		var name = $("#name").val();
 		var power = $("#power").val();
 		var phone = $("#phone").val();
@@ -15,9 +15,9 @@ $(document).ready(function() {
 			var layer = layui.layer;
 		$.ajax({
 
-			url : base_url + "/userService/add",
+			url : base_url + "/userService/userChange",
 			data : {
-				account : account,
+				id:id,
 				pw : pw,
 				name : name,
 				power : power,
@@ -33,7 +33,7 @@ $(document).ready(function() {
 					
 					if (data.code == 200) {
 						var url = base_url + "/userService/userServiceManager"
-						layer.msg("添加成功");
+						layer.msg("修改成功");
 						parent.window.location.href = url;
 						parent.layer.close(index);
 					} else {

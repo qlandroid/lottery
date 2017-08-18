@@ -10,7 +10,7 @@ $(document).ready(function(){
 		var name = $("#name").val();
 		var power=$("#power").val();
 		var phone = $("#phone").val();
-		var url = base_url+"/userServiceManager.do?account="+account+"&name="+name+"&power="+power+"&phone="+phone
+		var url = base_url+"/userServiceManager?account="+account+"&name="+name+"&power="+power+"&phone="+phone
 	    parent.window.location.href =url;
 	    	parent.layer.close(index);
 	});

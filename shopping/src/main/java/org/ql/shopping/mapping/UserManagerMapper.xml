@@ -40,23 +40,20 @@
 	</select>
 
 	<update id="updateUser" parameterType="org.ql.shopping.pojo.UserManager">
-		UPDATE FROME user_manager
+		UPDATE user_manager
 		<set>
-			<trim prefixOverrides=",">
-				<if test="account != null and account != ''">
-					, account = #{account,jdbcType=VARCHAR}
-				</if>
+			<trim suffixOverrides=",">
 				<if test="pw != null and pw != ''">
-					, pw = #{pw,jdbcType=VARCHAR}
+					pw = #{pw,jdbcType=VARCHAR},
 				</if>
 				<if test="name != null and name != ''">
-					, name = #{name,jdbcType=VARCHAR}
+					name = #{name,jdbcType=VARCHAR},
 				</if>
 				<if test="phone != null and phone != ''">
-					, phone = #{phone,jdbcType=VARCHAR}
+					phone = #{phone,jdbcType=VARCHAR},
 				</if>
 				<if test="address != null and address != ''">
-					, address = #{address,jdbcType=VARCHAR}
+					address = #{address,jdbcType=VARCHAR},
 				</if>
 			</trim>
 		</set>

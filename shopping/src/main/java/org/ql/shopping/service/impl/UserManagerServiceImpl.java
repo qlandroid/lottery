@@ -65,4 +65,26 @@ public class UserManagerServiceImpl implements IUserManagerService{
 		return list.get(0);
 	}
 
+	public void deleteUserById(Long id) {
+		UserManager delUser = new UserManager();
+		delUser.setId(id);
+		mUserManagerDao.deleteUser(delUser);
+		
+		
+	}
+
+	public void deleteUser(UserManager user) {
+		mUserManagerDao.deleteUser(user);
+	}
+
+	public UserManager findUserById(Long id) {
+		UserManager userManager = new UserManager();
+		userManager.setId(new Long(id));
+		List<UserManager> list = mUserManagerDao.findUser(userManager);
+		if(list == null && list.size()==0){
+			return null;
+		}
+		return list.get(0);
+	}
+
 }

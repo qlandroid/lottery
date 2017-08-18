@@ -12,7 +12,7 @@
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
-	<input type="text" id="params" data-total="${total }"
+	<input type="text" id="params" data-total="${total }" data-page="${page}"
 		data-url="${contextPath }" class="layui-hide">
 	<div class="">
 		<button class="layui-btn" id="btn-search">查询</button>
@@ -51,15 +51,16 @@
 						<td>${user.phone }</td>
 						<td>${user.power }</td>
 						<td><button
-								class="layui-btn  layui-btn-mini layui-btn-danger" type="del"
+								class="layui-btn  layui-btn-mini layui-btn-danger btn-del-user" type="del"
 								data-id="${user.id }">删除</button>
-							<button class="layui-btn layui-btn-mini" type="changePw"
+							<button class="layui-btn layui-btn-mini btn-change-pw" type="changePw"
 								data-id="${user.id }">修改密码</button></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
+	<div id="demo1"></div>
 	<div id="demo7"></div>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/js/jquery.js"></script>

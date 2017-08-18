@@ -22,7 +22,7 @@ layui.config({
     	var index = layer.load();
     	
     	 $.ajax( {
-   		  url:"http://localhost:8080/lottery/toLogin.do"
+   		  url:"http://localhost:8080/lottery/toLogin"
    		  ,type:"POST"
    			  ,data: {account:$("#account").val(),pw:$("#pw").val()}
    			  ,
@@ -32,16 +32,17 @@ layui.config({
    				console.log(data);
    				if(200 === data.code){
    					
-   					setTimeout(function(){
-   					  layer.closeAll('loading');
-   					},0);
+   					  layer.close(index);
    					window.location.href = data.data.url;
    				}else {
-					aler(data.message);
+   				 layer.close(index);
+   					layer.msg(data.message);
 				}
    			 },
    			 error:function(data){
+   				layer.close(index);
    				 console.log("error"  + JSON.stringify(data));
+   				layer.msg("连接失败");
    			 }
    	  });
     	 
