@@ -61,9 +61,10 @@
 		where id = #{id ,jdbcType=INTEGER}
 	</update>
 
-	<select id="queryTotalCount" resultType="long">
+	<select id="queryTotalCount" resultType="long" parameterType="org.ql.shopping.pojo.UserManager">
 		SELECT count(*) FROM
-		user_manager ;
+		user_manager
+		<include refid="where"></include> 
 	</select>
 
 

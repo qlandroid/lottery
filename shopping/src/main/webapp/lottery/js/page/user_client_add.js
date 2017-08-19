@@ -1,42 +1,44 @@
-$(document).ready(function() {
-	layui.use('layer', function() {
+$(document).ready(function(){
+	layui.use("layer",function(){
 		var layer = layui.layer;
+		
 		var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
 		// 关闭iframe
 		$('.btn-cancel').click(function() {
 			parent.layer.close(index);
 		});
-		// 给父页面传值
-		$('.btn-yes').on('click', function() {
-			var account = $("#account").val();
-			var name = $("#name").val();
-			var power = $("#power").val();
-			var phone = $("#phone").val();
-			var pw = $("#pw").val();
-			if(account == null || account =="" ){
+		
+		$(".btn-yes").on("click",function(){
+			var account = $("#account").val(),
+			pw =$("#pw").val(),
+			name = $("#name").val(),
+			zhifubao = $("#zhifubao").val(),
+			clientId = $("#clientId").val(),
+			phone = $("#phone").val();
+			
+			if(account == ""){
+				layer.msg("请输入账号");
 				$("#account").focus();
-				layer.msg("账号不能为空");
 				return;
 			}
-			if(account.length <8){
-				layer.msg("账号长度不能小于8");
-				return ;
-			}
-			if(pw == null || pw==""){
+			if(pw == ""){
+				layer.msg("请输入密码");
 				$("#pw").focus();
-				layer.msg("密码不能为空");
 				return;
 			}
-			var url = $(this).data("url");
+			var url = $(this).data("url"),
+			id = $(this).data("id");
 			$.ajax({
-	
+
 				url : url,
 				data : {
 					account : account,
 					pw : pw,
 					name : name,
-					power : power,
-					phone : phone
+					zhifubao : zhifubao,
+					phone : phone,
+					clientId,clientId
+					
 				},
 				dataType : "json",
 				type : "post",
@@ -46,7 +48,7 @@ $(document).ready(function() {
 				success : function(data) {
 						if (data.code == 200) {
 							layer.msg("添加成功");
-							parent.window.location.reload();
+							parent.window.location.href = data.data.url;
 							parent.layer.close(index);
 						} else {
 							// 墨绿深蓝风
@@ -57,10 +59,13 @@ $(document).ready(function() {
 							}, function() {
 								layer.close(index);
 							});
+
 						}
+					
+
 				}
+			});
 			
-			})
-		});
-	});
+		})
+	})
 })

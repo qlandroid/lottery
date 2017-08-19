@@ -1,6 +1,6 @@
 package org.ql.shopping.pojo.result;
 
-public class LoginResult {
+public class UrlResult {
 	private String url ;
 
 	public String getUrl() {

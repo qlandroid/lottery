@@ -3,6 +3,7 @@ package org.ql.shopping.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ql.shopping.HttpUrl;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -21,7 +22,7 @@ public class DefaultFilterInterceptor extends HandlerInterceptorAdapter{
 		if(modelAndView == null ){
 			modelAndView = new ModelAndView();
 		}
-		modelAndView.addObject("contextPath", request.getContextPath());
+		modelAndView.addObject("contextPath", HttpUrl.BASE_URL);
 	}
 	
 	@Override

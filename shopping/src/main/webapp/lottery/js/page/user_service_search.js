@@ -6,12 +6,34 @@ $(document).ready(function(){
 	});
 	//给父页面传值
 	$('.btn-yes').on('click', function(){
-		var account = $("#account").val();
-		var name = $("#name").val();
-		var power=$("#power").val();
-		var phone = $("#phone").val();
-		var url = base_url+"/userServiceManager?account="+account+"&name="+name+"&power="+power+"&phone="+phone
-	    parent.window.location.href =url;
+		var url = $(this).data("url");
+	    parent.window.location.href = url +params();
 	    	parent.layer.close(index);
 	});
 })
+
+
+function params(){
+	var account = $("#account").val();
+	var name = $("#name").val();
+	var power=$("#power").val();
+	var phone = $("#phone").val();
+	 var p =new String() ;
+	 if(account != null && account !=""){
+		 p = p +"&account="+account
+	 }
+	 if(name != null && name !=""){
+		 p = p +"&name="+name
+	 }
+	 if(power != null && power !=""){
+		 p = p +"&power="+power
+	 }
+	 if(phone != null && phone !=""){
+		 p = p +"&phone="+phone
+	 }
+	 if(p!=null|| p!=""){
+		 p = p.slice(1);
+	 }
+	 
+	 return "?" + p;
+}

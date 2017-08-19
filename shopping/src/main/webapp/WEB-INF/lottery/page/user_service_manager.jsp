@@ -9,17 +9,27 @@
 <link rel="stylesheet" href="${contextPath}/lottery/layui/css/layui.css">
 <link rel="stylesheet"
 	href="${contextPath}/lottery/css/page/add_user.css">
+	<link rel="stylesheet"
+	href="${contextPath}/lottery/css/page/user_service_manager.css">
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
-	<input type="text" id="params" data-total="${total }" data-page="${page}"
-		data-url="${contextPath }" class="layui-hide">
-	<div class="">
-		<button class="layui-btn" id="btn-search">查询</button>
-		<button class="layui-btn layui-btn-warm" id="btn-add">添加用户</button>
-		<button class=" layui-btn layui-btn-dange" id="btn-del">批量删除</button>
+	<input type="text"  id="params" 
+		data-account="${params.account }"
+		data-power="${params.power }"
+		data-page=""
+		 class="layui-hide">
+	<div class="btn-group">
+		<input class="layui-input fl" id="searchContent" placeholder="账号搜索"  type="text">
+		<button class="layui-btn" data-url="${searchUrl }" id="btnSearchContent">搜索</button>
+		<button class="layui-btn" data-url="${searchViewUrl }" id="btn-search">条件查询</button>
+		<button class="layui-btn   layui-btn-warm"  data-url="${addUserViewUrl }"id="btn-add">添加用户</button>
+		<button class=" layui-btn layui-btn-dange" data-url=""  id="btn-del">批量删除</button>
+		<div class="rf">
+			<span>用户是总数${totalUser }</span>
+		</div>
 	</div>
-	<div>
+	<div class="content-tab-body">
 		<table class="layui-table">
 			<colgroup>
 				<col width="50">
@@ -51,17 +61,16 @@
 						<td>${user.phone }</td>
 						<td>${user.power }</td>
 						<td><button
-								class="layui-btn  layui-btn-mini layui-btn-danger btn-del-user" type="del"
+								class="layui-btn  layui-btn-mini layui-btn-danger btn-del-user" data-url="${deleteUrl }"
 								data-id="${user.id }">删除</button>
-							<button class="layui-btn layui-btn-mini btn-change-pw" type="changePw"
+							<button class="layui-btn layui-btn-mini btn-change-pw" data-url="${changeViewUrl }"
 								data-id="${user.id }">修改密码</button></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
-	<div id="demo1"></div>
-	<div id="demo7"></div>
+	<div id="navIndex" data-total="${total }" data-url="${searchUrl }"data-page="${page}" class="nav-left"></div>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/js/jquery.js"></script>
 	<script type="text/javascript"

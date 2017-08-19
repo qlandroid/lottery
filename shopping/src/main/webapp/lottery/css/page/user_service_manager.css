@@ -1,0 +1,20 @@
+.content-tab-body{
+	padding: 0px 10px;
+}
+.nav-left {
+	position:absolute;
+	right:0px;
+}
+
+.btn-group{
+	padding: 20px 10px;
+}
+.layui-input{
+	width:200px;
+}
+.fl{
+	float: left;
+}
+.fr{
+	float: right;
+}

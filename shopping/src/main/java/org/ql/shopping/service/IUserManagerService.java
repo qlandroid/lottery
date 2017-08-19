@@ -23,7 +23,7 @@ public interface IUserManagerService {
 
 	public void deleteUser(UserManager user);
 
-	public long getUserTotalCount();
+	public long getUserTotalCount(UserManager queryUser);
 
 	/**
 	 * 分页查询用户

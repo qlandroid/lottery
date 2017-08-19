@@ -50,9 +50,6 @@ public class UserManagerServiceImpl implements IUserManagerService{
 		return mUserManagerDao.findAll(page);
 	}
 
-	public long getUserTotalCount() {
-		return mUserManagerDao.queryTotalCount();
-	}
 
 	public UserManager findUserByAccount(String account) {
 		UserManager acc = new UserManager();
@@ -85,6 +82,11 @@ public class UserManagerServiceImpl implements IUserManagerService{
 			return null;
 		}
 		return list.get(0);
+	}
+
+	public long getUserTotalCount(UserManager queryUser) {
+		return mUserManagerDao.queryTotalCount(queryUser);
+
 	}
 
 }

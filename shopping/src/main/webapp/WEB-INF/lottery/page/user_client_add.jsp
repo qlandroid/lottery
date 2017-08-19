@@ -11,6 +11,7 @@
 </head>
 <body>
 	<div class="layui-form">
+	<h1>添加用户</h1>
 		<div class="layui-form-item">
 			<label class="layui-form-label">账号</label>
 			<div class="layui-input-block">
@@ -19,10 +20,10 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">电话</label>
+			<label class="layui-form-label">密码</label>
 			<div class="layui-input-block">
-				<input type="text" name="title" id="phone" required lay-verify="required"
-					placeholder="电话" autocomplete="off" class="layui-input">
+				<input type="password" id="pw" name="title" required lay-verify="required"
+					placeholder="密码" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
@@ -33,13 +34,29 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">权限</label>
+			<label class="layui-form-label">身份证号</label>
 			<div class="layui-input-block">
-				<input type="text" name="title" id="power" required lay-verify="required"
-					placeholder="权限" autocomplete="off" class="layui-input">
+				<input type="text" name="title" id="clientId" required lay-verify="required"
+					placeholder="身份证号" autocomplete="off" class="layui-input">
 			</div>
 		</div>
-		<button class="layui-btn btn-yes" data-url="${searchUrl }">确认</button><button class="layui-btn btn-cancel">取消</button>
+		<div class="layui-form-item">
+			<label class="layui-form-label">电话</label>
+			<div class="layui-input-block">
+				<input type="text" name="title" id="phone" required lay-verify="required"
+					placeholder="电话" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">支付宝账号</label>
+			<div class="layui-input-block">
+				<input type="text" name="title" id="zhifubao" required lay-verify="required"
+					placeholder="支付宝账号用于转账" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<button data-url="${url }" data-id="${id }" class="layui-btn btn-yes">确认</button><button class="layui-btn btn-cancel">取消</button>
 	</div>
 
 	<script src="${contextPath}/lottery/js/jquery.js"></script>
@@ -48,6 +65,6 @@
 
 
 	<script type="text/javascript"
-		src="${contextPath}/lottery/js/page/user_service_search.js"></script>
+		src="${contextPath}/lottery/js/page/user_client_add.js"></script>
 </body>
 </html>

@@ -36,9 +36,10 @@ public interface IUserManagerDao {
 	public int updateUser(UserManager user);
 	/**
 	 * 总条数
+	 * @param queryUser 
 	 * @return
 	 */
-	public long queryTotalCount();
+	public long queryTotalCount(UserManager queryUser);
 
 	
 	/**

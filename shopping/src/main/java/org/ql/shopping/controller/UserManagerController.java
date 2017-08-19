@@ -1,32 +1,22 @@
 package org.ql.shopping.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.Service.Mode;
 
-import org.ql.shopping.HttpUrl;
 import org.ql.shopping.code.Code;
-import org.ql.shopping.exception.AccountHaveException;
-import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.pojo.Result;
-import org.ql.shopping.pojo.Rows;
-import org.ql.shopping.pojo.UserLogin;
 import org.ql.shopping.pojo.UserManager;
-import org.ql.shopping.pojo.params.ListParams;
-import org.ql.shopping.pojo.result.LoginResult;
+import org.ql.shopping.pojo.result.UrlResult;
 import org.ql.shopping.pojo.result.MainLeftNav;
-import org.ql.shopping.service.IUserClientService;
+import org.ql.shopping.service.IUserLoginService;
 import org.ql.shopping.service.IUserManagerService;
 import org.ql.shopping.util.MainNavFactroy;
-import org.ql.shopping.service.IUserLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,8 +31,6 @@ public class UserManagerController {
 
 	@Resource
 	private IUserLoginService mUserService;
-	@Resource
-	private IUserClientService mUserClientService;
 	@Resource
 	private IUserManagerService mUserManagerService;
 
@@ -81,7 +69,7 @@ public class UserManagerController {
 					result.setMessage("账号或密码不正确");
 				} else {
 					result.setCode(Code.SUCCESS);
-					LoginResult login = new LoginResult();
+					UrlResult login = new UrlResult();
 					login.setUrl("main.do");
 					result.setData(login);
 					HttpSession s = request.getSession();

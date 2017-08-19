@@ -47,7 +47,7 @@
 					placeholder="${user.power }" autocomplete="off" class="layui-input">
 			</div>
 		</div>
-		<button class="layui-btn btn-yes">确认</button><button class="layui-btn btn-cancel">取消</button>
+		<button class="layui-btn btn-yes" data-url="${changeUrl }">确认</button><button class="layui-btn btn-cancel">取消</button>
 	</div>
 
 	<script src="${contextPath}/lottery/js/jquery.js"></script>

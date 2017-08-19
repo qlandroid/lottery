@@ -4,17 +4,20 @@ public class UserClient {
 
 	private Long id;
 	private String name;//用户姓名
-	private String zhiFuBao;//支付宝账号
+	private String zhifubao;//支付宝账号
 	private String clientId;//身份证号
 	private String phone;//电话号码
-	private long userId;
-	private double lBi;//当前平台货币；
-	private String idFront;//身份证正面；
-	private String idVerso;//身份证反面；
-	public long getId() {
+	private Double lBi;//当前平台货币；
+	private String pw;
+	private String account;
+	private Double expendLBi;//消费的积分
+	
+	
+	
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -23,11 +26,11 @@ public class UserClient {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getZhiFuBao() {
-		return zhiFuBao;
+	public String getZhifubao() {
+		return zhifubao;
 	}
-	public void setZhiFuBao(String zhiFuBao) {
-		this.zhiFuBao = zhiFuBao;
+	public void setZhifubao(String zhifubao) {
+		this.zhifubao = zhifubao;
 	}
 	public String getClientId() {
 		return clientId;
@@ -41,30 +44,33 @@ public class UserClient {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public long getUserId() {
-		return userId;
-	}
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-	public double getlBi() {
+	public Double getlBi() {
 		return lBi;
 	}
-	public void setlBi(double lBi) {
+	public void setlBi(Double lBi) {
 		this.lBi = lBi;
 	}
-	public String getIdFornt() {
-		return idFront;
+	public String getPw() {
+		return pw;
 	}
-	public void setIdFornt(String idFornt) {
-		this.idFront = idFornt;
+	public void setPw(String pw) {
+		this.pw = pw;
 	}
-	public String getIdVerso() {
-		return idVerso;
+	public String getAccount() {
+		return account;
 	}
-	public void setIdVerso(String idVerso) {
-		this.idVerso = idVerso;
+	public void setAccount(String account) {
+		this.account = account;
 	}
+	public Double getExpendLBi() {
+		return expendLBi;
+	}
+	public void setExpendLBi(Double expendLBi) {
+		this.expendLBi = expendLBi;
+	}
+	
+	
+	
 	
 	
 }

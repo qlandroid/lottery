@@ -1,100 +1,154 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.ql.shopping.dao.IUserClientDao">
+<mapper namespace="org.ql.shopping.dao.IUserClientManagerDao">
 	<resultMap id="BaseResultMap" type="org.ql.shopping.pojo.UserClient">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
-		<result column="zhiFuBao" property="zhifubao" jdbcType="VARCHAR" />
-		<result column="clientId" property="client_id" jdbcType="VARCHAR" />
+		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
+		<result column="client_id" property="clientId" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
-		<result column="userId" property="user_id" jdbcType="INTEGER" />
-		<result column="lBi" property="l_bi" jdbcType="INTEGER" />
-		<result column="idFront" property="id_front" jdbcType="VARCHAR" />
-		<result column="idVerso" property="id_verso" jdbcType="VARCHAR" />
+		<result column="l_bi" property="lBi" jdbcType="INTEGER" />
+		<result column="pw" property="pw" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
 	</resultMap>
-	<sql id="Base_Column_List">
-		id, account, pw
-	</sql>
 
-	<insert id="addUser" parameterType="org.ql.shopping.pojo.UserClient">
-		insert into user_client
-		(name
-		,zhifubao
-		,chient_id
-		,phone
-		,user_id
-		,id_front
-		,id_verso)
-
+	<insert id="insterUserDetails" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		insert into
+		user_client
+		(zhifubao,name,client_id,phone,user_id)
 		values(
-		#{name,jdbcType=VARCHAR}
-		,#{zhiFuBao,jdbcType=VARCHAR}
+		#{zhifubao,jdbcType=VARCHAR}
+		,#{name,jdbcType=VARCHAR}
 		,#{clientId,jdbcType=VARCHAR}
-		,#{phone,jdbcType=VARCHAR}
-		,#{userId,jdbcType=INTEGER}
-		,#{idFront,jdbcType=VARCHAR}
-		,#{idVerso,jdbcType=VARCHAR}
+		,#{name,jdbcType=VARCHAR}
+		,#{phone,jdbcType=INTEGER}
+		);
+	</insert>
+	<insert id="insterUser" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		insert into
+		user_login
+		(account,pw)
+		values(
+		#{account,jdbcType=VARCHAR}
+		,#{pw,jdbcType=VARCHAR}
 		);
 	</insert>
 
-	<select id="find" resultMap="BaseResultMap" parameterType="org.ql.shopping.pojo.UserClient">
-		SELECT *
-		FROM user_client
-		<trim prefix="WHERE" prefixOverrides="AND | OR">
-			<if test="name != null">
-				AND name = #{name,jdbcType=VARCHAR}
-			</if>
-			<if test="zhiFuBao != null">
-				AND zhifubao = #{zhiFuBao,jdbcType=VARCHAR}
-			</if>
-			<if test="clientId != null">
-				AND client_id = #{clientId,jdbcType=VARCHAR}
-			</if>
-			<if test="phone != null">
-				AND phone = #{phone,jdbcType=VARCHAR}
-			</if>
-			<if test="userId != null and userId != '' ">
-				AND user_id = #{userId,jdbcType=INTEGER}
-			</if>
-		</trim>
+	<select id="findUserLogin" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		SELECT
+		id
+		FROM
+		user_login
+		WHERE account = #{account,jdbcType=VARCHAR}
 	</select>
+	
+	<select id="findUser" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		SELECT
+		a.id,a.account,a.pw,b.zhifubao,b.name,b.client_id,b.phone,b.l_bi
+		FROM
+		user_login a
+		JOIN user_client b
+		ON a.id = b.user_id
+		<include refid="whereSearch"></include>
+		<if test="firstIndex != null and firstIndex !=''">
+			LIMIT #{firstIndex jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="getTotalCount" resultType="long"
+		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		SELECT
+		count(*)
+		FROM
+		user_login a
+		JOIN user_client b
+		ON a.id = b.user_id
+		<include refid="whereSearch"></include>
+		
+	</select>
+	
+	
 
-
-	<update id="update" parameterType="org.ql.shopping.pojo.UserClient">
-
-		update user_client
+	<update id="updateUserPw" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		UPDATE user_login
 		<set>
-			<trim suffixOverrides=",">
-				<if test="name != null">
-					name = #{name,jdbcType=VARCHAR},
-				</if>
-				<if test="zhiFuBao != null">
-					zhifubao = #{zhiFuBao,jdbcType=VARCHAR},
-				</if>
-				<if test="clientId != null">
-					client_id = #{clientId,jdbcType=VARCHAR},
-				</if>
-				<if test="idFront != null">
-					id_front = #{idFront,jdbcType=VARCHAR},
-				</if>
-				<if test="clientId != null">
-					id_verso = #{idVerso,jdbcType=VARCHAR},
+			<trim suffixOverrides="">
+				<if test="pw != null and pw !=''">
+					pw = #{pw ,jdbcType=VARCHAR},
 				</if>
 			</trim>
 		</set>
-		where id = #{id,jdbcType=INTEGER}
-	</update>
 
-	<update id="changeLBi" parameterType="org.ql.shopping.pojo.UserClient">
-		update user_client
+		WHERE id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateUserDetails" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		UPDATE user_client
 		<set>
-			l_bi = #{lBi,jdbcType=INTEGER}
+			<trim suffixOverrides="">
+				<if test="zhifubao != null and zhifubao !=''">
+					zhifubao = #{zhifubao ,jdbcType=VARCHAR},
+				</if>
+				<if test="name != null and name !=''">
+					name = #{name ,jdbcType=VARCHAR},
+				</if>
+				<if test="clientId != null and clientId !=''">
+					client_id = #{clientId ,jdbcType=VARCHAR},
+				</if>
+				<if test="phone != null and phone !=''">
+					phone = #{phone ,jdbcType=VARCHAR},
+				</if>
+			</trim>
 		</set>
-		where id = #{id,jdbcType=INTEGER}
+
+		WHERE user_id = #{id,jdbcType=INTEGER}
 	</update>
 
-	<delete id="deleteUser" parameterType="long">
-		DELETE FROM user_client where id = #{id}
+	<update id="updateLBi" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		UPDATE user_client
+		<set>
+			<trim suffixOverrides="">
+				<if test="lBi != null and lBi !=''">
+					l_bi = #{lBi ,jdbcType=INTEGER},
+				</if>
+			</trim>
+		</set>
+		WHERE user_id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteUser" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		<if test="id != null and id !='' ">
+			DELETE FROM user_login where id = #{id}
+		</if>
+
 	</delete>
+	<delete id="deleteUserDetails" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		<if test="userId != null  and userId !='' ">
+			DELETE FROM user_client where id = #{userId}
+		</if>
+	</delete>
+	
+	<sql id="whereSearch">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="account != null and account !='' ">
+				AND a.account = #{account,jdbcType=VARCHAR}
+			</if>
+			<if test="pw != null and pw !='' ">
+				AND a.pw = #{pw,jdbcType=VARCHAR}
+			</if>
+			<if test="zhifubao != null and zhifubao !='' ">
+				AND b.zhifubao = #{zhifubao,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null and account !='' ">
+				AND b.name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="clientId != null and clientId !='' ">
+				AND b.client_id = #{clientId,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null and phone !='' ">
+				AND b.phone = #{phone,jdbcType=VARCHAR}
+			</if>
+		</trim></sql>
 
 </mapper>

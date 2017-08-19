@@ -1,30 +1,26 @@
-package org.ql.shopping.pojo;
+package org.ql.shopping.pojo.params;
 
-public class UserManager {
+public class UserClientManagerParams {
 
 	private Long id;
 	private String account;
 	private String pw;
-	private String power;
 	private String name;
+	private String zhifubao;
+	private String clientId;//身份证号
 	private String phone;
-	private String address;
-	private Long firstIndex;
-	private Integer pageSize;
-	private Integer page;
-	private Boolean isLike;
+	private String detailsId;//用户详情id
 	
-
-	public Boolean getIsLike() {
-		return isLike;
-	}
-	public void setIsLike(Boolean isLike) {
-		this.isLike = isLike;
-	}
-	public Integer getPage() {
+	private Long firstIndex;
+	private Long page;
+	private Integer pageSize;
+	
+	
+	
+	public Long getPage() {
 		return page;
 	}
-	public void setPage(Integer page) {
+	public void setPage(Long page) {
 		this.page = page;
 	}
 	public Long getFirstIndex() {
@@ -38,12 +34,6 @@ public class UserManager {
 	}
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
 	}
 	public Long getId() {
 		return id;
@@ -63,17 +53,23 @@ public class UserManager {
 	public void setPw(String pw) {
 		this.pw = pw;
 	}
-	public String getPower() {
-		return power;
-	}
-	public void setPower(String power) {
-		this.power = power;
-	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getZhifubao() {
+		return zhifubao;
+	}
+	public void setZhifubao(String zhifubao) {
+		this.zhifubao = zhifubao;
+	}
+	public String getClientId() {
+		return clientId;
+	}
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 	public String getPhone() {
 		return phone;
@@ -81,7 +77,12 @@ public class UserManager {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+	public String getDetailsId() {
+		return detailsId;
+	}
+	public void setDetailsId(String detailsId) {
+		this.detailsId = detailsId;
+	}
 	
 	
 }

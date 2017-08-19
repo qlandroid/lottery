@@ -9,4 +9,8 @@ public class ResultHintUtils {
 		result.setCode(Code.ERROR);
 		result.setMessage("系統內部錯誤");
 	}
+
+	public static void setSystemError(Result result, Exception e) {
+		
+	}
 }

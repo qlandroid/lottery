@@ -6,35 +6,21 @@ $(document).ready(function() {
 	});
 	// 给父页面传值
 	$('.btn-yes').on('click', function() {
-		var id = $("#account").data("id");
-		var name = $("#name").val();
-		var power = $("#power").val();
-		var phone = $("#phone").val();
-		var pw = $("#pw").val();
+		var url = $(this).data("url");
 		layui.use('layer', function() {
 			var layer = layui.layer;
 		$.ajax({
-
-			url : base_url + "/userService/userChange",
-			data : {
-				id:id,
-				pw : pw,
-				name : name,
-				power : power,
-				phone : phone
-			},
+			url : url,
+			data : params(),
 			dataType : "json",
 			type : "post",
 			error : function() {
 				layer.msg("連接失敗");
 			},
 			success : function(data) {
-				
-					
 					if (data.code == 200) {
-						var url = base_url + "/userService/userServiceManager"
 						layer.msg("修改成功");
-						parent.window.location.href = url;
+						parent.window.location.reload();
 						parent.layer.close(index);
 					} else {
 
@@ -55,3 +41,11 @@ $(document).ready(function() {
 		})
 	});
 })
+ function params(){
+	var id = $("#account").data("id");
+	var name = $("#name").val();
+	var power = $("#power").val();
+	var phone = $("#phone").val();
+	var pw = $("#pw").val();
+	return {id:id,name:name,power:power,phone:phone,pw:pw};
+ }
