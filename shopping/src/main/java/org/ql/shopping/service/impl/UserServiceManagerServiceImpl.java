@@ -6,13 +6,13 @@ import javax.annotation.Resource;
 
 import org.ql.shopping.dao.IUserManagerDao;
 import org.ql.shopping.pojo.UserManager;
-import org.ql.shopping.service.IUserManagerService;
+import org.ql.shopping.service.IUserServiceManagerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service("userManagerService")
-public class UserManagerServiceImpl implements IUserManagerService{
+public class UserServiceManagerServiceImpl implements IUserServiceManagerService{
 
 	
 	@Resource
@@ -47,6 +47,8 @@ public class UserManagerServiceImpl implements IUserManagerService{
 	}
 
 	public List<UserManager> findPage(UserManager page) {
+		Long firstIndex = (long) ((page.getPage() - 1)* page.getPageSize());
+		page.setFirstIndex(firstIndex);
 		return mUserManagerDao.findAll(page);
 	}
 
@@ -85,6 +87,7 @@ public class UserManagerServiceImpl implements IUserManagerService{
 	}
 
 	public long getUserTotalCount(UserManager queryUser) {
+		
 		return mUserManagerDao.queryTotalCount(queryUser);
 
 	}

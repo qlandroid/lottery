@@ -25,9 +25,9 @@
 	<div class="btn-group">
 		<input class="layui-input fl" id="searchContent" placeholder="账号搜索"
 			type="text">
-		<button class="layui-btn" id="search">搜索</button>
-		<button class="layui-btn" id="btn-search">条件查询</button>
-		<button class="layui-btn layui-btn-warm" data-url="#{addUrl }" id="btn-add">添加用户</button>
+		<button class="layui-btn" data-url="${url }" id="search">搜索</button>
+		<button class="layui-btn" data-url="${searchViewUrl }" id="btn-search">条件查询</button>
+		<button class="layui-btn layui-btn-warm" data-url="${addViewUrl }" id="btn-add">添加用户</button>
 		<button class=" layui-btn layui-btn-dange" id="btn-del">批量删除</button>
 	</div>
 	<div class="content-tab-body">
@@ -66,16 +66,18 @@
 						<td>${user.expendLBi }</td>
 						<td>
 							<button class="layui-btn layui-btn-mini" id="btnDecode"
-								type="changePw" data-id="${user.id }">消费记录</button>
+								type="changePw"  data-id="${user.id }">消费记录</button>
 							<button class="layui-btn layui-btn-mini btn-change-pw"
 							id="btnIncome"
-								type="changePw" data-id="${user.id }">充值</button>
+								type="changePw" data-url="${incomeViewUrl } data-id="${user.id }">充值</button>
 							<button class="layui-btn layui-btn-mini btn-change-pw"
 							id="btnChange"
+							data-url="${changeViewUrl }"
 								type="changePw" data-id="${user.id }">修改</button>
 							<button
 							id="btnDel"
 								class="layui-btn  layui-btn-mini layui-btn-danger btn-del-user"
+								data-url="${deleteViewUrl }"
 								type="del" data-id="${user.id }">删除</button>
 						</td>
 					</tr>
@@ -83,7 +85,10 @@
 			</tbody>
 		</table>
 	</div>
-	<div id="demo7" class="nav-left"></div>
+	<div id="navIndex" data-total="${pageTotal }"
+	data-url="${url }"
+	data-page="${page }"
+	 class="nav-left"></div>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/js/jquery.js"></script>
 	<script type="text/javascript"

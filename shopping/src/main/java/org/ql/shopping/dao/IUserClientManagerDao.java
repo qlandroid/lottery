@@ -23,12 +23,9 @@ public interface IUserClientManagerDao {
 	 */
 	public List<UserClient> findUser(UserClientManagerParams params);
 	
-	/**
-	 * 根据条件查询
-	 * @param user
-	 * @return
-	 */
-	public List<UserClient> findUserLogin(UserClientManagerParams params);
+	
+	public List<UserClient> findUserClientByUserId(Long id);
+	
 	/**
 	 * 分页查询
 	 * @param user
@@ -42,7 +39,7 @@ public interface IUserClientManagerDao {
 	 * @param user
 	 * @return
 	 */
-	public void updateLBi(UserClientManagerParams params);
+	public void updateLBi(UserClient params);
 	/**
 	 * 总条数
 	 * @param queryUser 

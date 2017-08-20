@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.ILBiChangeManagerDao">
+	<resultMap id="BaseResultMap" type="org.ql.shopping.pojo.LBiChangeManager">
+		<id column="change_doc_id" property="changeId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="doc_expend_id" property="docExpendId" jdbcType="INTEGER" />
+		<result column="doc_income_id" property="docIncomeId" jdbcType="INTEGER" />
+		<result column="operate_date" property="operateDate" jdbcType="DATE" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="operate_type" property="operateType" jdbcType="VARCHAR" />
+		<result column="pay_money" property="payMoney" jdbcType="INTEGER" />
+		<result column="income_in_qty" property="incomeInQty" jdbcType="INTEGER" />
+		<result column="income_doc_no" property="incomeDocNo" jdbcType="VARCHAR" />
+		<result column="income_before_qty" property="incomeBeforeQty" jdbcType="INTEGER" />
+		<result column="income_after_qty" property="incomeAfterQty" jdbcType="INTEGER" />
+		<result column="expend_out_qty" property="expendOutQty" jdbcType="INTEGER" />
+		<result column="expend_before_qty" property="expendBeforeQty" jdbcType="INTEGER" />
+		<result column="expend_after_qty" property="expendAfterQty" jdbcType="INTEGER" />
+		<result column="expend_doc_no" property="expendDocNo" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<delete id="deleteById" parameterType="long">
+		delete from manifest_l_bi_change where change_doc_id = #{id}
+	</delete>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="manifestId" parameterType="org.ql.shopping.pojo.LBiChangeManager">
+		insert into manifest_l_bi_change(
+			<trim prefixOverrides=",">
+				<if test="changeId != null and changId !=''">
+					, a.change_doc_id 
+				</if>
+				<if test="type != null and type !=''">
+					, a.type
+				</if>
+				<if test="operateTime != null and operateTime !=''">
+					, a.operate_time 
+				</if>
+				<if test="docIncomeId != null and docIncomeId !=''">
+					, a.doc_income_id
+				</if>
+				<if test="docExpendId != null and docExpendId !=''">
+					, a.doc_expend_id
+				</if>
+				<if test="userId != null and userId !=''">
+					, a.user_id 
+				</if>
+				<if test="operateType != null and operateType !=''">
+					, a.operate_type
+				</if>
+			</trim>
+		)
+		<trim  prefix="values(" prefixOverrides="," suffix=")">
+				<if test="changeId != null and changId !=''">
+					,#{changeId,jdbcType=INTEGER}
+				</if>
+				<if test="type != null and type !=''">
+					,#{type,jdbcType=VARCHAR}
+				</if>
+				<if test="operateTime != null and operateTime !=''">
+					,#{operateTime,jdbcType=DATE}
+				</if>
+				<if test="docIncomeId != null and docIncomeId !=''">
+					,#{docIncomeId,jdbcType=INTEGER}
+				</if>
+				<if test="docExpendId != null and docExpendId !=''">
+					,#{docExpendId,jdbcType=INTEGER}
+				</if>
+				<if test="userId != null and userId !=''">
+					,#{userId,jdbcType=INTEGER}
+				</if>
+				<if test="operateType != null and operateType !=''">
+					, #{operateType,jdbcType=VARCHAR}
+				</if>
+			</trim>
+	</insert>
+	<update id="updateById" parameterType="org.ql.shopping.pojo.LBiChangeManager">
+		update manifest_l_bi_change a
+		<set>
+			<trim prefixOverrides=",">
+				<if test="changeId != null and changId !=''">
+					, a.change_doc_id = #{changeId,jdbcType=INTEGER}
+				</if>
+				<if test="type != null and type !=''">
+					, a.type = #{type,jdbcType=VARCHAR}
+				</if>
+				<if test="operateTime != null and operateTime !=''">
+					, a.operate_time = #{operateTime,jdbcType=DATE}
+				</if>
+				<if test="docIncomeId != null and docIncomeId !=''">
+					, a.doc_income_id = #{docIncomeId,jdbcType=INTEGER}
+				</if>
+				<if test="docExpendId != null and docExpendId !=''">
+					, a.doc_expend_id = #{docExpendId,jdbcType=INTEGER}
+				</if>
+				<if test="userId != null and userId !=''">
+					, a.user_id = #{userId,jdbcType=INTEGER}
+				</if>
+				<if test="operateType != null and operateType !=''">
+					, a.operate_type = #{operateType,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</set>
+		
+		WHERE a.change_doc_id = #{changeId,jdbcType=INTEGER}
+
+	</update>
+	<select id="findAnd" parameterType="org.ql.shopping.pojo.LBiChangeManager">
+		<include refid="select"></include>
+		<include refid="whereAnd"></include>
+		ORDER by a.operate_date desc
+		<if test="firstIndex != null and firstIndex != '' and pageSize != null and pageSize !=''">
+		LIMIT #{firstIndex},#{pageSize}
+		</if>
+	</select>
+	<select id="findOr" parameterType="org.ql.shopping.pojo.LBiChangeManager">
+		<include refid="select"></include>
+		<include refid="whereOr"></include>
+		ORDER by a.operate_date desc
+		<if test="firstIndex != null and firstIndex != '' and pageSize != null and pageSize !=''">
+		LIMIT #{firstIndex},#{pageSize}
+		</if>
+	</select>
+	<select id="getTotalCount" parameterType="org.ql.shopping.pojo.LBiChangeManager">
+		select count(*) from
+		manfiest_l_bi_change
+	</select>
+	<select id="getTotalCountOr" parameterType="org.ql.shopping.pojo.LBiChangeManager">
+		select count(*) from manifest_l_bi_change a
+		JOIN manifest_income b ON
+		a.doc_income_id =
+		b.income_id
+		JOIN manifest_expend c ON a.doc_expend_id
+		= c.expend_id
+
+		<include refid="whereOr"></include>
+	</select>
+	<select id="getTotalCountAnd" parameterType="org.ql.shopping.pojo.LBiChangeManager">
+		select count(*) from manifest_l_bi_change a
+		JOIN manifest_income b ON
+		a.doc_income_id =
+		b.income_id
+		JOIN manifest_expend c ON a.doc_expend_id
+		= c.expend_id
+		<include refid="whereAnd"></include>
+	</select>
+	<sql id="select">
+		SELECT
+		a.change_doc_id
+		,a.type
+		,a.operate_date
+		,a.doc_income_id
+		,a.doc_expend_id
+		,a.user_id
+		,a.remark
+		,a,operate_type
+		,b.income_doc_no
+		,b.income_after_qty
+		,b.income_before_qty
+		,b.income_in_qty
+		,b.pay_money
+		,c.expend_doc_no
+		,c.expend_after_qty
+		,c.expend_before_qty
+		,c.expend_out_qty
+		from
+		manifest_l_bi_change a
+		JOIN
+		manifest_income b ON a.doc_income_id =
+		b.income_id and a.user_id = b.user_id
+		JOIN manifest_expend
+		c ON a.doc_expend_id = c.expend_id and a.user_id = c.user_id
+	</sql>
+	<sql id="whereAnd">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="changeId != null and changId !=''">
+				AND a.change_doc_id = #{changeId,jdbcType=INTEGER}
+			</if>
+			<if test="type != null and type !=''">
+				AND a.type = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="operateTime != null and operateTime !=''">
+				AND a.operate_time = #{operateTime,jdbcType=DATE}
+			</if>
+			<if test="docIncomeId != null and docIncomeId !=''">
+				AND a.doc_income_id = #{docIncomeId,jdbcType=INTEGER}
+			</if>
+			<if test="docExpendId != null and docExpendId !=''">
+				AND a.doc_expend_id = #{docExpendId,jdbcType=INTEGER}
+			</if>
+			<if test="userId != null and userId !=''">
+				AND a.user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="operateType != null and operateType !=''">
+				AND a.operate_type = #{operateType,jdbcType=VARCHAR}
+			</if>
+			<if test="incomeDocNo != null and incomeDocNo !=''">
+				AND b.income_doc_no = #{incomeDocNo,jdbcType=VARCHAR}
+			</if>
+			<if test="expendDocNo != null and expendDocNo !=''">
+				AND c.expend_doc_no = #{expendDocNo,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</sql>
+	<sql id="whereOr">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="changeId != null and changId !=''">
+				OR a.change_doc_id = #{changeId,jdbcType=INTEGER}
+			</if>
+			<if test="type != null and type !=''">
+				OR a.type = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="operateTime != null and operateTime !=''">
+				OR a.operate_time = #{operateTime,jdbcType=DATE}
+			</if>
+			<if test="docIncomeId != null and docIncomeId !=''">
+				OR a.doc_income_id = #{docIncomeId,jdbcType=INTEGER}
+			</if>
+			<if test="docExpendId != null and docExpendId !=''">
+				OR a.doc_expend_id = #{docExpendId,jdbcType=INTEGER}
+			</if>
+			<if test="userId != null and userId !=''">
+				OR a.user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="operateType != null and operateType !=''">
+				OR a.operate_type = #{operateType,jdbcType=VARCHAR}
+			</if>
+			<if test="incomeDocNo != null and incomeDocNo !=''">
+				OR b.income_doc_no = #{incomeDocNo,jdbcType=VARCHAR}
+			</if>
+			<if test="expendDocNo != null and expendDocNo !=''">
+				OR c.expend_doc_no = #{expendDocNo,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</sql>
+
+</mapper>

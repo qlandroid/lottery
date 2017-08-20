@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.IIncomeManifestManagerDao">
+	<resultMap id="BaseResultMap" type="org.ql.shopping.pojo.IncomeManifest">
+		<id column="income_id" property="manifestId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="income_end_date" property="endDate" jdbcType="DATE" />
+		<result column="income_in_qty" property="inQty" jdbcType="INTEGER" />
+		<result column="income_before_qty" property="beforeQty" jdbcType="INTEGER" />
+		<result column="income_after_qty" property="afterQty" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="pay_money" property="payMoney" jdbcType="INTEGER" />
+		<result column="income_doc_no" property="incomeDocNo" jdbcType="VARCHAR" />
+		<result column="income_create_date" property="createDate" jdbcType="DATE" />
+		<result column="zhifubao_doc" property="zhifubaoDoc" jdbcType="VARCHAR" />
+		<result column="l_bi" property="lBi" jdbcType="VARCHAR" />
+		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
+		
+
+	</resultMap>
+
+	<insert id="insterUserDetails" useGeneratedKeys="true" keyProperty="manifestId" parameterType="org.ql.shopping.pojo.IncomeManifest">
+		insert into
+		manifest_income
+		(
+		income_create_date
+		,end_date
+		,zhifubao_doc
+		,pay_money
+		,income_in_qty
+		,income_doc_no
+		,status
+		,user_id
+		,before_qty
+		,income_after_qty
+		)
+		values(
+		#{crateDate
+		,jdbcType=DATE}
+		,#{endDate ,jdbcType=DATE}
+		,#{zhifubaoDoc
+		,jdbcType=VARCHAR}
+		,#{payMoney ,jdbcType=INTEGER}
+		,#{inQty
+		,jdbcType=INTEGER}
+		,#{incomeDocNo ,jdbcType=VARCHAR}
+		,#{status
+		,jdbcType=VARCHAR}
+		,#{userId ,jdbcType=INTEGER}
+		,#{beforeQty
+		,jdbcType=INTEGER}
+		,#{afterQty ,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="org.ql.shopping.pojo.IncomeManifest">
+		DELETE FROM manifest_income
+
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="manifestId != null and manifestId != ''">
+				AND id = #{manifestId ,jdbcType=INTEGER}
+			</if>
+
+			<if test="userId != null and userId != ''">
+				AND user_id = #{userId ,jdbcType=INTEGER}
+			</if>
+			<if test="incomeDocNo != null and incomeDocNo != ''">
+				AND income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR}
+			</if>
+		</trim>
+
+	</delete>
+
+	<update id="updateById" parameterType="org.ql.shopping.pojo.IncomeManifest">
+		UPDATE manifest_income
+		<set>
+			<trim suffixOverrides=",">
+				<if test="createDate != null and createDate != ''">
+					income_create_date = #{createDate ,jdbcType=DATE},
+				</if>
+				<if test="zhifubaoDoc != null and zhifubaoDoc != ''">
+					zhifubao_doc = #{zhifubaoDoc ,jdbcType=VARCHAR},
+				</if>
+				<if test="payMoney != null and payMoney != ''">
+					pay_money = #{payMoney ,jdbcType=INTEGER},
+				</if>
+				<if test="inQty != null and inQty != ''">
+					income_in_qty = #{inQty ,jdbcType=INTEGER},
+				</if>
+				<if test="incomeDocNo != null and incomeDocNo != ''">
+					income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR},
+				</if>
+				<if test="status != null and status != ''">
+					status = #{status ,jdbcType=VARCHAR},
+				</if>
+				<if test="userId != null and userId != ''">
+					user_id = #{userId ,jdbcType=INTEGER},
+				</if>
+				<if test="beforeQty != null and beforeQty != ''">
+					before_qty = #{beforeQty ,jdbcType=INTEGER},
+				</if>
+
+				<if test="afterQty != null and afterQty != ''">
+					income_after_qty = #{afterQty ,jdbcType=INTEGER},
+				</if>
+				<if test="endDate != null and endDate != ''">
+					income_end_date = #{endDate ,jdbcType=DATE},
+				</if>
+			</trim>
+		</set>
+		WHERE icome_id = #{manifestId,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getTotalCount" resultType="long">
+		select count(*) from manifest_income
+	</select>
+	<select id="getParamsTotalCountOr" resultType="long" parameterType="org.ql.shopping.pojo.IncomeManifest">
+		select count(*) from manifest_income b 
+		where 
+		<trim prefixOverrides="OR">
+			<include refid="or_user_a"></include>
+			<include refid="or_income_b"></include>
+			<include refid="or_client_c"></include>
+		</trim>
+		
+	</select>
+	<select id="getParamsTotalCountAnd" resultType="long" parameterType="org.ql.shopping.pojo.IncomeManifest">
+	select count(*) from manifest_income b 
+		where 
+		<trim prefixOverrides="AND">
+			<include refid="and_user_a"></include>
+			<include refid="and_income_b"></include>
+			<include refid="and_client_c"></include>
+		</trim>
+		
+	</select>
+	<select id="findAnd" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.IncomeManifest">
+		<include refid="select"></include>
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<include refid="and_income_b"></include>
+			<include refid="and_user_a"></include>
+			<include refid="and_client_c"></include>
+		</trim>
+		ORDER by b.income_create_date desc
+		LIMIT ${firstIndex},${pageSize}
+	</select>
+	<select id="findOr" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.IncomeManifest">
+		<include refid="select"></include>
+		<trim prefix="WHERE" prefixOverrides="OR">
+			<include refid="or_client_c"></include>
+			<include refid="or_user_a"></include>
+			<include refid="or_income_b"></include>
+		</trim>
+		ORDER by b.income_create_date desc
+		LIMIT ${firstIndex},${pageSize}
+	</select>
+
+
+	<sql id="and_client_c">
+		<if test="name != null and name != ''">
+			AND c.name = #{name ,jdbcType=VARCHAR},
+		</if>
+	</sql>
+	<sql id="or_client_c">
+		<if test="name != null and name != ''">
+			OR c.name = #{name ,jdbcType=VARCHAR},
+		</if>
+	</sql>
+
+	<sql id="and_user_a">
+		<if test="account != null and account != ''">
+			AND a.account = #{account ,jdbcType=INTEGER},
+		</if>
+	</sql>
+	<sql id="or_user_a">
+		<if test="account != null and account != ''">
+			OR a.account = #{account ,jdbcType=INTEGER},
+		</if>
+	</sql>
+	<sql id="and_income_b">
+		<if test="userId != null and userId != ''">
+			AND b.user_id = #{userId ,jdbcType=INTEGER},
+		</if>
+
+		<if test="createDate != null and createDate != ''">
+			AND b.income_create_date = #{createDate ,jdbcType=DATE},
+		</if>
+		<if test="zhifubaoDoc != null and zhifubaoDoc != ''">
+			AND b.zhifubao_doc = #{zhifubaoDoc ,jdbcType=VARCHAR},
+		</if>
+		<if test="payMoney != null and payMoney != ''">
+			AND b.pay_money = #{payMoney ,jdbcType=INTEGER},
+		</if>
+		<if test="inQty != null and inQty != ''">
+			AND b.income_in_qty = #{inQty ,jdbcType=INTEGER},
+		</if>
+		<if test="incomeDocNo != null and incomeDocNo != ''">
+			AND b.income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR},
+		</if>
+		<if test="status != null and status != ''">
+			AND b.status = #{status ,jdbcType=VARCHAR},
+		</if>
+		<if test="userId != null and userId != ''">
+			AND b.user_id = #{userId ,jdbcType=INTEGER},
+		</if>
+		<if test="beforeQty != null and beforeQty != ''">
+			AND b.before_qty = #{beforeQty ,jdbcType=INTEGER},
+		</if>
+
+		<if test="afterQty != null and afterQty != ''">
+			AND b.income_after_qty = #{afterQty ,jdbcType=INTEGER},
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND b.income_end_date = #{endDate ,jdbcType=DATE},
+		</if>
+	</sql>
+	<sql id="or_income_b">
+		<if test="userId != null and userId != ''">
+			OR b.user_id = #{userId ,jdbcType=INTEGER},
+		</if>
+
+		<if test="createDate != null and createDate != ''">
+			OR b.income_create_date = #{createDate ,jdbcType=DATE},
+		</if>
+		<if test="zhifubaoDoc != null and zhifubaoDoc != ''">
+			OR b.zhifubao_doc = #{zhifubaoDoc ,jdbcType=VARCHAR},
+		</if>
+		<if test="payMoney != null and payMoney != ''">
+			OR b.pay_money = #{payMoney ,jdbcType=INTEGER},
+		</if>
+		<if test="inQty != null and inQty != ''">
+			OR b.income_in_qty = #{inQty ,jdbcType=INTEGER},
+		</if>
+		<if test="incomeDocNo != null and incomeDocNo != ''">
+			OR b.income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR},
+		</if>
+		<if test="status != null and status != ''">
+			OR b.status = #{status ,jdbcType=VARCHAR},
+		</if>
+		<if test="userId != null and userId != ''">
+			OR b.user_id = #{userId ,jdbcType=INTEGER},
+		</if>
+		<if test="beforeQty != null and beforeQty != ''">
+			OR b.before_qty = #{beforeQty ,jdbcType=INTEGER},
+		</if>
+
+		<if test="afterQty != null and afterQty != ''">
+			OR b.income_after_qty = #{afterQty ,jdbcType=INTEGER},
+		</if>
+		<if test="endDate != null and endDate != ''">
+			OR b.income_end_date = #{endDate ,jdbcType=DATE},
+		</if>
+	</sql>
+	<sql id="select">
+		SELECT
+		a.account
+		,b.income_id
+		,b.income_create_date
+		,b.zhifubao_doc
+		,b.pay_money
+		,b.income_in_qty
+		,b.income_doc_no
+		,b.status
+		,b.user_id
+		,b.income_before_qty
+		,b.income_after_qty
+		,b.income_end_date
+		,c.name
+		,c.zhifubao
+		,c.l_bi
+		,c.phone
+		FROM
+		manifest_income b
+		JOIN user_login a ON a.id =
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+	</sql>
+</mapper>

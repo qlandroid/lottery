@@ -12,7 +12,7 @@ import org.ql.shopping.exception.AccountHaveException;
 import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.pojo.Result;
 import org.ql.shopping.pojo.UserManager;
-import org.ql.shopping.service.IUserManagerService;
+import org.ql.shopping.service.IUserServiceManagerService;
 import org.ql.shopping.util.ResultHintUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class UserServiceMangerController {
 	}
 	
 	@Resource
-	private IUserManagerService mUserManagerService;
+	private IUserServiceManagerService mUserManagerService;
 
 	/**
 	 * 查询用户，条件选择页面
@@ -87,30 +87,28 @@ public class UserServiceMangerController {
 	 * userService/userServiceManagerSerach.do?account=&name=&power=&phone=
 	 * 分页查询
 	 * @param request
-	 * @param queryUser
+	 * @param params
 	 * @return
 	 */
 	@RequestMapping("/list")
 	public ModelAndView showUserManger(HttpServletRequest request,
-			UserManager queryUser) {
+			UserManager params) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("page/user_service_manager.jsp");
-		Integer page = queryUser.getPage();
-		if (queryUser.getPageSize() == null) {
-			queryUser.setPageSize(10);
+		Long page = params.getPage();
+		if (page == null || page <= 0) {
+			page = 1L;
+			params.setPage(page);
 		}
-		int firstIndex;
-		if (page == null) {
-			page = 1;
-			firstIndex = 0;
-		} else {
-			firstIndex = (page - 1) * queryUser.getPageSize();
+		Integer pageSize = params.getPageSize();
+		if (pageSize == null || pageSize <= 0) {
+			pageSize = 10;
+			params.setPageSize(pageSize);
 		}
-		queryUser.setFirstIndex(new Long(firstIndex));
-		List<UserManager> userList = mUserManagerService.findPage(queryUser);
-		Long total = mUserManagerService.getUserTotalCount(queryUser);
+		List<UserManager> userList = mUserManagerService.findPage(params);
+		Long total = mUserManagerService.getUserTotalCount(params);
 		Long totlaUser = total;
-		total = total / queryUser.getPageSize() + 1;
+		total = total / params.getPageSize() + 1;
 		mav.addObject("page",page);
 		mav.addObject("total", total);
 		mav.addObject("userList", userList);

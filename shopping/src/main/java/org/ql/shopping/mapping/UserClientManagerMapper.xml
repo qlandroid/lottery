@@ -20,11 +20,11 @@
 		#{zhifubao,jdbcType=VARCHAR}
 		,#{name,jdbcType=VARCHAR}
 		,#{clientId,jdbcType=VARCHAR}
-		,#{name,jdbcType=VARCHAR}
-		,#{phone,jdbcType=INTEGER}
+		,#{phone,jdbcType=VARCHAR}
+		,#{id,jdbcType=INTEGER}
 		);
 	</insert>
-	<insert id="insterUser" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+	<insert id="insterUser" useGeneratedKeys="true" keyProperty="id" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
 		insert into
 		user_login
 		(account,pw)
@@ -34,13 +34,13 @@
 		);
 	</insert>
 
-	<select id="findUserLogin" resultMap="BaseResultMap"
-		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+	
+	<select id="findUserClientByUserId" resultMap="BaseResultMap" parameterType="long">
 		SELECT
 		id
 		FROM
 		user_login
-		WHERE account = #{account,jdbcType=VARCHAR}
+		WHERE user_id = #{id}
 	</select>
 	
 	<select id="findUser" resultMap="BaseResultMap"
@@ -124,8 +124,8 @@
 
 	</delete>
 	<delete id="deleteUserDetails" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
-		<if test="userId != null  and userId !='' ">
-			DELETE FROM user_client where id = #{userId}
+		<if test="id != null  and id !='' ">
+			DELETE FROM user_client where user_id = #{id}
 		</if>
 	</delete>
 	

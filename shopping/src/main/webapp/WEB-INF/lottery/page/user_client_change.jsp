@@ -4,47 +4,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>服务端用户条件查询</title>
+<title>修改個人詳情</title>
 <link rel="stylesheet" href="${contextPath}/lottery/layui/css/layui.css">
 <link rel="stylesheet"
 	href="${contextPath}/lottery/css/page/lottery_0.css">
 </head>
 <body>
 	<div class="layui-form">
-	<h1>添加用户</h1>
 		<div class="layui-form-item">
 			<label class="layui-form-label">账号</label>
 			<div class="layui-input-block">
-				<input type="text" id="account" name="title" required lay-verify="required"
-					placeholder="账号" autocomplete="off" class="layui-input">
+				<span type="text" id="account" name="title" required lay-verify="required"
+					class="layui-input" data-id="${user.id }"> ${user.account }</span>
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">密码</label>
+			<label class="layui-form-label">密碼</label>
 			<div class="layui-input-block">
-				<input type="password" id="pw" name="title" required lay-verify="required"
-					placeholder="密码" autocomplete="off" class="layui-input">
+				<input type="text" name="title" id="pw" required lay-verify="required"
+					placeholder="${user.pw }" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">姓名</label>
 			<div class="layui-input-block">
 				<input type="text" name="title" id="name" required lay-verify="required"
-					placeholder="姓名" autocomplete="off" class="layui-input">
+					placeholder="${user.name }" autocomplete="off" class="layui-input">
 			</div>
 		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label">身份证号</label>
-			<div class="layui-input-block">
-				<input type="text" name="title" id="clientId" required lay-verify="required"
-					placeholder="身份证号" autocomplete="off" class="layui-input">
-			</div>
-		</div>
+		
 		<div class="layui-form-item">
 			<label class="layui-form-label">电话</label>
 			<div class="layui-input-block">
 				<input type="text" name="title" id="phone" required lay-verify="required"
-					placeholder="电话" autocomplete="off" class="layui-input">
+					placeholder="${user.phone }" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		
@@ -52,11 +45,17 @@
 			<label class="layui-form-label">支付宝账号</label>
 			<div class="layui-input-block">
 				<input type="text" name="title" id="zhifubao" required lay-verify="required"
-					placeholder="支付宝账号用于转账" autocomplete="off" class="layui-input">
+					placeholder="${user.zhifubao }" autocomplete="off" class="layui-input">
 			</div>
 		</div>
-		
-		<button data-url="${addOperateUrl }" data-id="${id }" class="layui-btn btn-yes">确认</button><button class="layui-btn btn-cancel">取消</button>
+		<div class="layui-form-item">
+			<label class="layui-form-label">身份证号</label>
+			<div class="layui-input-block">
+				<input type="text" name="title" id="clientId" required lay-verify="required"
+					placeholder="${user.clientId }" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<button class="layui-btn btn-yes" data-url="${changeUrl }">确认</button><button class="layui-btn btn-cancel">取消</button>
 	</div>
 
 	<script src="${contextPath}/lottery/js/jquery.js"></script>
@@ -65,6 +64,6 @@
 
 
 	<script type="text/javascript"
-		src="${contextPath}/lottery/js/page/user_client_add.js"></script>
+		src="${contextPath}/lottery/js/page/user_client_change.js"></script>
 </body>
 </html>

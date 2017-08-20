@@ -3,23 +3,26 @@
 	 var laypage = layui.laypage,layer =layui.layer;
 	 layer.closeAll();
 	 laypage({
-		    cont: 'demo7'
-		    ,pages: $("#params").data("total")
+		    cont: 'navIndex'
+		    ,pages: $("navIndex").data("total")
 		    ,skip: true
-		    ,curr:$("#params").data("page")
+		    ,curr:$("#navIndex").data("page")
 		    ,jump: function(obj, first){
 		        //得到了当前页，用于向服务端请求对应数据
 		    		if(!first) {
-		    			console.log(obj);
 		    			var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
-		    			window.location.href = "userServiceManager?page="+obj.curr;
+		    			var page = obj.curr;
+		    			$("#params").attr("data-page",page);
+		    			window.location.href = $("#navIndex").data("url")+params();
 		    		}
 		       
 		      }
 		  });
 	 $("#search").on("click",function(){
 		 var searchContent = $("#searchContent").val();
-			 window.location.href = base_url + "/userService/userServiceManager?account="+searchContent
+		 clearParams();
+		 $("#params").attr("data-account",searchContent);
+			 window.location.href = $(this).data("url")+params();
 	 })
 	 $("#btn-search").on("click",function(){
 		//iframe层
@@ -32,12 +35,11 @@
 		   shadeClose: true,
 		   shade: 0.8,
 		   area: ['100%', '90%'],
-		   content: $("#params").data("url")+'/userService/userServiceManagerSearch' //iframe的url
+		   content: $("#btn-search").data("url") //iframe的url
 		 });
 	 });
 	 
 	 $("#btn-add").on("click",function(){
-		 var addUrl = $(this).data("url");
 		//iframe层
 		 layer.open({
 			 
@@ -48,13 +50,14 @@
 		   shadeClose: true,
 		   shade: 0.8,
 		   area: ['100%', '100%'],
-		   content: addUrl
+		   content: $("#btn-add").data("url")
 		 });
 	 })
 	 
 	 $(".btn-del-user").on("click",function(){
 		 //刪除
 		 var id = $(this).data("id");
+		 var url = $(this).data("url");
 		 var index = layer.confirm('請問確定刪除用戶嗎？', {
 			  btn: ['確定','取消'] //按钮
 		 	,title:"刪除用戶"
@@ -67,13 +70,13 @@
 					data:{
 						id:id
 					}
-				,url:base_url +"/userService/deleteUser"
+				,url:url
 				,type:"post"
 					,dataType:"json"
 						,success:function(data){
 							layer.close(loding);
 							if(data.code == 200){
-								window.location.href = base_url +"/userService/userServiceManager"
+								window.location.reload();
 							}else{
 								layer.msg(data.message);
 							}
@@ -92,10 +95,10 @@
 	 });
 	 $(".btn-change-pw").on("click",function(){
 		 var id = $(this).data("id");
+		 var url =$(this).data("url");
 		//修改密碼
 		//iframe层
 		 layer.open({
-			 
 			 tips: [1, '#c00'],
 		   type: 2,
 		   move:false,
@@ -103,10 +106,44 @@
 		   shadeClose: true,
 		   shade: 0.8,
 		   area: ['100%', '100%'],
-		   content: $("#params").data("url")+'/userService/userServiceManagerChange?id='+id //iframe的url
+		   content:url+'?id='+id //iframe的url
 		 });
 	 });
 	 
-	 
-	 
  });
+ 
+ function params(){
+	 var account=$("#params").data("account"),
+	 name = $("params").data("name"),
+	 phone = $("params").data("phone"),
+	 page = $("params").data("page"),pageSize = $("params").data("pageSize"),
+	 zhifubao = $("params").data("zhifubao");
+	 var p =new String() ;
+	 if(account != null && account !=""){
+		 p = p +"&account="+account
+	 }
+	 if(name != null && name !=""){
+		 p = p +"&name="+name
+	 }
+	 if(phone != null && phone !=""){
+		 p = p +"&phone="+phone
+	 }
+	 if(zhifubao != null && zhifubao !=""){
+		 p = p +"&zhifubao="+zhifubao
+	 }
+	 if(page != null && page !=""){
+		 p = p +"&page="+page
+	 }
+	 if(pageSize != null && pageSize !=""){
+		 p = p +"&pageSize="+pageSize
+	 }
+	 
+	 if(p!=null|| p!=""){
+		 p = p.slice(1);
+	 }
+	 
+	 return "?" + p;
+ }
+ function clearParams(){
+	 
+ }

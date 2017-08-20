@@ -31,6 +31,8 @@ public interface IUserClientManagerService {
 	public void updateUser(UserClientManagerParams params);
 
 	public Long getTotalCount(UserClientManagerParams params);
+
+	public UserClient findUserByAccount(String account);
 	
 	
 }

@@ -12,7 +12,7 @@ import org.ql.shopping.pojo.UserManager;
 import org.ql.shopping.pojo.result.UrlResult;
 import org.ql.shopping.pojo.result.MainLeftNav;
 import org.ql.shopping.service.IUserLoginService;
-import org.ql.shopping.service.IUserManagerService;
+import org.ql.shopping.service.IUserServiceManagerService;
 import org.ql.shopping.util.MainNavFactroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class UserManagerController {
 	@Resource
 	private IUserLoginService mUserService;
 	@Resource
-	private IUserManagerService mUserManagerService;
+	private IUserServiceManagerService mUserManagerService;
 
 	@RequestMapping("/login")
 	public String userManagerLogin() {

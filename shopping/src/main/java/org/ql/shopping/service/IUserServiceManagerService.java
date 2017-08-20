@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.ql.shopping.pojo.UserManager;
 
-public interface IUserManagerService {
+public interface IUserServiceManagerService {
 
 
 	/**

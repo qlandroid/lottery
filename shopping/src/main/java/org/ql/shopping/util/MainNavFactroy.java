@@ -3,6 +3,7 @@ package org.ql.shopping.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ql.shopping.HttpUrl;
 import org.ql.shopping.pojo.result.MainLeftNav;
 
 public class MainNavFactroy {
@@ -68,7 +69,7 @@ public class MainNavFactroy {
 		MainLeftNav income = new MainLeftNav();
 		income.setTitle("充值账单");
 		income.setIcon("&#xe654;");// &#xe612;
-		income.setHref("#");
+		income.setHref(HttpUrl.replaceUrl("/income/view/list"));
 		manager.add(income);
 
 		MainLeftNav expend = new MainLeftNav();

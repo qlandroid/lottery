@@ -11,7 +11,7 @@
 		<result column="address" property="address" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<insert id="inserte" parameterType="org.ql.shopping.pojo.UserManager">
+	<insert id="inserte" useGeneratedKeys="true" keyProperty="manifestId" parameterType="org.ql.shopping.pojo.UserManager">
 		insert into user_manager
 		(account,pw,power,name,phone,address)
 		values(

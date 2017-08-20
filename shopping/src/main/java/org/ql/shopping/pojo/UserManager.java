@@ -11,7 +11,7 @@ public class UserManager {
 	private String address;
 	private Long firstIndex;
 	private Integer pageSize;
-	private Integer page;
+	private Long page;
 	private Boolean isLike;
 	
 
@@ -21,10 +21,10 @@ public class UserManager {
 	public void setIsLike(Boolean isLike) {
 		this.isLike = isLike;
 	}
-	public Integer getPage() {
+	public Long getPage() {
 		return page;
 	}
-	public void setPage(Integer page) {
+	public void setPage(Long page) {
 		this.page = page;
 	}
 	public Long getFirstIndex() {
