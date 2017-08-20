@@ -29,25 +29,28 @@
 		insert into manifest_l_bi_change(
 			<trim prefixOverrides=",">
 				<if test="changeId != null and changId !=''">
-					, a.change_doc_id 
+					, change_doc_id 
 				</if>
 				<if test="type != null and type !=''">
-					, a.type
+					, type
 				</if>
-				<if test="operateTime != null and operateTime !=''">
-					, a.operate_time 
+				<if test="operateDate != null and operateDate !=''">
+					, operate_date 
 				</if>
 				<if test="docIncomeId != null and docIncomeId !=''">
-					, a.doc_income_id
+					, doc_income_id
 				</if>
 				<if test="docExpendId != null and docExpendId !=''">
-					, a.doc_expend_id
+					, doc_expend_id
 				</if>
 				<if test="userId != null and userId !=''">
-					, a.user_id 
+					, user_id 
 				</if>
 				<if test="operateType != null and operateType !=''">
-					, a.operate_type
+					, operate_type
+				</if>
+				<if test="remark != null and remark !=''">
+					, remark 
 				</if>
 			</trim>
 		)
@@ -58,8 +61,8 @@
 				<if test="type != null and type !=''">
 					,#{type,jdbcType=VARCHAR}
 				</if>
-				<if test="operateTime != null and operateTime !=''">
-					,#{operateTime,jdbcType=DATE}
+				<if test="operateDate != null and operateDate !=''">
+					,#{operateDate,jdbcType=DATE}
 				</if>
 				<if test="docIncomeId != null and docIncomeId !=''">
 					,#{docIncomeId,jdbcType=INTEGER}
@@ -73,37 +76,40 @@
 				<if test="operateType != null and operateType !=''">
 					, #{operateType,jdbcType=VARCHAR}
 				</if>
+				<if test="remark != null and remark !=''">
+					, #{remark,jdbcType=VARCHAR} 
+				</if>
 			</trim>
 	</insert>
 	<update id="updateById" parameterType="org.ql.shopping.pojo.LBiChangeManager">
-		update manifest_l_bi_change a
+		update manifest_l_bi_change
 		<set>
 			<trim prefixOverrides=",">
 				<if test="changeId != null and changId !=''">
-					, a.change_doc_id = #{changeId,jdbcType=INTEGER}
+					, change_doc_id = #{changeId,jdbcType=INTEGER}
 				</if>
 				<if test="type != null and type !=''">
-					, a.type = #{type,jdbcType=VARCHAR}
+					, type = #{type,jdbcType=VARCHAR}
 				</if>
-				<if test="operateTime != null and operateTime !=''">
-					, a.operate_time = #{operateTime,jdbcType=DATE}
+				<if test="operateDate != null and operateDate !=''">
+					, operate_date = #{operateDate,jdbcType=DATE}
 				</if>
 				<if test="docIncomeId != null and docIncomeId !=''">
-					, a.doc_income_id = #{docIncomeId,jdbcType=INTEGER}
+					, doc_income_id = #{docIncomeId,jdbcType=INTEGER}
 				</if>
 				<if test="docExpendId != null and docExpendId !=''">
-					, a.doc_expend_id = #{docExpendId,jdbcType=INTEGER}
+					, doc_expend_id = #{docExpendId,jdbcType=INTEGER}
 				</if>
 				<if test="userId != null and userId !=''">
-					, a.user_id = #{userId,jdbcType=INTEGER}
+					, user_id = #{userId,jdbcType=INTEGER}
 				</if>
 				<if test="operateType != null and operateType !=''">
-					, a.operate_type = #{operateType,jdbcType=VARCHAR}
+					, operate_type = #{operateType,jdbcType=VARCHAR}
 				</if>
 			</trim>
 		</set>
 		
-		WHERE a.change_doc_id = #{changeId,jdbcType=INTEGER}
+		WHERE change_doc_id = #{changeId,jdbcType=INTEGER}
 
 	</update>
 	<select id="findAnd" parameterType="org.ql.shopping.pojo.LBiChangeManager">
@@ -180,8 +186,8 @@
 			<if test="type != null and type !=''">
 				AND a.type = #{type,jdbcType=VARCHAR}
 			</if>
-			<if test="operateTime != null and operateTime !=''">
-				AND a.operate_time = #{operateTime,jdbcType=DATE}
+			<if test="operateDate != null and operateDate !=''">
+				AND a.operate_date = #{operateDate,jdbcType=DATE}
 			</if>
 			<if test="docIncomeId != null and docIncomeId !=''">
 				AND a.doc_income_id = #{docIncomeId,jdbcType=INTEGER}
@@ -211,8 +217,8 @@
 			<if test="type != null and type !=''">
 				OR a.type = #{type,jdbcType=VARCHAR}
 			</if>
-			<if test="operateTime != null and operateTime !=''">
-				OR a.operate_time = #{operateTime,jdbcType=DATE}
+			<if test="operateDate != null and operateDate !=''">
+				OR a.operate_date = #{operateDate,jdbcType=DATE}
 			</if>
 			<if test="docIncomeId != null and docIncomeId !=''">
 				OR a.doc_income_id = #{docIncomeId,jdbcType=INTEGER}

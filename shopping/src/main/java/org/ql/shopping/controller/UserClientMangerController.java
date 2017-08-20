@@ -6,13 +6,19 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ql.shopping.HttpUrl;
+import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
+import org.ql.shopping.code.UrlFactory;
 import org.ql.shopping.exception.AccountErrorException;
 import org.ql.shopping.exception.LotteryException;
+import org.ql.shopping.exception.ParamsErrorException;
+import org.ql.shopping.pojo.IncomeManifest;
 import org.ql.shopping.pojo.Result;
 import org.ql.shopping.pojo.UserClient;
+import org.ql.shopping.pojo.params.RechagerHanderLBiParams;
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.result.UrlResult;
+import org.ql.shopping.service.IIncomeManifestManagerService;
 import org.ql.shopping.service.IUserClientManagerService;
 import org.ql.shopping.util.ResultHintUtils;
 import org.ql.shopping.util.StringUtils;
@@ -32,6 +38,8 @@ public class UserClientMangerController {
 
 	@Resource
 	private IUserClientManagerService mUserClientManagerService;
+	@Resource
+	private IIncomeManifestManagerService mIncomeManifestManagerService;
 
 	private String url(String url) {
 		return HttpUrl.replaceUrl("/userClient" + url);
@@ -63,6 +71,28 @@ public class UserClientMangerController {
 			logger.error("showChangeView", e);
 		}
 		return "error/page/iframe_error.jsp";
+	}
+	
+	/**
+	 * 充值 页面
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/view/recharge")
+	public String showRechargeView(Model model,Long userId){
+		
+		try{
+			UserClient userClient = mUserClientManagerService.findUserById(userId);
+			model.addAttribute("user",userClient);
+			model.addAttribute("submitUrl",url("/operate/rechager"));
+			
+			
+		}catch(Exception e){
+			logger.error("showRechargeView",e);
+			return UrlFactory.iframeError;
+		}
+		
+		return "page/recharge.jsp";
 	}
 
 	/**
@@ -99,7 +129,7 @@ public class UserClientMangerController {
 			mav.addObject("url", url("/list"));
 			mav.addObject("searchViewUrl", url("/view/search"));
 			mav.addObject("addViewUrl", url("/view/add"));
-			mav.addObject("incomeViewUrl", url("/view/income"));
+			mav.addObject("incomeViewUrl", url("/view/recharge"));
 			mav.addObject("changeViewUrl", url("/view/change"));
 			mav.addObject("deleteViewUrl", url("/operate/delete"));
 
@@ -156,7 +186,7 @@ public class UserClientMangerController {
 			result.setCode(Code.SUCCESS);
 
 		} catch (Exception e) {
-			logger.error("addUser", e);
+			logger.error("deleteUser", e);
 			ResultHintUtils.setSystemError(result, e);
 		}
 
@@ -176,11 +206,52 @@ public class UserClientMangerController {
 			result.setCode(Code.SUCCESS);
 
 		} catch (Exception e) {
-			logger.error("addUser", e);
+			logger.error("updateUser", e);
+			ResultHintUtils.setSystemError(result, e);
+		}
+
+		return result;
+	}
+	@RequestMapping(value = "/operate/rechager", method = RequestMethod.POST)
+	@ResponseBody
+	public Result rechagerLBi(HttpServletRequest request, RechagerHanderLBiParams params) {
+		Result result = new Result();
+		try {
+			checkRechagerParams(params);
+			
+			//先生成订单
+			IncomeManifest createManifest = new IncomeManifest();
+			createManifest.setUserId(params.getUserId());
+			createManifest.setPayMoney(params.getPayMoney());
+			createManifest.setInQty(params.getInQty());
+			createManifest.setZhifubaoDoc(params.getZhifubaoDoc());
+			mIncomeManifestManagerService.createIncomeManifest(createManifest);
+			//完成订单
+			mIncomeManifestManagerService.incomeSuccessById(createManifest.getIncomeId(),params.getRemark(),C.CHANGE_OPERATE_TYPE_OTHER);
+			result.setCode(Code.SUCCESS);
+
+		} catch (Exception e) {
+			logger.error("rechagerLBi", e);
 			ResultHintUtils.setSystemError(result, e);
 		}
 
 		return result;
 	}
 
+	private void checkRechagerParams(RechagerHanderLBiParams params) {
+		Long id = params.getUserId();
+		Double payMoney = params.getPayMoney();
+		Double inQty = params.getInQty();
+		String mark = params.getRemark();
+		if(id == null || isEmpte(payMoney)|| isEmpte(inQty)||StringUtils.isEmpty(mark)){
+			throw new ParamsErrorException("参数不正确");
+		}
+	}
+	
+	private boolean isEmpte(Double qty){
+		if(qty == null || qty <= 0 ){
+			return true;
+		}
+		return false;
+	}
 }

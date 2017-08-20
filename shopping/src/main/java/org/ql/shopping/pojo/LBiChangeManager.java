@@ -1,13 +1,13 @@
 package org.ql.shopping.pojo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class LBiChangeManager {
     private Long changeId;
     private String type;//0-收入,1-支出
     private Long docExpendId;//支出的
     private Long docIncomeId;//收入的
-    private Date opearteDate;//操作的时间
+    private Date operateDate;//操作的时间
     private Long userId;
     private String remark;//备注
     private String operateType;//0-收入单创建，1-支出单创建，2-其他创建
@@ -26,6 +26,14 @@ public class LBiChangeManager {
     private Integer pageSize;
     private Long page;
     private Long firstIndex;
+    
+    
+	public Date getOperateDate() {
+		return operateDate;
+	}
+	public void setOperateDate(Date operateDate) {
+		this.operateDate = operateDate;
+	}
 	public Long getChangeId() {
 		return changeId;
 	}
@@ -49,12 +57,6 @@ public class LBiChangeManager {
 	}
 	public void setDocIncomeId(Long docIncomeId) {
 		this.docIncomeId = docIncomeId;
-	}
-	public Date getOpearteDate() {
-		return opearteDate;
-	}
-	public void setOpearteDate(Date opearteDate) {
-		this.opearteDate = opearteDate;
 	}
 	public Long getUserId() {
 		return userId;

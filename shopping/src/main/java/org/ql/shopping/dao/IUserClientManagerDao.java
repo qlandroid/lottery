@@ -23,9 +23,6 @@ public interface IUserClientManagerDao {
 	 */
 	public List<UserClient> findUser(UserClientManagerParams params);
 	
-	
-	public List<UserClient> findUserClientByUserId(Long id);
-	
 	/**
 	 * 分页查询
 	 * @param user

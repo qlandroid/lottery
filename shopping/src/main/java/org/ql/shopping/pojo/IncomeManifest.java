@@ -1,11 +1,10 @@
 package org.ql.shopping.pojo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class IncomeManifest {
 
-	private Long manifestId;//任务单的id;
-	
+	private Long incomeId;//任务单Id;
 	
 	private Long userId;//所属用户id
 	private String name;
@@ -37,6 +36,12 @@ public class IncomeManifest {
 	
 	
 	
+	public Long getIncomeId() {
+		return incomeId;
+	}
+	public void setIncomeId(Long incomeId) {
+		this.incomeId = incomeId;
+	}
 	public String getZhifubao() {
 		return zhifubao;
 	}
@@ -102,13 +107,6 @@ public class IncomeManifest {
 		this.zhifubaoDoc = zhifubaoDoc;
 	}
 
-	public Long getManifestId() {
-		return manifestId;
-	}
-
-	public void setManifestId(Long manifestId) {
-		this.manifestId = manifestId;
-	}
 
 
 	public Long getUserId() {

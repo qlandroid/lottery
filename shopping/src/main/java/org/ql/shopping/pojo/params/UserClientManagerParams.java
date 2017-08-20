@@ -15,6 +15,8 @@ public class UserClientManagerParams {
 	private Long page;
 	private Integer pageSize;
 	
+	private Double rechagerLBi;//充值积分
+	
 	
 	
 	public Long getPage() {

@@ -19,6 +19,16 @@ public interface IIncomeManifestManagerService {
 	 * @param id
 	 */
 	public void incomeSuccessById(Long id);
+	/**
+	 * 充值成功 并添加备注 默认操作类型为充值
+	 * @param id
+	 */
+	public void incomeSuccessById(Long id ,String remark);
+	/**
+	 * 充值成功 并添加备注 操作类型
+	 * @param id
+	 */
+	public void incomeSuccessById(Long id ,String remark,String type);
 	
 	/**
 	 * 交易超时，取消订单

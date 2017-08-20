@@ -41,6 +41,7 @@
 	 
 	 $("#btn-add").on("click",function(){
 		//iframe层
+		 var url = $(this).data("url")
 		 layer.open({
 			 
 			 tips: [1, '#c00'],
@@ -50,7 +51,7 @@
 		   shadeClose: true,
 		   shade: 0.8,
 		   area: ['100%', '100%'],
-		   content: $("#btn-add").data("url")
+		   content: url
 		 });
 	 })
 	 
@@ -109,6 +110,24 @@
 		   content:url+'?id='+id //iframe的url
 		 });
 	 });
+	 $(".btn-rechager").on("click",function(){
+		//iframe层
+		var url =  $(this).data("url");
+		var id = $(this).data("id");
+		 console.log(url);
+		  console.log("id = " + id);
+		 layer.open({
+			 
+			 tips: [1, '#c00'],
+		   type: 2,
+		   move:false,
+		   title: '充值',
+		   shadeClose: true,
+		   shade: 0.8,
+		   area: ['70%', '70%'],
+		   content: url+"?id="+id
+		 });
+	 })
 	 
  });
  
