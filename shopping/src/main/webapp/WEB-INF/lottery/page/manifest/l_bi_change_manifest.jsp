@@ -16,73 +16,66 @@
 </head>
 <body>
 
-	<table class="layui-table" lay-data="{height:313, url:'${listUrl }'}">
-        <thead>
-        <tr>
-            <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-            <th lay-data="{field:'username', width:80}">用户名</th>
-            <th lay-data="{field:'sex', width:80, sort: true}">性别</th>
-            <th lay-data="{field:'city', width:80}">城市</th>
-            <th lay-data="{field:'sign', width:177}">签名</th>
-            <th lay-data="{field:'experience', width:80, sort: true}">积分</th>
-            <th lay-data="{field:'score', width:80, sort: true}">评分</th>
-            <th lay-data="{field:'classify', width:80}">职业</th>
-            <th lay-data="{field:'wealth', width:135, sort: true}">财富</th>
-        </tr>
-        </thead>
-    </table>
+	<div class="content-tab-body">
+		<table class="layui-table" data-url="listUrl" data-account=""
+			data-operateDate="" data-type="" data-docNo="" data-opereateType>
+			<colgroup>
+				<col width="50">
+				<col width="130">
+				<col width="130">
+				<col width="100">
+				<col width="50">
+				<col width="70">
+				<col width="150">
+				<col width="110">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>用户名</th>
+					<th>操作时间</th>
+					<th>支付金额</th>
+					<th>类型</th>
+					<th>操作积分</th>
+					<th>任务单据号</th>
+					<th>变化后</th>
+					<th>变化前</th>
+					<th>任务单局来源</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${dataList }" var="data" varStatus="i">
+					<tr>
+						<td>${i.index +1 }</td>
+						<td>${data.account }</td>
+						<td><fmt:formatDate value="${data.operateDate}"
+								pattern="yyyy-MM-dd HH:mm:ss" /></td>
+						<td>${data.payMoney }</td>
+
+						<c:if test="${ data.type == 1 }">
+							<td><span >收入</span></td>
+							<td><span >${data.incomeInQty }</span></td>
+							<td>${data.incomeDocNo }</td>
+							<td>${data.incomeAfterQty }</td>
+							<td>${data.incomeBeforeQty }</td>
+						</c:if>
+						<c:if test="${data.type == 0 }">
+							<td><span style="color: #ff0;">支出</span></td>
+							<td><span style="color: #ff0;">${data.expentOutQty }</span></td>
+							<td>${data.expendDocNo }</td>
+							<td>${data.expendAfterQty }</td>
+							<td>${data.expendBeforeQty }</td>
+						</c:if>
+						<td><c:if test="${data.type == 1 }">收入</c:if> <c:if
+								test="${data.type == 0 }">支出</c:if> <c:if
+								test="${data.type == 2 }">其他</c:if></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
 </body>
-<script type="text/html" id="account">
-<a class="layui-btn" href="#">{{d.account}}</a>
-	</script>
 
-<script type="text/html" id="operateType">
-	{{# if(d.type == '0'){ }}
-		收入
-	{{# } else if(d.type == '1') {}}
-		支出
-	{{# }}}
-	</script>
-<script type="text/html" id="inQty">
-		{{# if(d.type == '0'){ }}
-		{{# d.incomeInQty}}
-	{{# } else if(d.type == '1') {}}
-		-{{# d.expendOutQty}}
-	{{# }}}
-	</script>
-<script type="text/html" id="manifest">
-	<a href="#" class="btn-docNo">
-		{{# if(d.type == '0'){ }}
-			{{# d.incomeDocNo}}
-		{{# } else if(d.type == '1') {}}
-			{{# d.incomeDocNo}}
-		{{# }}}
-	</a>
-</script>
-<script type="text/html" id="afterQty">
-	{{# if(d.type == '0'){ }}
-		{{# d.incomeAfterQty}}
-	{{# } else if(d.type == '1') {}}
-		{{# d.expendAfterQty}}
-	{{# }}}
-	</script>
-
-<script type="text/html" id="beforQty">
-{{# if(d.type == '0'){ }}
-		{{# d.incomeBeforeQty}}
-	{{# } else if(d.type == '1') {}}
-		{{# d.expendBeforeQty}}
-	{{# }}}
-	</script>
-<script type="text/html" id="operateType">
-	{{# if(d.v == '0'){ }}
-		收入单
-	{{# } else if(d.operateType == '1') {}}
-		支出单
-	{{# } else if(d.operateType == '2') {}}
-		其他
-	{{# }}}
-	</script>
 <script type="text/javascript"
 	src="${contextPath }/lottery/js/jquery.js"></script>
 <script type="text/javascript"

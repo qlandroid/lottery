@@ -144,21 +144,29 @@
 	</select>
 	<select id="getTotalCountOr" resultType="long"  parameterType="org.ql.shopping.pojo.LBiChangeManager">
 		select count(*) from manifest_l_bi_change a
-		JOIN manifest_income b ON
-		a.doc_income_id =
-		b.income_id
-		JOIN manifest_expend c ON a.doc_expend_id
-		= c.expend_id
+		LEFT JOIN
+		manifest_income b ON a.doc_income_id =
+		b.income_id and a.user_id =
+		b.user_id
+		LEFT JOIN manifest_expend
+		c ON a.doc_expend_id = c.expend_id and
+		a.user_id =
+		c.user_id
+		LEFT JOIN user_login d ON d.id = a.user_id
 
 		<include refid="whereOr"></include>
 	</select>
 	<select id="getTotalCountAnd" resultType="long"  parameterType="org.ql.shopping.pojo.LBiChangeManager">
 		select count(*) from manifest_l_bi_change a
-		JOIN manifest_income b ON
-		a.doc_income_id =
-		b.income_id
-		JOIN manifest_expend c ON a.doc_expend_id
-		= c.expend_id
+		LEFT JOIN
+		manifest_income b ON a.doc_income_id =
+		b.income_id and a.user_id =
+		b.user_id
+		LEFT JOIN manifest_expend
+		c ON a.doc_expend_id = c.expend_id and
+		a.user_id =
+		c.user_id
+		LEFT JOIN user_login d ON d.id = a.user_id
 		<include refid="whereAnd"></include>
 	</select>
 	<sql id="select">
@@ -180,6 +188,7 @@
 		,c.expend_after_qty
 		,c.expend_before_qty
 		,c.expend_out_qty
+		,d.account
 		from
 		manifest_l_bi_change a
 		LEFT JOIN

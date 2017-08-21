@@ -17,7 +17,8 @@ import org.ql.shopping.pojo.Rows;
 import org.ql.shopping.pojo.UserLogin;
 import org.ql.shopping.pojo.UserClient;
 import org.ql.shopping.pojo.params.ListParams;
-import org.ql.shopping.service.IUserClientService;
+import org.ql.shopping.pojo.params.UserClientManagerParams;
+import org.ql.shopping.service.IUserClientManagerService;
 import org.ql.shopping.service.IUserLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class UserLoginController {
 	@Resource
 	IUserLoginService mUserService;
 	@Resource
-	IUserClientService mUserClientService;
+	IUserClientManagerService mUserClientService;
 
 	@RequestMapping("/toLogin")
 	public ModelAndView toLogin(HttpServletRequest request, UserLogin user, Model model) {
@@ -118,9 +119,9 @@ public class UserLoginController {
 			// 添加用户
 			mUserService.inserteUser(regUser);
 			// 创建当前用户个人详情，并设置当前账号的唯一账号ID；
-			UserClient client = new UserClient();
-			client.setId(regUser.getId());
-			mUserClientService.addUserClient(client);
+			UserClientManagerParams createClient = new UserClientManagerParams();
+			createClient.setId(regUser.getId());
+			mUserClientService.inserte(createClient);
 
 			result.setCode(Code.SUCCESS);
 

@@ -1,6 +1,8 @@
 package org.ql.shopping.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -31,9 +33,26 @@ public class LBiChangeManifestController {
 	}
 
 	@RequestMapping("/view/list")
-	public String showList(Model model) {
-
-		model.addAttribute("listUrl", url("/operate/list"));
+	public String showList(Model model ,LBiChangeManager params) {
+			
+		Map<String, Object> map = new HashMap<String, Object>();
+		Long page = params.getPage();
+		Integer pageSize = params.getPageSize();
+		if(page == null){
+			params.setPage(1l);
+		}
+		if(pageSize == null){
+			params.setPageSize(10);
+		}
+		try{
+			map.put("listUrl", url("/view/list"));
+			List<LBiChangeManager> data = mLBiManifestMangerService.findAnd(params);
+			map.put("dataList", data);
+			map.put("params", params);
+		}catch(Exception e){
+			logger.error("showList",e);
+		}
+		model.addAllAttributes(map);
 
 		return "page/manifest/l_bi_change_manifest.jsp";
 	}
@@ -68,7 +87,7 @@ public class LBiChangeManifestController {
 			
 			result.setCount(count);
 			result.setData(data);
-			result.setCode(1);
+			result.setCode(0);
 		} catch (Exception e) {
 			logger.error("getList", e);
 			result.setMsg("就不告诉你错哪了");
