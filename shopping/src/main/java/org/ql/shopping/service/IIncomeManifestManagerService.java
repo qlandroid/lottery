@@ -6,6 +6,13 @@ import org.ql.shopping.pojo.IncomeManifest;
 
 public interface IIncomeManifestManagerService {
 
+	/**
+	 * 创建订单
+	 * pay_money不能为空
+	 * income_in_qty 不能为空
+	 * user_id不能为空
+	 * @param params
+	 */
 	public void createIncomeManifest(IncomeManifest params);
 	
 	/**
@@ -20,7 +27,8 @@ public interface IIncomeManifestManagerService {
 	 */
 	public void incomeSuccessById(Long id);
 	/**
-	 * 充值成功 并添加备注 默认操作类型为充值
+	 * 充值成功 并添加备注
+	 *  默认操作类型为 任务单创建
 	 * @param id
 	 */
 	public void incomeSuccessById(Long id ,String remark);
@@ -28,7 +36,7 @@ public interface IIncomeManifestManagerService {
 	 * 充值成功 并添加备注 操作类型
 	 * @param id
 	 */
-	public void incomeSuccessById(Long id ,String remark,String type);
+	public void incomeSuccessById(Long id ,String remark,String operatetype);
 	
 	/**
 	 * 交易超时，取消订单
@@ -49,5 +57,22 @@ public interface IIncomeManifestManagerService {
 	public Long getParamsTotalCountAnd(IncomeManifest params);
 	
 	public Long getParamsTotalCountOr(IncomeManifest params);
-
+	
+	/**
+	 * 获得条件下所有支付金额 的总额，
+	 * 传null则查询全部
+	 * @param params
+	 * @return
+	 */
+	public Double getTotalPayMoney(IncomeManifest params);
+	
+	
+	/**
+	 * 获得条件下所有充值积分的总额
+	 * @param parms
+	 * @return
+	 */
+	public Double getTotalIncomeInQty(IncomeManifest parms);
+	
+	
 }

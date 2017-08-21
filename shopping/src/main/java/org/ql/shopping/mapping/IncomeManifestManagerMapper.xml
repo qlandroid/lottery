@@ -6,7 +6,7 @@
 		<result column="user_id" property="userId" jdbcType="INTEGER" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="account" property="account" jdbcType="VARCHAR" />
-		<result column="income_end_date" property="endDate" jdbcType="DATE" />
+		<result column="income_end_date" property="endDate" jdbcType="TIMESTAMP" />
 		<result column="income_in_qty" property="inQty" jdbcType="INTEGER" />
 		<result column="income_before_qty" property="beforeQty"
 			jdbcType="INTEGER" />
@@ -15,12 +15,10 @@
 		<result column="pay_money" property="payMoney" jdbcType="INTEGER" />
 		<result column="income_doc_no" property="incomeDocNo" jdbcType="VARCHAR" />
 		<result column="income_create_date" property="createDate"
-			jdbcType="DATE" />
+			jdbcType="TIMESTAMP" />
 		<result column="zhifubao_doc" property="zhifubaoDoc" jdbcType="VARCHAR" />
 		<result column="l_bi" property="lBi" jdbcType="VARCHAR" />
 		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
-
-
 	</resultMap>
 
 	<insert id="insert" useGeneratedKeys="true" keyProperty="incomeId"
@@ -103,19 +101,20 @@
 
 	<delete id="delete" parameterType="org.ql.shopping.pojo.IncomeManifest">
 		DELETE FROM manifest_income
+		<where>
+			<trim prefixOverrides="AND|OR">
+				<if test="incomeId != null and incomeId != ''">
+					AND id = #{incomeId ,jdbcType=INTEGER}
+				</if>
 
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="incomeId != null and incomeId != ''">
-				AND id = #{incomeId ,jdbcType=INTEGER}
-			</if>
-
-			<if test="userId != null and userId != ''">
-				AND user_id = #{userId ,jdbcType=INTEGER}
-			</if>
-			<if test="incomeDocNo != null and incomeDocNo != ''">
-				AND income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR}
-			</if>
-		</trim>
+				<if test="userId != null and userId != ''">
+					AND user_id = #{userId ,jdbcType=INTEGER}
+				</if>
+				<if test="incomeDocNo != null and incomeDocNo != ''">
+					AND income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
 
 	</delete>
 
@@ -159,57 +158,120 @@
 		WHERE income_id = #{incomeId,jdbcType=INTEGER}
 	</update>
 
+	<!-- 通过条件筛选获得用户支付的总额 -->
+	<select id="sumPayMoney" resultType="double"
+		parameterType="org.ql.shopping.pojo.IncomeManifest">
+		SELECT SUM(b.pay_money) FROM manifest_income b
+		JOIN user_login
+		a ON a.id
+		=
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<include refid="and_user_a"></include>
+				<include refid="and_income_b"></include>
+				<include refid="and_client_c"></include>
+			</trim>
+		</where>
+	</select>
+
+	<!-- 通过条件筛选获得用户充值积分的总额 -->
+	<select id="sumIncomeInQty" resultType="double"
+		parameterType="org.ql.shopping.pojo.IncomeManifest">
+		SELECT SUM(b.income_in_qty) FROM manifest_income b
+		JOIN user_login
+		a ON
+		a.id =
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<include refid="and_user_a"></include>
+				<include refid="and_income_b"></include>
+				<include refid="and_client_c"></include>
+			</trim>
+		</where>
+	</select>
+	<!-- 获得数据的总数量 -->
 	<select id="getTotalCount" resultType="long">
 		select count(*) from
 		manifest_income
 	</select>
+	<!-- 通过条件筛选，获得数据的总数量 -->
 	<select id="getParamsTotalCountOr" resultType="long"
 		parameterType="org.ql.shopping.pojo.IncomeManifest">
 		select count(*) from manifest_income b
-		where
-		<trim prefixOverrides="OR">
-			<include refid="or_user_a"></include>
-			<include refid="or_income_b"></include>
-			<include refid="or_client_c"></include>
-		</trim>
-
+		JOIN user_login
+		a ON a.id =
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+		<where>
+			<trim prefixOverrides="OR">
+				<include refid="or_user_a"></include>
+				<include refid="or_income_b"></include>
+				<include refid="or_client_c"></include>
+			</trim>
+		</where>
 	</select>
+
+	<!-- 通过条件筛选And 获得的总数量 -->
 	<select id="getParamsTotalCountAnd" resultType="long"
 		parameterType="org.ql.shopping.pojo.IncomeManifest">
 		select count(*) from manifest_income b
-		where
-		<trim prefixOverrides="AND">
-			<include refid="and_user_a"></include>
-			<include refid="and_income_b"></include>
-			<include refid="and_client_c"></include>
-		</trim>
-
+		JOIN user_login
+		a ON a.id =
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<include refid="and_user_a"></include>
+				<include refid="and_income_b"></include>
+				<include refid="and_client_c"></include>
+			</trim>
+		</where>
 	</select>
+
+	<!-- 通过条件 and 筛选数据 -->
 	<select id="findAnd" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.IncomeManifest">
 		<include refid="select"></include>
-		<trim prefix="WHERE" prefixOverrides="AND">
-			<include refid="and_income_b"></include>
-			<include refid="and_user_a"></include>
-			<include refid="and_client_c"></include>
-		</trim>
+		<where>
+			<trim prefixOverrides="AND">
+				<include refid="and_income_b"></include>
+				<include refid="and_user_a"></include>
+				<include refid="and_client_c"></include>
+			</trim>
+		</where>
 		<if
 			test="firstIndex != null and firstIndex != '' and pageSize != null and pageSize != ''">
 			LIMIT ${firstIndex},${pageSize}
 		</if>
+		order by b.income_create_date desc
 	</select>
 	<select id="findOr" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.IncomeManifest">
 		<include refid="select"></include>
-		<trim prefix="WHERE" prefixOverrides="OR">
-			<include refid="or_client_c"></include>
-			<include refid="or_user_a"></include>
-			<include refid="or_income_b"></include>
-		</trim>
+		<where>
+			<trim prefixOverrides="OR">
+				<include refid="or_client_c"></include>
+				<include refid="or_user_a"></include>
+				<include refid="or_income_b"></include>
+			</trim>
+		</where>
 		<if
 			test="firstIndex != null and firstIndex != '' and pageSize != null and pageSize != ''">
 			LIMIT ${firstIndex},${pageSize}
 		</if>
+		order by b.income_create_date desc
 	</select>
 
 

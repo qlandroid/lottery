@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.registry.infomodel.User;
 
 import org.ql.shopping.HttpUrl;
 import org.ql.shopping.code.C;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,10 +81,10 @@ public class UserClientMangerController {
 	 * @return
 	 */
 	@RequestMapping("/view/recharge")
-	public String showRechargeView(Model model,Long userId){
+	public String showRechargeView(Model model,UserClient params){
 		
 		try{
-			UserClient userClient = mUserClientManagerService.findUserById(userId);
+			UserClient userClient = mUserClientManagerService.findUserById(params.getId());
 			model.addAttribute("user",userClient);
 			model.addAttribute("submitUrl",url("/operate/rechager"));
 			

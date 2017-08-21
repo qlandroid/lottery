@@ -1,6 +1,6 @@
 package org.ql.shopping.service.impl;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,16 +15,11 @@ import org.ql.shopping.pojo.UserClient;
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.service.IIncomeManifestManagerService;
 import org.ql.shopping.util.MakeManifest;
-import org.ql.shopping.util.MakeManifestNo;
 import org.springframework.stereotype.Service;
 
 @Service("incomeManifestManagerService")
 public class IncomeManifestManagerServiceImpl implements IIncomeManifestManagerService {
-	// 当前交易状态0-未支付，1-支付完成，2-订单超时，3-取消订单
-	public final static String STATUS_WAITING = "0";
-	public final static String STATUS_SUCCESS = "1";
-	public final static String STATUS_TIME_OUT = "2";
-	public final static String STATUS_CANCEL = "3";
+	
 
 	@Resource
 	private IIncomeManifestManagerDao mIncomeManifestManagerDao;
@@ -34,8 +29,9 @@ public class IncomeManifestManagerServiceImpl implements IIncomeManifestManagerS
 	private IUserClientManagerDao mUserClientMnagerDao;
 
 	public void createIncomeManifest(IncomeManifest params) {
-		params.setStatus(STATUS_WAITING);
-		params.setCreateDate(new Date(System.currentTimeMillis()));
+		params.setStatus(C.ManifestIncome.INCOME_STATUS_WAITING);
+		params.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		//生成订单号
 		String manifestNo = MakeManifest.makeIncomeManifestNo();
 		params.setIncomeDocNo(manifestNo);
 		mIncomeManifestManagerDao.insert(params);
@@ -97,8 +93,8 @@ public class IncomeManifestManagerServiceImpl implements IIncomeManifestManagerS
 	public void cancelIncomeManifestById(Long id) {
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
-		i.setEndDate(new Date(System.currentTimeMillis()));
-		i.setStatus(STATUS_CANCEL);
+		i.setEndDate(new Timestamp(System.currentTimeMillis()));
+		i.setStatus(C.ManifestIncome.INCOME_STATUS_CANCEL);
 		mIncomeManifestManagerDao.updateById(i);
 	}
 
@@ -106,8 +102,8 @@ public class IncomeManifestManagerServiceImpl implements IIncomeManifestManagerS
 	public void timeOutCancelManifest(Long id) {
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
-		i.setEndDate(new Date(System.currentTimeMillis()));
-		i.setStatus(STATUS_TIME_OUT);
+		i.setEndDate(new Timestamp(System.currentTimeMillis()));
+		i.setStatus(C.ManifestIncome.INCOME_STATUS_TIME_OUT);
 		mIncomeManifestManagerDao.updateById(i);
 	}
 
@@ -149,8 +145,8 @@ public class IncomeManifestManagerServiceImpl implements IIncomeManifestManagerS
 		// 更新当前充值表
 		incomeDoc.setAfterQty(afterQty);
 		incomeDoc.setBeforeQty(beforeQty);
-		incomeDoc.setStatus(STATUS_SUCCESS);
-		Date nowDate = new Date(System.currentTimeMillis());
+		incomeDoc.setStatus(C.ManifestIncome.INCOME_STATUS_SUCCESS);
+		Timestamp nowDate = new Timestamp(System.currentTimeMillis());
 		incomeDoc.setEndDate(nowDate);
 		mIncomeManifestManagerDao.updateById(incomeDoc);
 
@@ -158,13 +154,21 @@ public class IncomeManifestManagerServiceImpl implements IIncomeManifestManagerS
 		LBiChangeManager insertChangeManifest = new LBiChangeManager();
 		insertChangeManifest.setRemark(remark);
 		insertChangeManifest.setDocIncomeId(incomeDoc.getIncomeId());
-		insertChangeManifest.setOperateDate(new Date(System.currentTimeMillis()));
+		insertChangeManifest.setOperateDate(new Timestamp(System.currentTimeMillis()));
 		insertChangeManifest.setType(C.CHANGE_TYPE_INCOME);
 		insertChangeManifest.setType(C.CHANGE_OPERATE_TYPE_INCOME);
 		insertChangeManifest.setUserId(incomeDoc.getUserId());
 		insertChangeManifest.setOperateType(operateType);
 		insertChangeManifest.setType(C.CHANGE_TYPE_INCOME);
 		mLBiChangeManagerDao.insert(insertChangeManifest);
+	}
+
+	public Double getTotalPayMoney(IncomeManifest params) {
+		return mIncomeManifestManagerDao.sumPayMoney(params);
+	}
+
+	public Double getTotalIncomeInQty(IncomeManifest params) {
+		return mIncomeManifestManagerDao.sumIncomeInQty(params);
 	}
 
 }

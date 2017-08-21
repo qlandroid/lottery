@@ -72,7 +72,7 @@
 								data-id="${user.id }"><i class="layui-icon">&#xe614;</i></button>
 							<button
 								class="layui-btn  layui-btn-mini layui-btn-danger btn-del-user"
-								data-url="${deleteViewUrl }" tdata-id="${user.id }"><i class="layui-icon">&#xe640;</i></button>
+								data-url="${deleteViewUrl }" data-id="${user.id }"><i class="layui-icon">&#xe640;</i></button>
 						</td>
 					</tr>
 				</c:forEach>

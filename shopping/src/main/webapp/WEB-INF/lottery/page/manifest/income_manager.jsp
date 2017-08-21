@@ -16,7 +16,21 @@
 </head>
 <body>
 
-
+	<div>
+		<div class="fl">
+			<span>总充值积分:${params.totalIncomeInQty }</span>
+		</div>	
+		<div class="fl">
+			<span>总充值金额:${params.totalPayMoney }</span>
+		</div>	
+		<div class="">
+			<span>筛选后积分:${params.totalSelectInQty }</span>
+		</div>	
+		<div class="fl">
+			<span>筛选后金额:${params.totalSelectPayMoney }</span>
+		</div>	
+	</div>
+	
 	<div class="content-tab-body">
 		<table class="layui-table">
 			<colgroup>

@@ -116,14 +116,10 @@ public class UserLoginController {
 				return result;
 			}
 			// 添加用户
-			String account = regUser.getAccount();
 			mUserService.inserteUser(regUser);
-			// 查询当前用户；
-			List<UserLogin> userList = mUserService.queryUserOfAccount(account);
-			UserLogin u = userList.get(0);
 			// 创建当前用户个人详情，并设置当前账号的唯一账号ID；
 			UserClient client = new UserClient();
-			client.setUserId(u.getId());
+			client.setId(regUser.getId());
 			mUserClientService.addUserClient(client);
 
 			result.setCode(Code.SUCCESS);

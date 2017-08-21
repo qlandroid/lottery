@@ -31,6 +31,19 @@ public class IncomeManfestController {
 			List<IncomeManifest> list = mIncomeManifestManagerService.findPageAnd(params);
 			Long totalCount = mIncomeManifestManagerService.getToatalCount(params);
 			Long pageTotal = totalCount / params.getPageSize() + 1;
+			//获得总充值积分
+			Double inQty = mIncomeManifestManagerService.getTotalIncomeInQty(null);
+			params.setTotalIncomeInQty(inQty);
+			//获得总支付金额
+			Double payMoney = mIncomeManifestManagerService.getTotalPayMoney(null);
+			params.setTotalPayMoney(payMoney);
+			//获得筛选后的总金额
+			Double selectPayMoney = mIncomeManifestManagerService.getTotalPayMoney(params);
+			params.setTotalSelectPayMoney(selectPayMoney);
+			//获得筛选后总支付金额
+			Double selectInQty = mIncomeManifestManagerService.getTotalPayMoney(params);
+			params.setTotalSelectInQty(selectInQty);
+			
 			
 			params.setTotal(totalCount);
 			params.setPageTotal(pageTotal);

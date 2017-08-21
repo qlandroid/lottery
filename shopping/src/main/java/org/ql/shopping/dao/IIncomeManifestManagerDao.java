@@ -20,5 +20,18 @@ public interface IIncomeManifestManagerDao {
 	
 	public Long getParamsTotalCountAnd(IncomeManifest params);
 	public Long getParamsTotalCountOr(IncomeManifest params);
+	
+	/**
+	 * 获得支付金额的总额
+	 * @return
+	 */
+	public Double sumPayMoney(IncomeManifest params);
+	
+	/**
+	 * 获得充值积分的总额
+	 * @return
+	 */
+	public Double sumIncomeInQty(IncomeManifest params);
+	
 
 }

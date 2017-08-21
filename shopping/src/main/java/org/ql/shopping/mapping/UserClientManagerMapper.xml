@@ -24,7 +24,8 @@
 		,#{id,jdbcType=INTEGER}
 		);
 	</insert>
-	<insert id="insterUser" useGeneratedKeys="true" keyProperty="id" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+	<insert id="insterUser" useGeneratedKeys="true" keyProperty="id"
+		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
 		insert into
 		user_login
 		(account,pw)
@@ -34,7 +35,7 @@
 		);
 	</insert>
 
-	
+
 	<select id="findUser" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
 		SELECT
@@ -45,7 +46,8 @@
 		ON a.id = b.user_id
 		<include refid="whereSearch"></include>
 		<if test="firstIndex != null and firstIndex !=''">
-			LIMIT #{firstIndex jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+			LIMIT #{firstIndex
+			jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
 		</if>
 	</select>
 	<select id="getTotalCount" resultType="long"
@@ -57,10 +59,10 @@
 		JOIN user_client b
 		ON a.id = b.user_id
 		<include refid="whereSearch"></include>
-		
+
 	</select>
-	
-	
+
+
 
 	<update id="updateUserPw" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
 		UPDATE user_login
@@ -74,7 +76,7 @@
 
 		WHERE id = #{id,jdbcType=INTEGER}
 	</update>
-	
+
 	<update id="updateUserDetails" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
 		UPDATE user_client
 		<set>
@@ -120,27 +122,33 @@
 			DELETE FROM user_client where user_id = #{id}
 		</if>
 	</delete>
-	
+
 	<sql id="whereSearch">
-	<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="account != null and account !='' ">
-				AND a.account = #{account,jdbcType=VARCHAR}
-			</if>
-			<if test="pw != null and pw !='' ">
-				AND a.pw = #{pw,jdbcType=VARCHAR}
-			</if>
-			<if test="zhifubao != null and zhifubao !='' ">
-				AND b.zhifubao = #{zhifubao,jdbcType=VARCHAR}
-			</if>
-			<if test="name != null and account !='' ">
-				AND b.name = #{name,jdbcType=VARCHAR}
-			</if>
-			<if test="clientId != null and clientId !='' ">
-				AND b.client_id = #{clientId,jdbcType=VARCHAR}
-			</if>
-			<if test="phone != null and phone !='' ">
-				AND b.phone = #{phone,jdbcType=VARCHAR}
-			</if>
-		</trim></sql>
+		<where>
+			<trim prefixOverrides="AND|OR">
+				<if test="id != null and id !='' ">
+					AND a.id = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="account != null and account !='' ">
+					AND a.account = #{account,jdbcType=VARCHAR}
+				</if>
+				<if test="pw != null and pw !='' ">
+					AND a.pw = #{pw,jdbcType=VARCHAR}
+				</if>
+				<if test="zhifubao != null and zhifubao !='' ">
+					AND b.zhifubao = #{zhifubao,jdbcType=VARCHAR}
+				</if>
+				<if test="name != null and account !='' ">
+					AND b.name = #{name,jdbcType=VARCHAR}
+				</if>
+				<if test="clientId != null and clientId !='' ">
+					AND b.client_id = #{clientId,jdbcType=VARCHAR}
+				</if>
+				<if test="phone != null and phone !='' ">
+					AND b.phone = #{phone,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
+	</sql>
 
 </mapper>
