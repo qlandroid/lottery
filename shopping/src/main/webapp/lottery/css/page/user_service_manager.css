@@ -1,20 +1,42 @@
-.content-tab-body{
+.content-tab-body {
 	padding: 0px 10px;
 }
+
 .nav-left {
-	position:absolute;
-	right:0px;
+	position: absolute;
+	right: 0px;
 }
 
-.btn-group{
+.btn-group {
 	padding: 20px 10px;
 }
-.layui-input{
-	width:200px;
+
+.layui-input {
+	width: 200px;
 }
-.fl{
+
+.fl {
 	float: left;
 }
-.fr{
+
+.fr {
 	float: right;
+}
+
+.table-top-body {
+	height: 100;
+}
+
+.label-content {
+	float: left;
+	margin: 8px 10px;
+	color: #fff9ec;
+	font-size: 16px;
+	padding: 10px 20px;
+}
+
+.label-content-content {
+	font-size: 24px;
+	margin-left: 4px;
+	margin-right: 4px;
 }

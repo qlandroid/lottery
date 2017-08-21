@@ -81,7 +81,7 @@ public class MainNavFactroy {
 		MainLeftNav change = new MainLeftNav();
 		change.setTitle("积分变更账单");
 		change.setIcon("&#xe61b;");// &#xe612;
-		change.setHref("#");
+		change.setHref("lbichange/view/list");
 		manager.add(change);
 
 		lotteryManager.setChildren(manager);

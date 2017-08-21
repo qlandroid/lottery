@@ -2,7 +2,7 @@
  layui.use(['laypage', 'layer'], function(){
 	 var laypage = layui.laypage,layer =layui.layer;
 	 layer.closeAll();
-	 laypage({
+	 laypage.render({
 		    cont: 'navIndex'
 		    ,pages: $("#navIndex").data("total")
 		    ,skip: true

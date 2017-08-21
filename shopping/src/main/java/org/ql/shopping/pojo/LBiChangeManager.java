@@ -4,18 +4,22 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class LBiChangeManager {
+	//?page=1&limit=30，
     private Long changeId;
     private String type;//0-收入,1-支出
     private Long docExpendId;//支出的
     private Long docIncomeId;//收入的
     private Timestamp operateDate;//操作的时间
-    private Long userId;
+    private Long userId;//用户id
+    private String account ;//用户账号 
+    
     private String remark;//备注
     private String operateType;//0-收入单创建，1-支出单创建，2-其他创建
     
     private Double payMoney;//支付的金额
     private Double incomeInQty;
     private String incomeDocNo;
+    
     private Double incomeBeforeQty;
     private Double incomeAfterQty;
     
@@ -27,8 +31,21 @@ public class LBiChangeManager {
     private Integer pageSize;
     private Long page;
     private Long firstIndex;
+    private Integer limit;
     
     
+	public Integer getLimit() {
+		return limit;
+	}
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
 	public Timestamp getOperateDate() {
 		return operateDate;
 	}
