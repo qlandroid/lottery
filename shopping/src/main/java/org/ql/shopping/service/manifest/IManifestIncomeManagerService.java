@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.ql.shopping.pojo.manifest.IncomeManifest;
 
-public interface IIncomeManifestManagerService {
+public interface IManifestIncomeManagerService {
 
 	/**
 	 * 创建订单

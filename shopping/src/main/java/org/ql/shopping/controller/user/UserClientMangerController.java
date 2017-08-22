@@ -18,7 +18,7 @@ import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.result.Result;
 import org.ql.shopping.pojo.result.UrlResult;
 import org.ql.shopping.pojo.user.UserClient;
-import org.ql.shopping.service.manifest.IIncomeManifestManagerService;
+import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
 import org.ql.shopping.service.user.IUserClientManagerService;
 import org.ql.shopping.util.HttpUrl;
 import org.ql.shopping.util.ResultHintUtils;
@@ -41,7 +41,7 @@ public class UserClientMangerController {
 	@Resource
 	private IUserClientManagerService mUserClientManagerService;
 	@Resource
-	private IIncomeManifestManagerService mIncomeManifestManagerService;
+	private IManifestIncomeManagerService mIncomeManifestManagerService;
 
 	private String url(String url) {
 		return HttpUrl.replaceUrl("/userClient" + url);

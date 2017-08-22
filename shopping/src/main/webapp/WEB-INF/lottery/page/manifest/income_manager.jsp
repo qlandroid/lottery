@@ -42,6 +42,10 @@
 			</div>
 		</div>
 	</div>
+	
+	<div>
+		<button class="layui-btn" data-url="${serachViewUrl }" id="btn-search">查詢</button>
+	</dir>
 
 	<div class="content-tab-body">
 		<table class="layui-table" data-page='1' data-size="10" id="tabelList" data-url="${listUrl }">

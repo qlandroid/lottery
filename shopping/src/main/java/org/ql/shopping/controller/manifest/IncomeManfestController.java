@@ -7,13 +7,14 @@ import javax.annotation.Resource;
 import org.ql.shopping.code.Code;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
 import org.ql.shopping.pojo.result.TabelResult;
-import org.ql.shopping.service.manifest.IIncomeManifestManagerService;
+import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
 import org.ql.shopping.util.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -22,11 +23,15 @@ public class IncomeManfestController {
 	private Logger logger = LoggerFactory.getLogger(IncomeManfestController.class);
 	
 	@Resource
-	private IIncomeManifestManagerService mIncomeManifestManagerService;
+	private IManifestIncomeManagerService mIncomeManifestManagerService;
 
 	
 	private String url(String url){
-		return HttpUrl.replaceUrl("/income/"+url);
+		return HttpUrl.replaceUrl("/income"+url);
+	}
+	@RequestMapping("/view/search")
+	public String showSearchView(Model model,IncomeManifest params){
+		return "page/search/manifest_income_search.jsp";
 	}
 	
 	@RequestMapping("/view/list")
@@ -52,6 +57,7 @@ public class IncomeManfestController {
 			params.setTotal(totalCount);
 			params.setPageTotal(pageTotal);
 			model.addAttribute("listUrl", url("/operate/list"));
+			model.addAttribute("serachViewUrl",url("/view/search"));
 			model.addAttribute("params",params);
 			
 		}catch(Exception e){
@@ -59,7 +65,7 @@ public class IncomeManfestController {
 		}
 		return "page/manifest/income_manager.jsp";
 	}
-	@RequestMapping("/operate/list")
+	@RequestMapping(value="/operate/list",method=RequestMethod.POST)
 	@ResponseBody
 	public TabelResult operateList(Model model,IncomeManifest params){
 		TabelResult result = new TabelResult();

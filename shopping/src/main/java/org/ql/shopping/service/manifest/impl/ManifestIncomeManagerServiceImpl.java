@@ -8,17 +8,18 @@ import javax.annotation.Resource;
 import org.ql.shopping.code.C;
 import org.ql.shopping.dao.manifest.IIncomeManifestManagerDao;
 import org.ql.shopping.dao.manifest.ILBiChangeManagerDao;
+import org.ql.shopping.dao.manifest.ManifestIncomeMapper;
 import org.ql.shopping.dao.user.IUserClientManagerDao;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
 import org.ql.shopping.pojo.manifest.LBiChangeManager;
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.user.UserClient;
-import org.ql.shopping.service.manifest.IIncomeManifestManagerService;
+import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
 import org.ql.shopping.util.MakeManifest;
 import org.springframework.stereotype.Service;
 
-@Service("incomeManifestManagerService")
-public class IncomeManifestManagerServiceImpl implements IIncomeManifestManagerService {
+@Service("manifestIncomeManagerService")
+public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerService {
 	
 
 	@Resource
@@ -27,6 +28,8 @@ public class IncomeManifestManagerServiceImpl implements IIncomeManifestManagerS
 	private ILBiChangeManagerDao mLBiChangeManagerDao;
 	@Resource
 	private IUserClientManagerDao mUserClientMnagerDao;
+	@Resource
+	private ManifestIncomeMapper mManifestIncomeMapper;
 
 	public void createIncomeManifest(IncomeManifest params) {
 		params.setStatus(C.ManifestIncome.INCOME_STATUS_WAITING);

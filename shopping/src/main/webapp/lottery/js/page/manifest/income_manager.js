@@ -1,9 +1,59 @@
+var laypage;
+var layer;
+var isFirstLoad = true;
 $(document).ready(layui.use([ 'laypage', 'layer' ], function() {
-	var laypage = layui.laypage;
-	var layer = layui.layer;
-	var isFirstLoad = true;
+	 laypage = layui.laypage;
+	 layer = layui.layer;
+	
 	var d = params();
-	http(layer, d, function(data) {
+	http( d);
+	
+	$("#btn-search").on("click",function(){
+		var url = $(this).data('url');
+		// iframe层
+		 layer.open({
+			 
+			 tips: [1, '#c00'],
+		   type: 2,
+		   move:false,
+		   title: '按条件查询用户',
+		   shadeClose: true,
+		   shade: 0.8,
+		   area: ['100%', '90%'],
+		   content: $("#btn-search").data("url") // iframe的url
+		 });
+	});
+
+}));
+
+function loadSuccess(data){
+	if (data.code == 200) {
+		console.log(data);
+		var tBody = addTrTbody(data.data);
+		$("#tabelBody").html(tBody);
+		if (isFirstLoad) {
+			isFirstLoad = false;
+			var nav = navIndex(data.count, layer);
+			laypage.render(nav);
+		}
+	} else {
+		layer.alert("错误编码:" + data.code + ",错误信息:" + data.msg);
+	}
+}
+
+function loadListDate(params){
+	isFirstLoad = true;
+	params.page = $('#tabelList').data("page");
+	params.pageSize = $("#tabelList").data('size');
+	$('#tabelList').attr("incomeDoc",params.incomeDoc);
+	$('#tabelList').attr("account",params.account);
+	$('#tabelList').attr("paymoney",params.payMoney);
+	$('#tabelList').attr("inQty",params.inQty);
+	$('#tabelList').attr("status",params.status);
+	$('#tabelList').attr("createDate",params.createDate);
+	$('#tabelList').attr("endDate",params.endDate);
+	 var p =JSON.stringify(params)
+	http(params,function (data){
 		if (data.code == 200) {
 			console.log(data);
 			var tBody = addTrTbody(data.data);
@@ -13,13 +63,11 @@ $(document).ready(layui.use([ 'laypage', 'layer' ], function() {
 				var nav = navIndex(data.count, layer);
 				laypage.render(nav);
 			}
-
 		} else {
 			layer.alert("错误编码:" + data.code + ",错误信息:" + data.msg);
 		}
 	});
-
-}));
+}
 
 function navIndex(count, layer) {
 	return {
@@ -36,7 +84,7 @@ function navIndex(count, layer) {
 				var d = params();
 				d.page = obj.curr;
 				d.pageSize = obj.limit;
-				http(layer, d, function(data) {
+				http( d, function(data) {
 					if (data.code == 200) {
 						console.log(data);
 						var tBody = addTrTbody(data.data);
@@ -50,15 +98,17 @@ function navIndex(count, layer) {
 	}
 }
 
-function http(layer, d, success) {
+function http( d) {
 	var url = $("#tabelList").data("url");
-
+	console.log(url);
 	$.ajax({
 		url : url,
 		type : 'POST',
 		dataType : 'json',
 		data : d,
-		success : success,
+		success : function(data){
+			loadSuccess(data)
+		},
 		error : function() {
 			layer.msg("连接异常");
 		}
