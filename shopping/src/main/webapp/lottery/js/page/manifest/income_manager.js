@@ -5,7 +5,7 @@ $(document).ready(layui.use([ 'laypage', 'layer' ], function() {
 	 laypage = layui.laypage;
 	 layer = layui.layer;
 	
-	var d = params();
+	var d = getParams();
 	http( d);
 	
 	$("#btn-search").on("click",function(){
@@ -45,13 +45,7 @@ function loadListDate(params){
 	isFirstLoad = true;
 	params.page = $('#tabelList').data("page");
 	params.pageSize = $("#tabelList").data('size');
-	$('#tabelList').attr("incomeDoc",params.incomeDoc);
-	$('#tabelList').attr("account",params.account);
-	$('#tabelList').attr("paymoney",params.payMoney);
-	$('#tabelList').attr("inQty",params.inQty);
-	$('#tabelList').attr("status",params.status);
-	$('#tabelList').attr("createDate",params.createDate);
-	$('#tabelList').attr("endDate",params.endDate);
+	replaceParams(params);
 	 var p =JSON.stringify(params)
 	http(params,function (data){
 		if (data.code == 200) {
@@ -69,6 +63,29 @@ function loadListDate(params){
 	});
 }
 
+function getParams(){
+	return {
+		incomeDocNo:$("#tabelList").data("incomeDocNo")
+		,account:$("#tabelList").data("account")
+		,payMoney:$("#tabelList").data("payMoney")
+		,inQty:$("#tabelList").data("inQty")
+		,status:$("#tabelList").data("status")
+		,incomeCreateDate:$("#tabelList").data("incomeCreateDate")
+		,page:$("#tabelList").data("page")
+		,pageSize:$("#tabelList").data("size")
+	}
+}
+
+function replaceParams(params){
+	$('#tabelList').attr("data-incomeDocNo",params.incomeDoc);
+	$('#tabelList').attr("data-account",params.account);
+	$('#tabelList').attr("data-payMoney",params.payMoney);
+	$('#tabelList').attr("data-incomeInQty",params.inQty);
+	$('#tabelList').attr("data-status",params.status);
+	$('#tabelList').attr("data-incomeCreateDate",params.incomeCreateDate);
+	$('#tabelList').attr("data-incomeEndDate",params.incomeEndDate);
+}
+
 function navIndex(count, layer) {
 	return {
 		elem : 'navIndex',
@@ -81,7 +98,7 @@ function navIndex(count, layer) {
 			if (!first) {
 				$("#tabelList").attr("page", obj.curr);
 				$("#tabelList").attr("size", obj.limit);
-				var d = params();
+				var d = getParams();
 				d.page = obj.curr;
 				d.pageSize = obj.limit;
 				http( d, function(data) {
@@ -115,18 +132,6 @@ function http( d) {
 	});
 }
 
-function params() {
-	var page = $("#tabelList").data("page");
-	var pageSize = $("#tabelList").data("size");
-
-	var a = {
-		page : page,
-		pageSize : pageSize
-	}
-	console.log(a);
-	return a;
-}
-
 function addTrTbody(dataList) {
 	var tBody = "";
 	for (var i = 0; i < dataList.length; i++) {
@@ -141,10 +146,21 @@ function addLine(index, data) {
 	line = line + "<td>" + data.incomeDocNo + "</td>"
 	line = line + "<td>" + data.account + "</td>"
 	line = line + "<td>" + data.payMoney + "</td>"
-	line = line + "<td>" + data.inQty + "</td>"
-	line = line + "<td>" + "+" + data.status + "</td>"
+	line = line + "<td>" + data.incomeInQty + "</td>"
+	//'当前交易状态0-未支付，1-支付完成，2-订单超时，3-取消订单'
+	if(data.status == '0'){
+		line = line + "<td>" + "未完成" + "</td>"
+	}else if(data.status == '1'){
+		line = line + "<td>" + "支付完成"  + "</td>"
+	}else if(data.status == '2'){
+		line = line + "<td>" + "订单超时" + "</td>"
+	}else if(data.status == '3'){
+		line = line + "<td>" + "取消订单"+ "</td>"
+	}else{
+		line = line + "<td>" + "+" + data.status + "</td>"
+	}
 	line = line + "<td>" + data.zhifubaoDoc + "</td>"
 	line = line + "<td>" + "<span class='color-afterqty'>"
-			+ formatDateTime(data.endDate) + "</span></td>"
+			+ formatDateTime(data.incomeCreateDate) + "</span></td>"
 	return line;
 }

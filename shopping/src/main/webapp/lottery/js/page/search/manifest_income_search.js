@@ -41,19 +41,19 @@ function params(){
 	console.log(createDate);
 	console.log(endDate);
 	 var p ={
-			 incomeDoc:incomeDoc
+			 incomeDocNo:incomeDoc
 			 ,account:account
 			 ,payMoney:payMoney
-			 ,inQty:inQty
+			 ,incomeInQty:inQty
 			 ,status:status
 	 } ;
 	 if(createDate != null && createDate.trim() != "")
 	 {
-		 p.createDate = createDate;
+		 p.incomeCreateDate = createDate;
 	 }
 	 if(endDate != null && endDate.trim() != "")
 	 {
-		 p.endDate = endDate;
+		 p.incomeEndDate = endDate;
 	 }
 	 
 	 

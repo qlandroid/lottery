@@ -12,6 +12,7 @@ import org.ql.shopping.dao.manifest.ManifestIncomeMapper;
 import org.ql.shopping.dao.user.IUserClientManagerDao;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
 import org.ql.shopping.pojo.manifest.LBiChangeManager;
+import org.ql.shopping.pojo.manifest.ManifestIncomeSearch;
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.user.UserClient;
 import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
@@ -172,6 +173,15 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 
 	public Double getTotalIncomeInQty(IncomeManifest params) {
 		return mIncomeManifestManagerDao.sumIncomeInQty(params);
+	}
+
+	public List<ManifestIncomeSearch> searchPageOrderByCreateDate(ManifestIncomeSearch params) {
+		
+		return mManifestIncomeMapper.searchPageOrderByCreateDate(params);
+	}
+	
+	public long getSearchPageCount(ManifestIncomeSearch params){
+		return mManifestIncomeMapper.getSearchPageCount(params);
 	}
 
 }

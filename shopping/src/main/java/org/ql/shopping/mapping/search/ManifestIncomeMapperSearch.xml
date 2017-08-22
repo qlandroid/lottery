@@ -1,8 +1,107 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.ql.shopping.dao.manifest.ManifestIncomeMapper" >
-  <resultMap id="ResultSearchMap" type="org.ql.shopping.pojo.manifest.ManifestIncomeSearch" extends="BaseResultMap" >
-    
-  </resultMap>
-  
+<mapper namespace="org.ql.shopping.dao.manifest.ManifestIncomeMapper">
+	<resultMap id="SearchMap"
+		type="org.ql.shopping.pojo.manifest.ManifestIncomeSearch" extends="BaseResultMap">
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		
+	</resultMap>
+
+
+	<select id="searchPageOrderByCreateDate" resultMap="SearchMap" parameterType="org.ql.shopping.pojo.manifest.ManifestIncomeSearch">
+		SELECT a.account,b.name,b.phone,c.income_id
+		,c.income_create_date
+		,c.zhifubao_doc
+		,c.pay_money
+		,c.income_in_qty
+		,c.income_doc_no
+		,c.status
+		,c.user_id
+		,c.income_before_qty
+		,c.income_after_qty
+		,c.income_end_date
+		from manifest_income c
+		LEFT JOIN user_login a ON a.id = c.user_id
+		LEFT
+		JOIN user_client b ON b.user_id =c.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<if test="account != null and account !=''">
+					AND a.account = #{account,jdbcType=VARCHAR}
+				</if>
+				<if test="name != null and name !=''">
+					AND b.name = #{name,jdbcType=VARCHAR}
+				</if>
+				<if test="phone != null and phone !=''">
+					AND b.phone = #{phone,jdbcType=VARCHAR}
+				</if>
+				<include refid="WHERE_INCOME_MANIFEST"></include>
+			</trim>
+		</where>
+		ORDER BY c.income_create_date desc
+		LIMIT #{firstIndex},#{pageSize}
+	</select>
+	
+	<select id="getSearchPageCount" resultType="long" parameterType="org.ql.shopping.pojo.manifest.ManifestIncomeSearch">
+		SELECT count(*) from manifest_income c
+		LEFT JOIN user_login a ON a.id = c.user_id
+		LEFT
+		JOIN user_client b ON b.user_id =c.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<if test="account != null and account !=''">
+					AND a.account = #{account,jdbcType=VARCHAR}
+				</if>
+				<if test="name != null and name !=''">
+					AND b.name = #{name,jdbcType=VARCHAR}
+				</if>
+				<if test="phone != null and phone !=''">
+					AND b.phone = #{phone,jdbcType=VARCHAR}
+				</if>
+				<include refid="WHERE_INCOME_MANIFEST"></include>
+			</trim>
+		</where>
+	</select>
+
+
+	<sql id="WHERE_INCOME_MANIFEST">
+		<trim prefixOverrides="AND">
+			<if test="incomeId != null and incomeId !=''">
+				AND income_id = #{incomeId,jdbcType=INTEGER}
+			</if>
+			<if test="incomeCreateDate != null and incomeCreateDate !=''">
+				AND income_create_date = #{incomeId,jdbcType=TIMESTAMP}
+			</if>
+			<if test="zhifubaoDoc != null and zhifubaoDoc != ''">
+			AND	zhifubao_doc = #{zhifubaoDoc,jdbcType=VARCHAR}
+			</if>
+			<if test="payMoney != null and payMoney != ''">
+				AND pay_money = #{payMoney,jdbcType=DECIMAL}
+			</if>
+			<if test="incomeInQty != null and incomeInQty != ''">
+				AND income_in_qty = #{incomeInQty,jdbcType=DECIMAL}
+			</if>
+			<if test="incomeDocNo != null and incomeDocNo != ''">
+				AND income_doc_no = #{incomeDocNo,jdbcType=INTEGER}
+			</if>
+			<if test="status != null and status != ''">
+				AND status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="incomeBeforeQty != null and incomeBeforeQty != ''">
+				AND income_before_qty = #{incomeBeforeQty,jdbcType=INTEGER}
+			</if>
+			<if test="incomeAfterQty != null and incomeAfterQty!=''">
+				AND income_after_qty = #{incomeAfterQty,jdbcType=INTEGER}
+			</if>
+			<if test="incomeEndDate != null and incomeEndDate != ''">
+				AND income_end_date = #{incomeEndDate,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</sql>
+
 </mapper>

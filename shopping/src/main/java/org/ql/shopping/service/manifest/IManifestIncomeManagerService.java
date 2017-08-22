@@ -3,6 +3,7 @@ package org.ql.shopping.service.manifest;
 import java.util.List;
 
 import org.ql.shopping.pojo.manifest.IncomeManifest;
+import org.ql.shopping.pojo.manifest.ManifestIncomeSearch;
 
 public interface IManifestIncomeManagerService {
 
@@ -75,4 +76,12 @@ public interface IManifestIncomeManagerService {
 	public Double getTotalIncomeInQty(IncomeManifest parms);
 	
 	
+	/**
+	 * 条件查询，并创建时间排序
+	 * @param params
+	 * @return
+	 */
+	public List<ManifestIncomeSearch> searchPageOrderByCreateDate(ManifestIncomeSearch params);
+
+	public long getSearchPageCount(ManifestIncomeSearch params);
 }

@@ -3,9 +3,11 @@ package org.ql.shopping.controller.manifest;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
 
 import org.ql.shopping.code.Code;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
+import org.ql.shopping.pojo.manifest.ManifestIncomeSearch;
 import org.ql.shopping.pojo.result.TabelResult;
 import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
 import org.ql.shopping.util.HttpUrl;
@@ -67,22 +69,20 @@ public class IncomeManfestController {
 	}
 	@RequestMapping(value="/operate/list",method=RequestMethod.POST)
 	@ResponseBody
-	public TabelResult operateList(Model model,IncomeManifest params){
+	public TabelResult operateList(Model model,ManifestIncomeSearch params){
 		TabelResult result = new TabelResult();
 		
+		if(params.getPage() == null){
+			params.setPage(1);
+		}
+		if(params.getPageSize() == null){
+			params.setPageSize(10);
+		}
+		params.initPageSize();
 		try{ 
 			
-			Long page = params.getPage();
-			Integer pageSize = params.getPageSize();
-			if(page == null){
-				params.setPage(1l);
-			}
-			if(pageSize == null )
-				params.setPageSize(10);
-			
-			List<IncomeManifest> list = mIncomeManifestManagerService.findPageAnd(params);
-			
-			Long count = mIncomeManifestManagerService.getToatalCount(params);
+			List<ManifestIncomeSearch> list = mIncomeManifestManagerService.searchPageOrderByCreateDate(params);
+			long count = mIncomeManifestManagerService.getSearchPageCount(params);
 			result.setCode(Code.SUCCESS);
 			result.setData(list);
 			result.setCount(count);

@@ -1,6 +1,9 @@
 package org.ql.shopping.dao.manifest;
 
+import java.util.List;
+
 import org.ql.shopping.pojo.manifest.ManifestIncome;
+import org.ql.shopping.pojo.manifest.ManifestIncomeSearch;
 
 public interface ManifestIncomeMapper {
 	/**
@@ -45,4 +48,18 @@ public interface ManifestIncomeMapper {
      * @return
      */
     int updateByPrimaryKey(ManifestIncome record);
+    
+    /**
+     * 查询分页，按时间排序
+     * @param record
+     * @return
+     */
+    public List<ManifestIncomeSearch> searchPageOrderByCreateDate(ManifestIncomeSearch record);
+
+    /**
+     * 获得全部数量
+     * @param params
+     * @return
+     */
+    public long  getSearchPageCount(ManifestIncomeSearch params);
 }

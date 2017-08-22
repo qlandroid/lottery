@@ -28,7 +28,7 @@
     delete from manifest_income
     where income_id = #{incomeId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="org.ql.shopping.pojo.manifest.ManifestIncome" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="incomeId" parameterType="org.ql.shopping.pojo.manifest.ManifestIncome" >
     insert into manifest_income (income_id, income_create_date, zhifubao_doc, 
       pay_money, income_in_qty, income_doc_no, 
       status, user_id, income_before_qty, 
@@ -38,7 +38,7 @@
       #{status,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{incomeBeforeQty,jdbcType=DECIMAL}, 
       #{incomeAfterQty,jdbcType=DECIMAL}, #{incomeEndDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="org.ql.shopping.pojo.manifest.ManifestIncome" >
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="incomeId" parameterType="org.ql.shopping.pojo.manifest.ManifestIncome" >
     insert into manifest_income
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="incomeId != null" >

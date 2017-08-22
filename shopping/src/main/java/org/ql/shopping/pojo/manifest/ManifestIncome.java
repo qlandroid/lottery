@@ -3,7 +3,9 @@ package org.ql.shopping.pojo.manifest;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ManifestIncome {
+import org.ql.shopping.pojo.Model;
+
+public class ManifestIncome  extends Model{
     private Integer incomeId;
 
     private Date incomeCreateDate;
@@ -16,7 +18,7 @@ public class ManifestIncome {
 
     private String incomeDocNo;
 
-    private String status;
+    private String status;//'当前交易状态0-未支付，1-支付完成，2-订单超时，3-取消订单'
 
     private Integer userId;
 
