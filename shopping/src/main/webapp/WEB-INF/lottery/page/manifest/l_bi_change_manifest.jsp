@@ -17,8 +17,8 @@
 <body>
 
 	<div class="content-tab-body">
-		<table class="layui-table" data-url="listUrl" data-account=""
-			data-operateDate="" data-type="" data-docNo="" data-opereateType>
+		<table class="layui-table" id="tabelList" data-url="${listUrl }" data-account=""
+			data-operateDate="" data-type="" data-docNo="" data-page="1" data-size="10" data-opereateType>
 			<colgroup>
 				<col width="50">
 				<col width="130">
@@ -43,37 +43,12 @@
 					<th>任务单局来源</th>
 				</tr>
 			</thead>
-			<tbody>
-				<c:forEach items="${dataList }" var="data" varStatus="i">
-					<tr>
-						<td>${i.index +1 }</td>
-						<td>${data.account }</td>
-						<td><fmt:formatDate value="${data.operateDate}"
-								pattern="yyyy-MM-dd HH:mm:ss" /></td>
-						<td>${data.payMoney }</td>
-
-						<c:if test="${ data.type == 1 }">
-							<td><span >收入</span></td>
-							<td><span >${data.incomeInQty }</span></td>
-							<td>${data.incomeDocNo }</td>
-							<td>${data.incomeAfterQty }</td>
-							<td>${data.incomeBeforeQty }</td>
-						</c:if>
-						<c:if test="${data.type == 0 }">
-							<td><span style="color: #ff0;">支出</span></td>
-							<td><span style="color: #ff0;">${data.expentOutQty }</span></td>
-							<td>${data.expendDocNo }</td>
-							<td>${data.expendAfterQty }</td>
-							<td>${data.expendBeforeQty }</td>
-						</c:if>
-						<td><c:if test="${data.type == 1 }">收入</c:if> <c:if
-								test="${data.type == 0 }">支出</c:if> <c:if
-								test="${data.type == 2 }">其他</c:if></td>
-					</tr>
-				</c:forEach>
+			<tbody id="tabelBody" style="height:500px">
+				
 			</tbody>
 		</table>
 	</div>
+	<div id="navIndex" ></div>
 </body>
 
 <script type="text/javascript"

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.user.IUserClientManagerDao">
+	<resultMap id="BaseResultMap" type="org.ql.shopping.pojo.user.UserClient">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
+		<result column="client_id" property="clientId" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="l_bi" property="lBi" jdbcType="INTEGER" />
+		<result column="pw" property="pw" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="insterUserDetails" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		insert into
+		user_client
+		(zhifubao,name,client_id,phone,user_id)
+		values(
+		#{zhifubao,jdbcType=VARCHAR}
+		,#{name,jdbcType=VARCHAR}
+		,#{clientId,jdbcType=VARCHAR}
+		,#{phone,jdbcType=VARCHAR}
+		,#{id,jdbcType=INTEGER}
+		);
+	</insert>
+	<insert id="insterUser" useGeneratedKeys="true" keyProperty="id"
+		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		insert into
+		user_login
+		(account,pw)
+		values(
+		#{account,jdbcType=VARCHAR}
+		,#{pw,jdbcType=VARCHAR}
+		);
+	</insert>
+
+
+	<select id="findUser" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		SELECT
+		a.id,a.account,a.pw,b.zhifubao,b.name,b.client_id,b.phone,b.l_bi
+		FROM
+		user_login a
+		JOIN user_client b
+		ON a.id = b.user_id
+		<include refid="whereSearch"></include>
+		<if test="firstIndex != null and firstIndex !=''">
+			LIMIT #{firstIndex
+			jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="getTotalCount" resultType="long"
+		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		SELECT
+		count(*)
+		FROM
+		user_login a
+		JOIN user_client b
+		ON a.id = b.user_id
+		<include refid="whereSearch"></include>
+
+	</select>
+
+
+
+	<update id="updateUserPw" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		UPDATE user_login
+		<set>
+			<trim suffixOverrides="">
+				<if test="pw != null and pw !=''">
+					pw = #{pw ,jdbcType=VARCHAR},
+				</if>
+			</trim>
+		</set>
+
+		WHERE id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateUserDetails" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		UPDATE user_client
+		<set>
+			<trim suffixOverrides="">
+				<if test="zhifubao != null and zhifubao !=''">
+					zhifubao = #{zhifubao ,jdbcType=VARCHAR},
+				</if>
+				<if test="name != null and name !=''">
+					name = #{name ,jdbcType=VARCHAR},
+				</if>
+				<if test="clientId != null and clientId !=''">
+					client_id = #{clientId ,jdbcType=VARCHAR},
+				</if>
+				<if test="phone != null and phone !=''">
+					phone = #{phone ,jdbcType=VARCHAR},
+				</if>
+			</trim>
+		</set>
+
+		WHERE user_id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateLBi" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		UPDATE user_client
+		<set>
+			<trim suffixOverrides="">
+				<if test="lBi != null and lBi !=''">
+					l_bi = #{lBi ,jdbcType=INTEGER},
+				</if>
+			</trim>
+		</set>
+		WHERE user_id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteUser" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		<if test="id != null and id !='' ">
+			DELETE FROM user_login where id = #{id}
+		</if>
+
+	</delete>
+	<delete id="deleteUserDetails" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
+		<if test="id != null  and id !='' ">
+			DELETE FROM user_client where user_id = #{id}
+		</if>
+	</delete>
+
+	<sql id="whereSearch">
+		<where>
+			<trim prefixOverrides="AND|OR">
+				<if test="id != null and id !='' ">
+					AND a.id = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="account != null and account !='' ">
+					AND a.account = #{account,jdbcType=VARCHAR}
+				</if>
+				<if test="pw != null and pw !='' ">
+					AND a.pw = #{pw,jdbcType=VARCHAR}
+				</if>
+				<if test="zhifubao != null and zhifubao !='' ">
+					AND b.zhifubao = #{zhifubao,jdbcType=VARCHAR}
+				</if>
+				<if test="name != null and account !='' ">
+					AND b.name = #{name,jdbcType=VARCHAR}
+				</if>
+				<if test="clientId != null and clientId !='' ">
+					AND b.client_id = #{clientId,jdbcType=VARCHAR}
+				</if>
+				<if test="phone != null and phone !='' ">
+					AND b.phone = #{phone,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+</mapper>

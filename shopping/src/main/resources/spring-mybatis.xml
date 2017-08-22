@@ -39,12 +39,18 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
         <property name="dataSource" ref="dataSource" />  
         <!-- 自动扫描mapping.xml文件 -->  
-        <property name="mapperLocations" value="classpath:org/ql/shopping/mapping/*.xml"></property>  
+        <property name="mapperLocations">
+        	<list>
+        		<value>classpath:org/ql/shopping/mapping/*.xml</value>
+        		<value>classpath:org/ql/shopping/mapping/**/*.xml</value>
+        	</list>
+        </property>  
     </bean>  
   
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-        <property name="basePackage" value="org.ql.shopping.dao" />  
+        <property name="basePackage" value="org.ql.shopping.dao,org.ql.shopping.dao.user,org.ql.shopping.dao.manifest" >
+        </property>   
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
     </bean>  
   

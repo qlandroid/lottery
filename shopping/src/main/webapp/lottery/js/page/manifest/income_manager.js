@@ -3,7 +3,7 @@ $(document).ready(layui.use([ 'laypage', 'layer' ], function() {
 	var layer = layui.layer;
 	var isFirstLoad = true;
 	var d = params();
-	http(layer,d, function(data) {
+	http(layer, d, function(data) {
 		if (data.code == 200) {
 			console.log(data);
 			var tBody = addTrTbody(data.data);
@@ -36,7 +36,7 @@ function navIndex(count, layer) {
 				var d = params();
 				d.page = obj.curr;
 				d.pageSize = obj.limit;
-				http(layer, d,function(data) {
+				http(layer, d, function(data) {
 					if (data.code == 200) {
 						console.log(data);
 						var tBody = addTrTbody(data.data);
@@ -50,9 +50,9 @@ function navIndex(count, layer) {
 	}
 }
 
-function http(layer,d, success) {
+function http(layer, d, success) {
 	var url = $("#tabelList").data("url");
-	
+
 	$.ajax({
 		url : url,
 		type : 'POST',
@@ -88,17 +88,13 @@ function addTrTbody(dataList) {
 }
 function addLine(index, data) {
 	var line = "<td>" + index + "</td>"
+	line = line + "<td>" + data.incomeDocNo + "</td>"
 	line = line + "<td>" + data.account + "</td>"
-	line = line + "<td>" + formatDateTime(data.operateDate) + "</td>"
 	line = line + "<td>" + data.payMoney + "</td>"
-	if(data.type == 1){
-		line = line + "<td>" + '收入' + "</td>"
-		line = line + "<td>" + "+"+data.incomeInQty + "</td>"
-		line = line + "<td>" + data.incomeDocNo + "</td>"
-		line = line + "<td>" + "<span class='color-afterqty'>" + data.incomeAfterQty + "</span></td>"
-		line = line + "<td><span class='color-beforeqty'>" + data.incomeBeforeQty + "</span></td>"
-	}
-	line = line + "<td>" + data.operateType + "</td>";
+	line = line + "<td>" + data.inQty + "</td>"
+	line = line + "<td>" + "+" + data.status + "</td>"
+	line = line + "<td>" + data.zhifubaoDoc + "</td>"
+	line = line + "<td>" + "<span class='color-afterqty'>"
+			+ formatDateTime(data.endDate) + "</span></td>"
 	return line;
 }
-

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.manifest.IIncomeManifestManagerDao">
+	<resultMap id="BaseResultMap" type="org.ql.shopping.pojo.manifest.IncomeManifest">
+		<id column="income_id" property="incomeId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="income_end_date" property="endDate" jdbcType="TIMESTAMP" />
+		<result column="income_in_qty" property="inQty" jdbcType="INTEGER" />
+		<result column="income_before_qty" property="beforeQty"
+			jdbcType="INTEGER" />
+		<result column="income_after_qty" property="afterQty" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="pay_money" property="payMoney" jdbcType="INTEGER" />
+		<result column="income_doc_no" property="incomeDocNo" jdbcType="VARCHAR" />
+		<result column="income_create_date" property="createDate"
+			jdbcType="TIMESTAMP" />
+		<result column="zhifubao_doc" property="zhifubaoDoc" jdbcType="VARCHAR" />
+		<result column="l_bi" property="lBi" jdbcType="VARCHAR" />
+		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="incomeId"
+		parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		insert into
+		<trim prefix="manifest_income(" prefixOverrides="," suffix=")">
+			<if test="createDate !=null and createDate != ''">
+				,income_create_date
+			</if>
+			<if test="endDate !=null and endDate != ''">
+				,income_end_date
+			</if>
+			<if test="zhifubaoDoc !=null and zhifubaoDoc != ''">
+				,zhifubao_doc
+			</if>
+			<if test="payMoney !=null and payMoney != ''">
+				,pay_money
+			</if>
+			<if test="inQty !=null and inQty != ''">
+				,income_in_qty
+			</if>
+			<if test="incomeDocNo !=null and inQty != ''">
+				,income_doc_no
+			</if>
+			<if test="status !=null and status != ''">
+				,status
+			</if>
+			<if test="userId !=null and userId != ''">
+				,user_id
+			</if>
+			<if test="beforeQty !=null and beforeQty != ''">
+				,income_before_qty
+			</if>
+			<if test="afterQty !=null and afterQty != ''">
+				,income_after_qty
+			</if>
+		</trim>
+		<trim prefix="values(" prefixOverrides="," suffix=")">
+			<if test="createDate !=null and createDate != ''">
+				,#{createDate
+				,jdbcType=DATE}
+			</if>
+			<if test="endDate !=null and endDate != ''">
+				,#{endDate ,jdbcType=DATE}
+			</if>
+			<if test="zhifubaoDoc !=null and zhifubaoDoc != ''">
+				,#{zhifubaoDoc
+				,jdbcType=VARCHAR}
+			</if>
+			<if test="payMoney !=null and payMoney != ''">
+				,#{payMoney
+				,jdbcType=INTEGER}
+			</if>
+			<if test="inQty !=null and inQty != ''">
+				,#{inQty
+				,jdbcType=INTEGER}
+			</if>
+			<if test="incomeDocNo !=null and inQty != ''">
+				,#{incomeDocNo
+				,jdbcType=VARCHAR}
+			</if>
+			<if test="status !=null and status != ''">
+				,#{status
+				,jdbcType=VARCHAR}
+			</if>
+			<if test="userId !=null and userId != ''">
+				,#{userId
+				,jdbcType=INTEGER}
+			</if>
+			<if test="beforeQty !=null and beforeQty != ''">
+				,#{beforeQty
+				,jdbcType=INTEGER}
+			</if>
+			<if test="afterQty !=null and afterQty != ''">
+				,#{afterQty
+				,jdbcType=INTEGER}
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="delete" parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		DELETE FROM manifest_income
+		<where>
+			<trim prefixOverrides="AND|OR">
+				<if test="incomeId != null and incomeId != ''">
+					AND id = #{incomeId ,jdbcType=INTEGER}
+				</if>
+
+				<if test="userId != null and userId != ''">
+					AND user_id = #{userId ,jdbcType=INTEGER}
+				</if>
+				<if test="incomeDocNo != null and incomeDocNo != ''">
+					AND income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
+
+	</delete>
+
+	<update id="updateById" parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		UPDATE manifest_income
+		<set>
+			<trim suffixOverrides=",">
+				<if test="createDate != null and createDate != ''">
+					income_create_date = #{createDate ,jdbcType=DATE},
+				</if>
+				<if test="zhifubaoDoc != null and zhifubaoDoc != ''">
+					zhifubao_doc = #{zhifubaoDoc ,jdbcType=VARCHAR},
+				</if>
+				<if test="payMoney != null and payMoney != ''">
+					pay_money = #{payMoney ,jdbcType=INTEGER},
+				</if>
+				<if test="inQty != null and inQty != ''">
+					income_in_qty = #{inQty ,jdbcType=INTEGER},
+				</if>
+				<if test="incomeDocNo != null and incomeDocNo != ''">
+					income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR},
+				</if>
+				<if test="status != null and status != ''">
+					status = #{status ,jdbcType=VARCHAR},
+				</if>
+				<if test="userId != null and userId != ''">
+					user_id = #{userId ,jdbcType=INTEGER},
+				</if>
+				<if test="beforeQty != null and beforeQty != ''">
+					income_before_qty = #{beforeQty ,jdbcType=INTEGER},
+				</if>
+
+				<if test="afterQty != null and afterQty != ''">
+					income_after_qty = #{afterQty ,jdbcType=INTEGER},
+				</if>
+				<if test="endDate != null and endDate != ''">
+					income_end_date = #{endDate ,jdbcType=DATE},
+				</if>
+			</trim>
+		</set>
+		WHERE income_id = #{incomeId,jdbcType=INTEGER}
+	</update>
+
+	<!-- 通过条件筛选获得用户支付的总额 -->
+	<select id="sumPayMoney" resultType="double"
+		parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		SELECT SUM(b.pay_money) FROM manifest_income b
+		JOIN user_login
+		a ON a.id
+		=
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<include refid="and_user_a"></include>
+				<include refid="and_income_b"></include>
+				<include refid="and_client_c"></include>
+			</trim>
+		</where>
+	</select>
+
+	<!-- 通过条件筛选获得用户充值积分的总额 -->
+	<select id="sumIncomeInQty" resultType="double"
+		parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		SELECT SUM(b.income_in_qty) FROM manifest_income b
+		JOIN user_login
+		a ON
+		a.id =
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<include refid="and_user_a"></include>
+				<include refid="and_income_b"></include>
+				<include refid="and_client_c"></include>
+			</trim>
+		</where>
+	</select>
+	<!-- 获得数据的总数量 -->
+	<select id="getTotalCount" resultType="long">
+		select count(*) from
+		manifest_income
+	</select>
+	<!-- 通过条件筛选，获得数据的总数量 -->
+	<select id="getParamsTotalCountOr" resultType="long"
+		parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		select count(*) from manifest_income b
+		JOIN user_login
+		a ON a.id =
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+		<where>
+			<trim prefixOverrides="OR">
+				<include refid="or_user_a"></include>
+				<include refid="or_income_b"></include>
+				<include refid="or_client_c"></include>
+			</trim>
+		</where>
+	</select>
+
+	<!-- 通过条件筛选And 获得的总数量 -->
+	<select id="getParamsTotalCountAnd" resultType="long"
+		parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		select count(*) from manifest_income b
+		JOIN user_login
+		a ON a.id =
+		b.user_id
+		JOIN user_client
+		c ON c.user_id =
+		b.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<include refid="and_user_a"></include>
+				<include refid="and_income_b"></include>
+				<include refid="and_client_c"></include>
+			</trim>
+		</where>
+	</select>
+	<!-- 通过条件 and 筛选数据 -->
+	<select id="findById" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		<include refid="select"></include>
+		where income_id = ${incomeId}
+
+	</select>
+	<!-- 通过条件 and 筛选数据 -->
+	<select id="findAnd" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		<include refid="select"></include>
+		<where>
+			<trim prefixOverrides="AND">
+				<include refid="and_income_b"></include>
+				<include refid="and_user_a"></include>
+				<include refid="and_client_c"></include>
+			</trim>
+		</where>
+		order by b.income_create_date desc
+		LIMIT ${firstIndex},${pageSize}
+
+	</select>
+	<select id="findOr" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.manifest.IncomeManifest">
+		<include refid="select"></include>
+		<where>
+			<trim prefixOverrides="OR">
+				<include refid="or_client_c"></include>
+				<include refid="or_user_a"></include>
+				<include refid="or_income_b"></include>
+			</trim>
+		</where>
+		order by b.income_create_date desc
+		LIMIT ${firstIndex},${pageSize}
+
+	</select>
+
+
+	<sql id="and_client_c">
+		<if test="name != null and name != ''">
+			AND c.name = #{name ,jdbcType=VARCHAR}
+		</if>
+	</sql>
+	<sql id="or_client_c">
+		<if test="name != null and name != ''">
+			OR c.name = #{name ,jdbcType=VARCHAR}
+		</if>
+	</sql>
+
+	<sql id="and_user_a">
+		<if test="account != null and account != ''">
+			AND a.account = #{account ,jdbcType=INTEGER}
+		</if>
+	</sql>
+	<sql id="or_user_a">
+		<if test="account != null and account != ''">
+			OR a.account = #{account ,jdbcType=INTEGER}
+		</if>
+	</sql>
+	<sql id="and_income_b">
+		<if test="userId != null and userId != ''">
+			AND b.user_id = #{userId ,jdbcType=INTEGER}
+		</if>
+		<if test="incomeId != null and incomeId != null and userId != ''">
+			AND b.income_id = #{incomeId ,jdbcType=INTEGER}
+		</if>
+		<if test="createDate != null and createDate != ''">
+			AND b.income_create_date = #{createDate ,jdbcType=DATE}
+		</if>
+		<if test="zhifubaoDoc != null and zhifubaoDoc != ''">
+			AND b.zhifubao_doc = #{zhifubaoDoc ,jdbcType=VARCHAR}
+		</if>
+		<if test="payMoney != null and payMoney != ''">
+			AND b.pay_money = #{payMoney ,jdbcType=INTEGER}
+		</if>
+		<if test="inQty != null and inQty != ''">
+			AND b.income_in_qty = #{inQty ,jdbcType=INTEGER}
+		</if>
+		<if test="incomeDocNo != null and incomeDocNo != ''">
+			AND b.income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null and status != ''">
+			AND b.status = #{status ,jdbcType=VARCHAR}
+		</if>
+		<if test="userId != null and userId != ''">
+			AND b.user_id = #{userId ,jdbcType=INTEGER}
+		</if>
+		<if test="beforeQty != null and beforeQty != ''">
+			AND b.income_before_qty = #{beforeQty ,jdbcType=INTEGER}
+		</if>
+
+		<if test="afterQty != null and afterQty != ''">
+			AND b.income_after_qty = #{afterQty ,jdbcType=INTEGER}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND b.income_end_date = #{endDate ,jdbcType=DATE}
+		</if>
+	</sql>
+	<sql id="or_income_b">
+		<if test="userId != null and userId != ''">
+			OR b.user_id = #{userId ,jdbcType=INTEGER}
+		</if>
+		<if test="incomeId != null and incomeId != null and userId != ''">
+			OR b.income_id = #{incomeId ,jdbcType=INTEGER}
+		</if>
+		<if test="createDate != null and createDate != ''">
+			OR b.income_create_date = #{createDate ,jdbcType=DATE}
+		</if>
+		<if test="zhifubaoDoc != null and zhifubaoDoc != ''">
+			OR b.zhifubao_doc = #{zhifubaoDoc ,jdbcType=VARCHAR}
+		</if>
+		<if test="payMoney != null and payMoney != ''">
+			OR b.pay_money = #{payMoney ,jdbcType=INTEGER}
+		</if>
+		<if test="inQty != null and inQty != ''">
+			OR b.income_in_qty = #{inQty ,jdbcType=INTEGER}
+		</if>
+		<if test="incomeDocNo != null and incomeDocNo != ''">
+			OR b.income_doc_no = #{incomeDocNo ,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null and status != ''">
+			OR b.status = #{status ,jdbcType=VARCHAR}
+		</if>
+		<if test="userId != null and userId != ''">
+			OR b.user_id = #{userId ,jdbcType=INTEGER}
+		</if>
+		<if test="beforeQty != null and beforeQty != ''">
+			OR b.income_before_qty = #{beforeQty ,jdbcType=INTEGER}
+		</if>
+
+		<if test="afterQty != null and afterQty != ''">
+			OR b.income_after_qty = #{afterQty ,jdbcType=INTEGER}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			OR b.income_end_date = #{endDate ,jdbcType=DATE}
+		</if>
+	</sql>
+	<sql id="select">
+		SELECT
+		a.account
+		,b.income_id
+		,b.income_create_date
+		,b.zhifubao_doc
+		,b.pay_money
+		,b.income_in_qty
+		,b.income_doc_no
+		,b.status
+		,b.user_id
+		,b.income_before_qty
+		,b.income_after_qty
+		,b.income_end_date
+		,c.name
+		,c.zhifubao
+		,c.l_bi
+		,c.phone
+		FROM
+		manifest_income b
+		LEFT JOIN
+		user_login
+		a ON a.id =
+		b.user_id
+		LEFT JOIN user_client
+		c ON c.user_id =
+		b.user_id
+	</sql>
+</mapper>

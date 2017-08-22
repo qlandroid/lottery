@@ -3,7 +3,7 @@ package org.ql.shopping.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ql.shopping.HttpUrl;
+import org.ql.shopping.util.HttpUrl;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

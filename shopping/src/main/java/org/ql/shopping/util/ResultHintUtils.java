@@ -2,7 +2,7 @@ package org.ql.shopping.util;
 
 import org.ql.shopping.code.Code;
 import org.ql.shopping.exception.LotteryException;
-import org.ql.shopping.pojo.Result;
+import org.ql.shopping.pojo.result.Result;
 
 public class ResultHintUtils {
 

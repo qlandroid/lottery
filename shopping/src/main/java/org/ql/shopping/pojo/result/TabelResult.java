@@ -35,7 +35,7 @@ public class TabelResult {
 	public void setCount(Long count) {
 		this.count = count;
 	}
-	public List<Object> getData() {
+	public List getData() {
 		return data;
 	}
 	public void setData(List data) {

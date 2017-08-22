@@ -3,7 +3,6 @@ package org.ql.shopping.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ql.shopping.HttpUrl;
 import org.ql.shopping.pojo.result.MainLeftNav;
 
 public class MainNavFactroy {

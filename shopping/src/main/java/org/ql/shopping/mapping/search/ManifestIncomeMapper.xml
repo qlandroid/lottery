@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.manifest.ManifestIncomeMapper" >
+  <resultMap id="BaseResultMap" type="org.ql.shopping.pojo.manifest.ManifestIncome" >
+    <id column="income_id" property="incomeId" jdbcType="INTEGER" />
+    <result column="income_create_date" property="incomeCreateDate" jdbcType="TIMESTAMP" />
+    <result column="zhifubao_doc" property="zhifubaoDoc" jdbcType="VARCHAR" />
+    <result column="pay_money" property="payMoney" jdbcType="DECIMAL" />
+    <result column="income_in_qty" property="incomeInQty" jdbcType="DECIMAL" />
+    <result column="income_doc_no" property="incomeDocNo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="income_before_qty" property="incomeBeforeQty" jdbcType="DECIMAL" />
+    <result column="income_after_qty" property="incomeAfterQty" jdbcType="DECIMAL" />
+    <result column="income_end_date" property="incomeEndDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    income_id, income_create_date, zhifubao_doc, pay_money, income_in_qty, income_doc_no, 
+    status, user_id, income_before_qty, income_after_qty, income_end_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from manifest_income
+    where income_id = #{incomeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from manifest_income
+    where income_id = #{incomeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.ql.shopping.pojo.manifest.ManifestIncome" >
+    insert into manifest_income (income_id, income_create_date, zhifubao_doc, 
+      pay_money, income_in_qty, income_doc_no, 
+      status, user_id, income_before_qty, 
+      income_after_qty, income_end_date)
+    values (#{incomeId,jdbcType=INTEGER}, #{incomeCreateDate,jdbcType=TIMESTAMP}, #{zhifubaoDoc,jdbcType=VARCHAR}, 
+      #{payMoney,jdbcType=DECIMAL}, #{incomeInQty,jdbcType=DECIMAL}, #{incomeDocNo,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{incomeBeforeQty,jdbcType=DECIMAL}, 
+      #{incomeAfterQty,jdbcType=DECIMAL}, #{incomeEndDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.ql.shopping.pojo.manifest.ManifestIncome" >
+    insert into manifest_income
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="incomeId != null" >
+        income_id,
+      </if>
+      <if test="incomeCreateDate != null" >
+        income_create_date,
+      </if>
+      <if test="zhifubaoDoc != null" >
+        zhifubao_doc,
+      </if>
+      <if test="payMoney != null" >
+        pay_money,
+      </if>
+      <if test="incomeInQty != null" >
+        income_in_qty,
+      </if>
+      <if test="incomeDocNo != null" >
+        income_doc_no,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="incomeBeforeQty != null" >
+        income_before_qty,
+      </if>
+      <if test="incomeAfterQty != null" >
+        income_after_qty,
+      </if>
+      <if test="incomeEndDate != null" >
+        income_end_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="incomeId != null" >
+        #{incomeId,jdbcType=INTEGER},
+      </if>
+      <if test="incomeCreateDate != null" >
+        #{incomeCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhifubaoDoc != null" >
+        #{zhifubaoDoc,jdbcType=VARCHAR},
+      </if>
+      <if test="payMoney != null" >
+        #{payMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeInQty != null" >
+        #{incomeInQty,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeDocNo != null" >
+        #{incomeDocNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="incomeBeforeQty != null" >
+        #{incomeBeforeQty,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeAfterQty != null" >
+        #{incomeAfterQty,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeEndDate != null" >
+        #{incomeEndDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.ql.shopping.pojo.manifest.ManifestIncome" >
+    update manifest_income
+    <set >
+      <if test="incomeCreateDate != null" >
+        income_create_date = #{incomeCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhifubaoDoc != null" >
+        zhifubao_doc = #{zhifubaoDoc,jdbcType=VARCHAR},
+      </if>
+      <if test="payMoney != null" >
+        pay_money = #{payMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeInQty != null" >
+        income_in_qty = #{incomeInQty,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeDocNo != null" >
+        income_doc_no = #{incomeDocNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="incomeBeforeQty != null" >
+        income_before_qty = #{incomeBeforeQty,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeAfterQty != null" >
+        income_after_qty = #{incomeAfterQty,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeEndDate != null" >
+        income_end_date = #{incomeEndDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where income_id = #{incomeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.ql.shopping.pojo.manifest.ManifestIncome" >
+    update manifest_income
+    set income_create_date = #{incomeCreateDate,jdbcType=TIMESTAMP},
+      zhifubao_doc = #{zhifubaoDoc,jdbcType=VARCHAR},
+      pay_money = #{payMoney,jdbcType=DECIMAL},
+      income_in_qty = #{incomeInQty,jdbcType=DECIMAL},
+      income_doc_no = #{incomeDocNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      income_before_qty = #{incomeBeforeQty,jdbcType=DECIMAL},
+      income_after_qty = #{incomeAfterQty,jdbcType=DECIMAL},
+      income_end_date = #{incomeEndDate,jdbcType=TIMESTAMP}
+    where income_id = #{incomeId,jdbcType=INTEGER}
+  </update>
+</mapper>
