@@ -5,13 +5,13 @@ $(document).ready(function(){
 		 //日期时间范围
 		  laydate.render({
 		    elem: '#createDate'
-		    ,type: 'datetime'
+		    ,type: 'month'
 		  
 		  });
 		//日期时间范围
 		  laydate.render({
 		    elem: '#endDate'
-		    ,type: 'datetime'
+		    ,type: 'month'
 		  });
 	})
 	

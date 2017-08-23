@@ -48,7 +48,7 @@
 	</dir>
 
 	<div class="content-tab-body">
-		<table class="layui-table" data-page='1' data-size="10" id="tabelList" data-url="${listUrl }">
+		<table class="layui-table" data-page='1' data-status='' data-size="10" id="tabelList" data-url="${listUrl }">
 			<colgroup>
 				<col width="50">
 				<col width="150">

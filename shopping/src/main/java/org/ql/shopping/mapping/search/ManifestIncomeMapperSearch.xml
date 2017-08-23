@@ -69,37 +69,37 @@
 	<sql id="WHERE_INCOME_MANIFEST">
 		<trim prefixOverrides="AND">
 			<if test="incomeId != null and incomeId !=''">
-				AND income_id = #{incomeId,jdbcType=INTEGER}
+				AND c.income_id = #{incomeId,jdbcType=INTEGER}
 			</if>
 			<if test="incomeCreateDate != null and incomeCreateDate !=''">
-				AND income_create_date = #{incomeId,jdbcType=TIMESTAMP}
+				AND c.income_create_date = #{incomeId,jdbcType=TIMESTAMP}
 			</if>
 			<if test="zhifubaoDoc != null and zhifubaoDoc != ''">
-			AND	zhifubao_doc = #{zhifubaoDoc,jdbcType=VARCHAR}
+			AND	c.zhifubao_doc = #{zhifubaoDoc,jdbcType=VARCHAR}
 			</if>
 			<if test="payMoney != null and payMoney != ''">
-				AND pay_money = #{payMoney,jdbcType=DECIMAL}
+				AND c.pay_money = #{payMoney,jdbcType=DECIMAL}
 			</if>
 			<if test="incomeInQty != null and incomeInQty != ''">
-				AND income_in_qty = #{incomeInQty,jdbcType=DECIMAL}
+				AND c.income_in_qty = #{incomeInQty,jdbcType=DECIMAL}
 			</if>
 			<if test="incomeDocNo != null and incomeDocNo != ''">
-				AND income_doc_no = #{incomeDocNo,jdbcType=INTEGER}
+				AND c.income_doc_no = #{incomeDocNo,jdbcType=INTEGER}
 			</if>
 			<if test="status != null and status != ''">
-				AND status = #{status,jdbcType=INTEGER}
+				AND c.status = #{status,jdbcType=INTEGER}
 			</if>
 			<if test="userId != null and userId != ''">
-				AND user_id = #{userId,jdbcType=INTEGER}
+				AND c.user_id = #{userId,jdbcType=INTEGER}
 			</if>
 			<if test="incomeBeforeQty != null and incomeBeforeQty != ''">
-				AND income_before_qty = #{incomeBeforeQty,jdbcType=INTEGER}
+				AND c.income_before_qty = #{incomeBeforeQty,jdbcType=INTEGER}
 			</if>
 			<if test="incomeAfterQty != null and incomeAfterQty!=''">
-				AND income_after_qty = #{incomeAfterQty,jdbcType=INTEGER}
+				AND c.income_after_qty = #{incomeAfterQty,jdbcType=INTEGER}
 			</if>
 			<if test="incomeEndDate != null and incomeEndDate != ''">
-				AND income_end_date = #{incomeEndDate,jdbcType=TIMESTAMP}
+				AND c.income_end_date = #{incomeEndDate,jdbcType=TIMESTAMP}
 			</if>
 		</trim>
 	</sql>

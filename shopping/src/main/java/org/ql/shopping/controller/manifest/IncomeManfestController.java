@@ -3,7 +3,7 @@ package org.ql.shopping.controller.manifest;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.Min;
+import javax.servlet.http.HttpServletRequest;
 
 import org.ql.shopping.code.Code;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -67,10 +66,11 @@ public class IncomeManfestController {
 		}
 		return "page/manifest/income_manager.jsp";
 	}
-	@RequestMapping(value="/operate/list",method=RequestMethod.POST)
+	@RequestMapping(value="/operate/list")
 	@ResponseBody
-	public TabelResult operateList(Model model,ManifestIncomeSearch params){
+	public TabelResult operateList(HttpServletRequest request,Model model,ManifestIncomeSearch params){
 		TabelResult result = new TabelResult();
+		
 		
 		if(params.getPage() == null){
 			params.setPage(1);

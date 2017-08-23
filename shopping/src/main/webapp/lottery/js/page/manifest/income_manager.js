@@ -2,33 +2,33 @@ var laypage;
 var layer;
 var isFirstLoad = true;
 $(document).ready(layui.use([ 'laypage', 'layer' ], function() {
-	 laypage = layui.laypage;
-	 layer = layui.layer;
-	
+	laypage = layui.laypage;
+	layer = layui.layer;
+
 	var d = getParams();
-	http( d);
-	
-	$("#btn-search").on("click",function(){
+	http(d);
+
+	$("#btn-search").on("click", function() {
 		var url = $(this).data('url');
 		// iframe层
-		 layer.open({
-			 
-			 tips: [1, '#c00'],
-		   type: 2,
-		   move:false,
-		   title: '按条件查询用户',
-		   shadeClose: true,
-		   shade: 0.8,
-		   area: ['100%', '90%'],
-		   content: $("#btn-search").data("url") // iframe的url
-		 });
+		layer.open({
+
+			tips : [ 1, '#c00' ],
+			type : 2,
+			move : false,
+			title : '按条件查询用户',
+			shadeClose : true,
+			shade : 0.8,
+			area : [ '100%', '90%' ],
+			content : $("#btn-search").data("url")
+		// iframe的url
+		});
 	});
 
 }));
 
-function loadSuccess(data){
+function loadSuccess(data) {
 	if (data.code == 200) {
-		console.log(data);
 		var tBody = addTrTbody(data.data);
 		$("#tabelBody").html(tBody);
 		if (isFirstLoad) {
@@ -41,49 +41,38 @@ function loadSuccess(data){
 	}
 }
 
-function loadListDate(params){
+function loadListDate(params) {
+	replaceParams(params);
+	
 	isFirstLoad = true;
 	params.page = $('#tabelList').data("page");
 	params.pageSize = $("#tabelList").data('size');
-	replaceParams(params);
-	 var p =JSON.stringify(params)
-	http(params,function (data){
-		if (data.code == 200) {
-			console.log(data);
-			var tBody = addTrTbody(data.data);
-			$("#tabelBody").html(tBody);
-			if (isFirstLoad) {
-				isFirstLoad = false;
-				var nav = navIndex(data.count, layer);
-				laypage.render(nav);
-			}
-		} else {
-			layer.alert("错误编码:" + data.code + ",错误信息:" + data.msg);
-		}
-	});
+	
+	http(params);
 }
-
-function getParams(){
-	return {
-		incomeDocNo:$("#tabelList").data("incomeDocNo")
-		,account:$("#tabelList").data("account")
-		,payMoney:$("#tabelList").data("payMoney")
-		,inQty:$("#tabelList").data("inQty")
-		,status:$("#tabelList").data("status")
-		,incomeCreateDate:$("#tabelList").data("incomeCreateDate")
-		,page:$("#tabelList").data("page")
-		,pageSize:$("#tabelList").data("size")
-	}
-}
-
-function replaceParams(params){
-	$('#tabelList').attr("data-incomeDocNo",params.incomeDoc);
-	$('#tabelList').attr("data-account",params.account);
-	$('#tabelList').attr("data-payMoney",params.payMoney);
-	$('#tabelList').attr("data-incomeInQty",params.inQty);
+function replaceParams(params) {
+	$('#tabelList').attr("data-incomeDocNo", params.incomeDoc);
+	$('#tabelList').attr("data-account", params.account);
+	$('#tabelList').attr("data-payMoney", params.payMoney);
+	$('#tabelList').attr("data-incomeInQty", params.inQty);
 	$('#tabelList').attr("data-status",params.status);
-	$('#tabelList').attr("data-incomeCreateDate",params.incomeCreateDate);
-	$('#tabelList').attr("data-incomeEndDate",params.incomeEndDate);
+	$('#tabelList').attr("data-incomeCreateDate", params.incomeCreateDate);
+	$('#tabelList').attr("data-incomeEndDate", params.incomeEndDate);
+	
+}
+
+function getParams() {
+	var p = {};
+	p.incomeDocNo = $("#tabelList").data("incomeDocNo");
+	p.account = $("#tabelList").data("account");
+	p.payMoney = $("#tabelList").data("payMoney");
+	p.inQty = $("#tabelList").data("inQty");
+	
+	p.status = document.getElementById("tabelList").getAttribute("data-status");
+	p.incomeCreateDate = $("#tabelList").data("incomeCreateDate");
+	p.page = $("#tabelList").data("page");
+	p.pageSize = $("#tabelList").data("size");
+	return p;
 }
 
 function navIndex(count, layer) {
@@ -93,37 +82,46 @@ function navIndex(count, layer) {
 		groups : 10,
 		layout : [ 'count', 'prev', 'page', 'next', 'limit', 'skip' ],
 		jump : function(obj, first) {
-			console.log(obj)
 			// 第一次不执行
 			if (!first) {
-				$("#tabelList").attr("page", obj.curr);
-				$("#tabelList").attr("size", obj.limit);
-				var d = getParams();
-				d.page = obj.curr;
-				d.pageSize = obj.limit;
-				http( d, function(data) {
-					if (data.code == 200) {
-						console.log(data);
-						var tBody = addTrTbody(data.data);
-						$("#tabelBody").html(tBody);
-					} else {
-						layer.alert("错误编码:" + data.code + ",错误信息:" + data.msg);
-					}
-				});
+				$("#tabelList").attr("data-page", obj.curr);
+				$("#tabelList").attr("data-size", obj.limit);
+				var p = getParams();
+				p.page = obj.curr;
+				p.pageSize = obj.limit;
+				http(p);
 			}
 		}
 	}
 }
 
-function http( d) {
+/**
+ * var p ={ incomeDocNo:incomeDoc ,account:account ,payMoney:payMoney
+ * ,incomeInQty:inQty ,status:status } ;
+ * 
+ * @param params
+ */
+function http(params) {
 	var url = $("#tabelList").data("url");
-	console.log(url);
+	var p = {};
+	
+	p.status = params.status;
+	p.incomeDoc = params.incomDoc;
+	p.account = params.account;
+	p.payMoney = params.payMoney;
+	p.incomeInQty = params.incomeInQty;
+	p.incomeCreateDate = params.incomeCreateDate;
+	p.incomeEndDate = params.incomeEndDate;
+	p.pageSize = params.pageSize;
+	p.page = params.page;
+	
+	console.log(p)
 	$.ajax({
 		url : url,
 		type : 'POST',
 		dataType : 'json',
-		data : d,
-		success : function(data){
+		data : p,
+		success : function(data) {
 			loadSuccess(data)
 		},
 		error : function() {
@@ -147,16 +145,16 @@ function addLine(index, data) {
 	line = line + "<td>" + data.account + "</td>"
 	line = line + "<td>" + data.payMoney + "</td>"
 	line = line + "<td>" + data.incomeInQty + "</td>"
-	//'当前交易状态0-未支付，1-支付完成，2-订单超时，3-取消订单'
-	if(data.status == '0'){
+	// '当前交易状态0-未支付，1-支付完成，2-订单超时，3-取消订单'
+	if (data.status == '0') {
 		line = line + "<td>" + "未完成" + "</td>"
-	}else if(data.status == '1'){
-		line = line + "<td>" + "支付完成"  + "</td>"
-	}else if(data.status == '2'){
+	} else if (data.status == '1') {
+		line = line + "<td>" + "支付完成" + "</td>"
+	} else if (data.status == '2') {
 		line = line + "<td>" + "订单超时" + "</td>"
-	}else if(data.status == '3'){
-		line = line + "<td>" + "取消订单"+ "</td>"
-	}else{
+	} else if (data.status == '3') {
+		line = line + "<td>" + "取消订单" + "</td>"
+	} else {
 		line = line + "<td>" + "+" + data.status + "</td>"
 	}
 	line = line + "<td>" + data.zhifubaoDoc + "</td>"
