@@ -19,6 +19,8 @@ public interface ILotteryClazzService {
 	 * @return
 	 */
 	public LotteryClazzTree findClazzByParentId();
+
+	public LotteryClazz selectByKey(Integer lotteryClazzParentId);
 	
 	
 }

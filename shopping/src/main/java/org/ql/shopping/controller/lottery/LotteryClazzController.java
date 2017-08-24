@@ -37,6 +37,7 @@ public class LotteryClazzController {
 	@RequestMapping("/view/add")
 	public String showAddView(Model model){
 		model.addAttribute("clazzUrl", url("operate/all"));
+		model.addAttribute("addUrl",url("operate/add"));
 		return "page/lottery/lottery_clazz_add.jsp";
 	}
 
@@ -47,9 +48,19 @@ public class LotteryClazzController {
 		Result result = new Result();
 		
 		try {
-			
+			if(params.getLotteryClazzName() == null){
+				throw new LotteryException("参数不正确");
+			}
+			if(params.getLotteryClazzParentId() != null){
+				LotteryClazz parentClazz =  mLotteryClazzService.selectByKey(params.getLotteryClazzParentId());
+				if(parentClazz == null){
+					throw new LotteryException("参数不正确");
+				}
+			}
+			mLotteryClazzService.addClazz(params);
+			result.setCode(Code.SUCCESS);
 		} catch (Exception e) {
-			logger.error("getClazzAll", e);
+			logger.error("addClazz", e);
 			ResultHintUtils.setSystemError(result, e);
 		}
 		return result;

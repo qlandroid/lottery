@@ -14,7 +14,7 @@
 		LEFT JOIN
 		lottery_clazz b ON a.lottery_clazz_id = b.lottery_clazz_id
 		<where>
-			<trim prefix="OR">
+			<trim prefixOverrides="OR">
 				<if test="lotteryClazzId != null and lotteryClazzId !=''">
 					OR a.lottery_clazz_id = #{lotteryClazzId
 					,jdbcType=INTEGER}

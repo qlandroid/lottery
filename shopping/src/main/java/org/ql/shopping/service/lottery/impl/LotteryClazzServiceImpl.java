@@ -72,4 +72,8 @@ public class LotteryClazzServiceImpl implements ILotteryClazzService {
 		
 	}
 
+	public LotteryClazz selectByKey(Integer id) {
+		return mLotteryClazzMapper.selectByPrimaryKey(id);
+	}
+
 }
