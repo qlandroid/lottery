@@ -17,7 +17,7 @@
 			jdbcType="INTEGER" />
 		<result column="income_after_qty" property="incomeAfterQty"
 			jdbcType="INTEGER" />
-		<result column="expend_out_qty" property="expendOutQty"
+		<result column="expend_qty" property="expendOutQty"
 			jdbcType="INTEGER" />
 		<result column="expend_before_qty" property="expendBeforeQty"
 			jdbcType="INTEGER" />
@@ -193,7 +193,7 @@
 		,c.expend_doc_no
 		,c.expend_after_qty
 		,c.expend_before_qty
-		,c.expend_out_qty
+		,c.expend_qty
 		,d.account
 		from
 		manifest_l_bi_change a

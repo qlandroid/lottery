@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.lottery.LotteryTypeMapper">
+	<select id="selectByClazzTypeOrClazzId" resultMap="ResultMapWithBLOBs"
+		parameterType="org.ql.shopping.pojo.lottery.LotteryClazzSearch">
+		SELECT
+		a.lottery_type_id,
+		a.lottery_rule,
+		a.lottery_type,
+		a.lottery_name,
+		a.lottery_remark,
+		a.lottery_clazz_id
+		FROM lottery_type a
+		LEFT JOIN
+		lottery_clazz b ON a.lottery_clazz_id = b.lottery_clazz_id
+		<where>
+			<trim prefix="OR">
+				<if test="lotteryClazzId != null and lotteryClazzId !=''">
+					OR a.lottery_clazz_id = #{lotteryClazzId
+					,jdbcType=INTEGER}
+				</if>
+				<if test="lotteryClazzName != null and lotteryClazzName !=''">
+					OR b.lottery_clazz_name = #{lotteryClazzName
+					,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
+	</select>
+</mapper>
