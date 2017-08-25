@@ -25,4 +25,9 @@ public class C {
 		 */
 		public final static Integer MAIN = 0;
 	}
+	
+	public static class LotteryType{
+		public final static String SEND_STATUS_OVER="1";//支付状态  已经支付完成
+		public final static String SEND_STATUS_UNFINSH = "0";//支付状态 未完成
+	}
 }

@@ -35,6 +35,6 @@ public interface IUserServiceManagerService {
 
 	public UserManager findUserByAccount(String account);
 	
-	public UserManager findUserById(Long id);
+	public UserManager findUserById(Integer id);
 
 }

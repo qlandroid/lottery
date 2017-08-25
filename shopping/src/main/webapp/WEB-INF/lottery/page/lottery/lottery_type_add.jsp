@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>添加彩票大类</title>
+<title>添加彩票类型</title>
 <link rel="stylesheet" href="${contextPath}/lottery/layui/css/layui.css">
 <link rel="stylesheet" href="${contextPath}/lottery/css/base.css">
 
@@ -18,12 +18,13 @@
 </head>
 <body>
 	<div class="tree-body fl">
-	<span>点击选择上级父类</span>
-	<hr class="layui-bg-red">
-		<ul id="clazzTree" data-url="${clazzUrl }"></ul>
+		<span>点击选择上级父类</span>
+		<hr class="layui-bg-red">
+		<ul id="clazzTree" data-url="${treeAllUrl }"></ul>
 	</div>
+	
 	<div class="form-content fl">
-		<form class="layui-form" action="">
+		<div class="layui-form" action="">
 			<div class="layui-form-item">
 				<label class="layui-form-label">父类名称</label>
 				<div class="layui-input-block">
@@ -34,14 +35,19 @@
 
 			</div>
 			<div class="layui-form-item">
-				<label class="layui-form-label">大类名称</label>
+				<label class="layui-form-label">彩票名称</label>
 				<div class="layui-input-block">
-					<input type="text" id="clazzName" name="title" lay-verify="title"
-						autocomplete="off" placeholder="大类名称" class="layui-input">
+					<input type="text" id="lotteryName" name="title" lay-verify="title"
+						autocomplete="off" placeholder="彩票名称" class="layui-input">
 				</div>
 			</div>
 
-
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">规则描述</label>
+				<div class="layui-input-block">
+					<textarea placeholder="请输入内容" id="rule" class="layui-textarea"></textarea>
+				</div>
+			</div>
 			<div class="layui-form-item layui-form-text">
 				<label class="layui-form-label">备注</label>
 				<div class="layui-input-block">
@@ -49,17 +55,17 @@
 				</div>
 			</div>
 			<div class="layui-form-item btn-group">
-				<button class="layui-btn layui-btn-warm" id="btnAdd" data-url="${addUrl }"
-					lay-submit="" lay-filter="demo1">添加大类</button>
+				<button class="layui-btn layui-btn-warm" id="btnAdd"
+					data-url="${typeAddUrl }" lay-submit="" lay-filter="formDemo">添加大类</button>
 				<button class="layui-btn" id="btnCancel" "lay-submit="">取消</button>
 			</div>
-		</form>
+		</div>
 	</div>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/js/jquery.js"></script>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/layui/layui.js"></script>
 	<script type="text/javascript"
-		src="${contextPath }/lottery/js/page/lottery/lottery_clazz_add.js"></script>
+		src="${contextPath }/lottery/js/page/lottery/lottery_type_add.js"></script>
 </body>
 </html>

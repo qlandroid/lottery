@@ -10,18 +10,22 @@
 <link rel="stylesheet" href="${contextPath}/lottery/layui/css/layui.css">
 <link rel="stylesheet"
 	href="${contextPath}/lottery/css/page/add_user.css">
+<link rel="stylesheet" href="${contextPath}/lottery/css/base.css">
 <link rel="stylesheet"
 	href="${contextPath}/lottery/css/page/user_service_manager.css">
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
-	
-	<div id="navIndex"></div>
+	<button class="layui-btn btn-add" url="${addClassUrl}">添加大类</button>
+	<button class="layui-btn btn-add" url="${addTypeUrl}">添加彩票类型</button>
+	<button class="layui-btn btn-add" url="${addFillUrl}">添加满积分彩票</button>
+	<ul id="clazzTree" data-url="${treeAll }"></ul>
+
 	<script type="text/javascript"
 		src="${contextPath }/lottery/js/jquery.js"></script>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/layui/layui.js"></script>
 	<script type="text/javascript"
-		src="${contextPath }/lottery/js/page/manifest/income_manager.js"></script>
+		src="${contextPath }/lottery/js/page/lottery/lottery_clazz_list.js"></script>
 </body>
 </html>

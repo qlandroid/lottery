@@ -1,5 +1,7 @@
 package org.ql.shopping.dao.lottery;
 
+import java.util.List;
+
 import org.ql.shopping.pojo.lottery.LotteryFillOpen;
 
 public interface LotteryFillOpenMapper {
@@ -50,4 +52,8 @@ public interface LotteryFillOpenMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(LotteryFillOpen record);
+
+	List<LotteryFillOpen> selectByLotteryTypeId(Integer typeId);
+
+	List<LotteryFillOpen> selectByParams(LotteryFillOpen params);
 }

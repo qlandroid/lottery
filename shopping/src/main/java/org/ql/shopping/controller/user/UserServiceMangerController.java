@@ -67,7 +67,7 @@ public class UserServiceMangerController {
 	 * @return
 	 */
 	@RequestMapping("/view/change")
-	public ModelAndView userServiceChange(@RequestParam("id")long id) {
+	public ModelAndView userServiceChange(@RequestParam("id")int id) {
 		ModelAndView mav = new ModelAndView();
 		UserManager changeUser = mUserManagerService.findUserById(id);
 		if(changeUser == null){

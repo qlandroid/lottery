@@ -76,7 +76,7 @@ public class UserServiceManagerServiceImpl implements IUserServiceManagerService
 		mUserManagerDao.deleteUser(user);
 	}
 
-	public UserManager findUserById(Long id) {
+	public UserManager findUserById(Integer id) {
 		UserManager userManager = new UserManager();
 		userManager.setId(new Long(id));
 		List<UserManager> list = mUserManagerDao.findUser(userManager);
@@ -91,5 +91,6 @@ public class UserServiceManagerServiceImpl implements IUserServiceManagerService
 		return mUserManagerDao.queryTotalCount(queryUser);
 
 	}
+
 
 }

@@ -99,6 +99,15 @@ public class MainNavFactroy {
 		lotteryManager.setHref("");
 
 		List<MainLeftNav> lotteryManagerList = new ArrayList<MainLeftNav>();
+		
+		
+		MainLeftNav clazz = new MainLeftNav();
+		clazz.setTitle("彩票大类管理");
+		clazz.setIcon("&#xe654;");// &#xe612;
+		clazz.setHref("lottery/clazz/view/list");
+		lotteryManagerList.add(clazz);
+		
+		
 		MainLeftNav ssqOpen = new MainLeftNav();
 		ssqOpen.setTitle("双色球开奖");
 		ssqOpen.setIcon("&#xe654;");// &#xe612;

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.lottery.LotteryFillOpenMapper">
+
+	<!-- 通过类型查询所有 -->
+	<select id="selectByLotteryTypeId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		lottery_fill_open.lottery_fill_open_id,
+		lottery_fill_open.open_number,
+		lottery_fill_open.lottery_fill_creater_date,
+		lottery_fill_open.lottery_fill_end_date,
+		lottery_fill_open.create_user_id,
+		lottery_fill_open.fill_l_bi,
+		lottery_fill_open.award_l_bi,
+		lottery_fill_open.send_status,
+		lottery_fill_open.lottery_fill_unit_price,
+		lottery_fill_open.lottery_type_id
+		FROM
+		lottery_fill_open
+		WHERE
+		lottery_fill_open.lottery_type_id = #{id}
+	</select>
+
+	<!-- 按条件查询 -->
+	<select id="selectByParams" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpen">
+		SELECT
+		lottery_fill_open.lottery_fill_open_id,
+		lottery_fill_open.open_number,
+		lottery_fill_open.lottery_fill_creater_date,
+		lottery_fill_open.lottery_fill_end_date,
+		lottery_fill_open.create_user_id,
+		lottery_fill_open.fill_l_bi,
+		lottery_fill_open.award_l_bi,
+		lottery_fill_open.send_status,
+		lottery_fill_open.lottery_fill_unit_price,
+		lottery_fill_open.lottery_type_id
+		FROM
+		lottery_fill_open
+		<where>
+			<trim prefixOverrides="AND">
+				<if test="lotteryTypeId != null and lotteryTypeId != ''">
+					AND lottery_fill_open.lottery_type_id =
+					#{lotteryTypeId,jdbcType=INTEGER}
+				</if>
+				<if test="openNumber != null and openNumber != ''">
+					AND lottery_fill_open.open_number =
+					#{openNumber,jdbcType=VARCHAR}
+				</if>
+				<if test="lotteryFillCreateDate != null and lotteryFillCreateDate != ''">
+					AND lottery_fill_open.lottery_fill_creater_date =
+					#{lotteryFillCreateDate,jdbcType=TIMESTAMP}
+				</if>
+				<if test="createUserId != null and createUserId != ''">
+					AND lottery_fill_open.create_user_id =
+					#{lotteryTypeId,jdbcType=INTEGER}
+				</if>
+				<if test="fillLBi != null and fillLBi != ''">
+					AND lottery_fill_open.fill_l_bi =
+					#{fillLBi,jdbcType=INTEGER}
+				</if>
+				<if test="awardLBi != null and awardLBi != ''">
+					AND lottery_fill_open.award_l_bi =
+					#{awardLBi,jdbcType=INTEGER}
+				</if>
+				<if test="sendStatus != null and sendStatus != ''">
+					AND lottery_fill_open.send_status =
+					#{sendStatus,jdbcType=VARCHAR}
+				</if>
+				<if test="lotteryFillUnitPrice != null and lotteryFillUnitPrice != ''">
+					AND lottery_fill_open.lottery_fill_unit_price =
+					#{lotteryFillUnitPrice,jdbcType=INTEGER}
+				</if>
+				<if test="lotteryTypeId != null and lotteryTypeId != ''">
+					AND lottery_fill_open.lottery_type_id =
+					#{lotteryTypeId,jdbcType=INTEGER}
+				</if>
+			</trim>
+		</where>
+
+	</select>
+</mapper>
