@@ -10,12 +10,15 @@ import org.ql.shopping.code.Code;
 import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.pojo.lottery.LotteryClazz;
 import org.ql.shopping.pojo.lottery.LotteryClazzSearch;
+import org.ql.shopping.pojo.lottery.LotteryFillOpen;
 import org.ql.shopping.pojo.lottery.LotteryTypeWithBLOBs;
 import org.ql.shopping.pojo.result.LotteryClazzTree;
 import org.ql.shopping.pojo.result.Result;
 import org.ql.shopping.pojo.result.ResultClazzTree;
 import org.ql.shopping.pojo.result.Rows;
 import org.ql.shopping.service.lottery.ILotteryClazzService;
+import org.ql.shopping.service.lottery.ILotteryFillOpenService;
+import org.ql.shopping.service.lottery.ILotteryTypeService;
 import org.ql.shopping.util.HttpUrl;
 import org.ql.shopping.util.ResultHintUtils;
 import org.ql.shopping.util.StringUtils;
@@ -30,8 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/lottery/clazz")
 public class LotteryClazzController {
 
-	private Logger logger = LoggerFactory
-			.getLogger(LotteryClazzController.class);
+	private Logger logger = LoggerFactory.getLogger(LotteryClazzController.class);
 
 	private String url(String url) {
 		return HttpUrl.replaceUrl("/lottery/clazz/" + url);
@@ -39,6 +41,11 @@ public class LotteryClazzController {
 
 	@Resource
 	private ILotteryClazzService mLotteryClazzService;
+	
+	@Resource
+	private ILotteryTypeService mLotteryTypeService;
+	@Resource
+	private ILotteryFillOpenService mLotteryFillOpenService;
 
 	@RequestMapping("/view/add")
 	public String showAddClazzView(Model model) {
@@ -51,8 +58,8 @@ public class LotteryClazzController {
 	public String showListView(Model model) {
 		model.addAttribute("addClassUrl", url("view/add"));
 		model.addAttribute("treeAll", url("operate/all"));
-		model.addAttribute("addTypeUrl",HttpUrl.replaceUrl("/lottery/type/view/add"));
-		model.addAttribute("addFillUrl",HttpUrl.replaceUrl("/lottery/fill/view/add"));
+		model.addAttribute("addTypeUrl", HttpUrl.replaceUrl("/lottery/type/view/add"));
+		model.addAttribute("addFillUrl", HttpUrl.replaceUrl("/lottery/fill/view/add"));
 		return "page/lottery/lottery_clazz_list.jsp";
 	}
 
@@ -67,8 +74,7 @@ public class LotteryClazzController {
 				throw new LotteryException("参数不正确");
 			}
 			if (params.getLotteryClazzParentId() != null) {
-				LotteryClazz parentClazz = mLotteryClazzService
-						.selectByKey(params.getLotteryClazzParentId());
+				LotteryClazz parentClazz = mLotteryClazzService.selectByKey(params.getLotteryClazzParentId());
 				if (parentClazz == null) {
 					throw new LotteryException("参数不正确");
 				}
@@ -103,17 +109,38 @@ public class LotteryClazzController {
 
 		Rows result = new Rows();
 		try {
-			LotteryClazzTree findClazzByParentId = mLotteryClazzService
-					.findClazzByParentId();
-			List<ResultClazzTree> tree = replaceTreeClazzResult(
-					findClazzByParentId.getClazzList());
-			result.setList(tree);
+			List<LotteryClazz> clazzList = mLotteryClazzService.findClazzByParentId(C.LotteryClazz.MAIN);
+			
+			List<ResultClazzTree> clazzTree = replaceClazzTreeList(clazzList);
+			result.setList(clazzTree);
 			result.setCode(Code.SUCCESS);
 		} catch (Exception e) {
 			logger.error("getClazzAll", e);
 			ResultHintUtils.setSystemError(result, e);
 		}
 		return result;
+	}
+	
+	/**
+	 * 用于遍历查询 大类树状结构
+	 * 
+	 * @param clazzList
+	 * @return
+	 */
+	private List<ResultClazzTree> replaceClazzTreeList(List<LotteryClazz> clazzList){
+		ArrayList<ResultClazzTree> clazzTree = new ArrayList<ResultClazzTree>();
+		for (LotteryClazz item : clazzList) {
+			ResultClazzTree tree = new ResultClazzTree();
+			tree.setName(item.getLotteryClazzName());
+			tree.setSpread(true);
+			tree.setType(ResultClazzTree.TYPE_CLAZZ);
+			tree.setId(item.getLotteryClazzId());
+			List<LotteryClazz> childrenList = mLotteryClazzService.findClazzByParentId(item.getLotteryClazzId());
+			List<ResultClazzTree> l = replaceClazzTreeList(childrenList);
+			tree.setChildren(l);
+			clazzTree.add(tree);
+		}
+		return clazzTree;
 	}
 
 	@RequestMapping("/operate/all")
@@ -122,11 +149,8 @@ public class LotteryClazzController {
 
 		Rows result = new Rows();
 		try {
-			LotteryClazzTree findClazzByParentId = mLotteryClazzService
-					.findClazzByParentId();
-			List<ResultClazzTree> tree = replaceTreeResult(
-					findClazzByParentId.getClazzList(),
-					findClazzByParentId.getTypeList());
+			List<LotteryClazz> clazzList = mLotteryClazzService.findClazzByParentId(C.LotteryClazz.MAIN);
+			List<ResultClazzTree> tree = replaceTreeResult(clazzList, C.LotteryClazz.MAIN);
 			result.setList(tree);
 			result.setCode(Code.SUCCESS);
 		} catch (Exception e) {
@@ -136,52 +160,66 @@ public class LotteryClazzController {
 		return result;
 	}
 
-	private List<ResultClazzTree> replaceTreeResult(
-			List<LotteryClazzTree> list, List<LotteryTypeWithBLOBs> tyepList) {
+	/**
+	 * 用于查询全部类型和大类
+	 * 
+	 * @param list 大类集合
+	 * @param clazzId 查询当前大类所对应的彩票类型
+	 * @return
+	 */
+	private List<ResultClazzTree> replaceTreeResult(List<LotteryClazz> list,Integer clazzId) {
 
-		List<ResultClazzTree> MainTree = new ArrayList<ResultClazzTree>();
+		List<ResultClazzTree> mainTree = new ArrayList<ResultClazzTree>();
 
-		for (LotteryClazzTree item : list) {
+		for (LotteryClazz item : list) {
 			ResultClazzTree tree = new ResultClazzTree();
 			tree.setName(item.getLotteryClazzName());
 			tree.setSpread(true);
 			tree.setType(ResultClazzTree.TYPE_CLAZZ);
 			tree.setId(item.getLotteryClazzId());
-			List<ResultClazzTree> l = replaceTreeResult(item.getClazzList(),
-					item.getTypeList());
+			List<LotteryClazz> childrenList = mLotteryClazzService.findClazzByParentId(item.getLotteryClazzId());
+			List<ResultClazzTree> l = replaceTreeResult(childrenList,item.getLotteryClazzId());
 			tree.setChildren(l);
-			MainTree.add(tree);
+			mainTree.add(tree);
+			
 		}
 		
-		if (tyepList != null) {
-			for (LotteryTypeWithBLOBs itemType : tyepList) {
-				ResultClazzTree tree = new ResultClazzTree();
-				tree.setName(itemType.getLotteryName());
-				tree.setType(ResultClazzTree.TYPE_TYPE);
-				tree.setId(tree.getId());
-				MainTree.add(tree);
-			}
-		}
-
-		return MainTree;
-	}
-	private List<ResultClazzTree> replaceTreeClazzResult(
-			List<LotteryClazzTree> list) {
-
-		List<ResultClazzTree> MainTree = new ArrayList<ResultClazzTree>();
-
-		for (LotteryClazzTree item : list) {
+		List<LotteryTypeWithBLOBs> typeList = mLotteryTypeService.selectByLotteryClazzId(clazzId);
+		for (LotteryTypeWithBLOBs typeItem : typeList) {
 			ResultClazzTree tree = new ResultClazzTree();
-			tree.setName(item.getLotteryClazzName());
-			tree.setSpread(true);
-			tree.setType(ResultClazzTree.TYPE_CLAZZ);
-			tree.setId(item.getLotteryClazzId());
-			List<ResultClazzTree> l = replaceTreeClazzResult(item.getClazzList());
-			tree.setChildren(l);
-			MainTree.add(tree);
+			tree.setName(typeItem.getLotteryName());
+			tree.setType(ResultClazzTree.TYPE_TYPE);
+			tree.setId(typeItem.getLotteryTypeId());
+			
+			LotteryFillOpen params = new LotteryFillOpen();
+			params.setLotteryTypeId(typeItem.getLotteryTypeId());
+			List<LotteryFillOpen> openList = mLotteryFillOpenService.selectByParams(params);
+			
+			List<ResultClazzTree> fillOpenTree = replaceFillOpenTree(openList);
+			tree.setChildren(fillOpenTree);
+			
+			mainTree.add(tree);
 		}
+		
+		return mainTree;
+	}
 
-		return MainTree;
+	/**
+	 *  将彩票转化成 树型结构 用于显示
+	 * @param openList
+	 * @return
+	 */
+	private List<ResultClazzTree> replaceFillOpenTree(List<LotteryFillOpen> openList) {
+		List<ResultClazzTree> treeList = new ArrayList<ResultClazzTree>();
+		for (LotteryFillOpen fillItem : openList) {
+			ResultClazzTree tree = new ResultClazzTree();
+			tree.setName(fillItem.getLotteryFillName());
+			tree.setType(ResultClazzTree.TYPE_FILL_OPEN);
+			tree.setId(fillItem.getLotteryFillOpenId());
+			treeList.add(tree);
+		}
+		
+		return treeList;
 	}
 
 }

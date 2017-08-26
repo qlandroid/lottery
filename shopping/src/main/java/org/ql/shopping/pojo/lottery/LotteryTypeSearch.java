@@ -11,7 +11,5 @@ public class LotteryTypeSearch extends LotteryTypeWithBLOBs {
 	public void setLotteryClazzName(String lotteryClazzName) {
 		this.lotteryClazzName = lotteryClazzName;
 	}
-	
-	
-	
+
 }

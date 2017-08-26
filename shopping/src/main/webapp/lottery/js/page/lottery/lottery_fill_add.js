@@ -13,7 +13,7 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
 		  elem: '#clazzTree' //传入元素选择器
 		  ,nodes: data.list
 		  ,click:function(nodes){
-			  console.log(nodes);
+			  console.log("nodes = " + nodes);
 			  if(nodes.type == 1){
 				  $("#clazzParentName").data("id",nodes.id);
 				  $("#clazzParentName").val(nodes.name);
@@ -41,31 +41,45 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
 	  
 	  var url = $(this).data("url");
 	  var rule = $("#rule").val();
-	  
+	  var clazzName = $("#clazzParentName").val();
+	  if(isEmpty(clazzName)){
+		  layer.msg("请选择大类",function(){});
+		  return false;
+	  }
 	  var name = $("#lotteryName").val();
 	  if(isEmpty(name)){
 		  $("#lotteryName").focus();
 		  layer.msg("请填写名称",function(){});
 		  return false;
 	  }
-	  var rule = $("#rule").val();
-	  if(isEmpty(rule)){
-		  $("#rule").focus();
-		  layer.msg("请填写规则明细",function(){});
+	  var fillQty = $("#fillQty").val();
+	  if(isEmpty(fillQty)){
+		  $("#fillQty").focus();
+		  layer.msg("请填写满数量，后进行抽奖",function(){});
 		  return false;
 	  }
-	  var remark = $("#remark").val();
-	  if(isEmpty(remark)){
-		  $("#remark").focus();
-		  layer.msg("请填写备注信息",function(){});
+	  
+	  var awardQty = $("#awardQty").val();
+	  if(isEmpty(fillQty)){
+		  $("#awardQty").focus();
+		  layer.msg("请填写中奖奖金金额",function(){});
 		  return false;
 	  }
+	  
+	  var unitPrice = $("#unitPrice").val();
+	  if(isEmpty(fillQty)){
+		  $("#unitPrice").focus();
+		  layer.msg("购买单价",function(){});
+		  return false;
+	  }
+	 
 	  $.ajax({
 		  data:{
-			  lotteryName:$("#lotteryName").val().trim(),
-			  lotteryRule:$("#rule").val().trim(),
-			  lotteryClazzId:$("#clazzParentName").data("id"),
-			  lotteryRemark:$("#remark").val().trim()
+			  fillLBi:$("#fillQty").val(),
+			  awardLBi:$("#awardQty").val(),
+			  lotteryFillUnitPrice:$("#unitPrice").val(),
+			  lotteryTypeId:$("#clazzParentName").data("id"),
+			  lotteryFillName:$("#lotteryName").val()
 		  }
 	  ,url:url
 	  ,type:"post",

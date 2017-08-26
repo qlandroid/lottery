@@ -4,25 +4,27 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class LotteryFillOpen {
-	private Integer lotteryFillOpenId;// 彩票的唯一id
+	private Integer lotteryFillOpenId;//主键
 
-	private String openNumber;// 开奖id
+	private String openNumber;//中奖 号码
 
-	private Date lotteryFillCreaterDate;// 创建彩票日期
+	private Date lotteryFillCreaterDate;//创建日期
 
-	private Date lotteryFillEndDate;// 彩票结束日期，
+	private Date lotteryFillEndDate;//结束日期
 
-	private Integer createUserId;// 创建彩票人的id
+	private Integer createUserId;//创建人id
 
-	private BigDecimal fillLBi;// 满多少积分
+	private BigDecimal fillLBi;//满多少积分进行抽奖
 
-	private BigDecimal awardLBi;// 中奖积分数量
+	private BigDecimal awardLBi;//中奖奖金金额
 
-	private String sendStatus;// 是否发放奖金
+	private String sendStatus;//是否发放奖金	
 
-	private BigDecimal lotteryFillUnitPrice;// 积分最低倍率，5 * unit
+	private BigDecimal lotteryFillUnitPrice;//购买单价
 
-	private Integer lotteryTypeId;// 所属彩票类型的 id;
+	private Integer lotteryTypeId;//所属typeid
+
+	private String lotteryFillName;//彩票名称
 
 	public Integer getLotteryFillOpenId() {
 		return lotteryFillOpenId;
@@ -102,5 +104,13 @@ public class LotteryFillOpen {
 
 	public void setLotteryTypeId(Integer lotteryTypeId) {
 		this.lotteryTypeId = lotteryTypeId;
+	}
+
+	public String getLotteryFillName() {
+		return lotteryFillName;
+	}
+
+	public void setLotteryFillName(String lotteryFillName) {
+		this.lotteryFillName = lotteryFillName == null ? null : lotteryFillName.trim();
 	}
 }

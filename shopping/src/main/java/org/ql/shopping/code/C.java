@@ -18,16 +18,16 @@ public class C {
 		public final static String INCOME_STATUS_TIME_OUT = "2";
 		public final static String INCOME_STATUS_CANCEL = "3";
 	}
-	
-	public static class LotteryClazz{
+
+	public static class LotteryClazz {
 		/**
 		 * 查询他的父类为-1 那么他就是最外层的
 		 */
 		public final static Integer MAIN = 0;
 	}
-	
-	public static class LotteryType{
-		public final static String SEND_STATUS_OVER="1";//支付状态  已经支付完成
-		public final static String SEND_STATUS_UNFINSH = "0";//支付状态 未完成
+
+	public static class LotteryType {
+		public final static String SEND_STATUS_OVER = "1";// 支付状态 已经支付完成
+		public final static String SEND_STATUS_UNFINSH = "0";// 支付状态 未完成
 	}
 }

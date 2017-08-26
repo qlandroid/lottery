@@ -23,57 +23,53 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LotteryTypeController {
 
 	private Logger logger = LoggerFactory.getLogger(LotteryTypeController.class);
-	
+
 	private String url(String url) {
 		return HttpUrl.replaceUrl("/lottery/type/" + url);
 	}
-	
+
 	@Resource
 	private ILotteryTypeService mLotteryTypeService;
-	
+
 	@RequestMapping("/view/add")
-	public String showAddView(Model model ){
-		
+	public String showAddView(Model model) {
+
 		model.addAttribute("treeAllUrl", HttpUrl.replaceUrl("/lottery/clazz/operate/all"));
-		model.addAttribute("typeAddUrl",url("operate/add"));
+		model.addAttribute("typeAddUrl", url("operate/add"));
 		return "page/lottery/lottery_type_add.jsp";
 	}
+
 	@RequestMapping("/operate/add")
 	@ResponseBody
-	public Result addType(LotteryTypeSearch params){
+	public Result addType(LotteryTypeSearch params) {
 		Result result = new Result();
-		
-		try{
+
+		try {
 			checkAddTypeParams(params);
-			
+
 			mLotteryTypeService.addType(params);
-			
+
 			result.setCode(Code.SUCCESS);
-		}catch(Exception e){
-			logger.error("addType",e);
-			ResultHintUtils.setSystemError(result,e);
+		} catch (Exception e) {
+			logger.error("addType", e);
+			ResultHintUtils.setSystemError(result, e);
 		}
-		
+
 		return result;
 	}
 
 	private void checkAddTypeParams(LotteryTypeSearch params) {
-		//彩票规则
-		String rule =params.getLotteryRule();
-		//彩票的名称
+		// 彩票规则
+		String rule = params.getLotteryRule();
+		// 彩票的名称
 		String name = params.getLotteryName();
-		//彩票描述
+		// 彩票描述
 		String remark = params.getLotteryRemark();
-		
-		if(StringUtils.isEmpty(rule)
-				||StringUtils.isEmpty(name)
-				||StringUtils.isEmpty(remark)){
+
+		if (StringUtils.isEmpty(rule) || StringUtils.isEmpty(name) || StringUtils.isEmpty(remark)) {
 			throw new ParamsErrorException("参数不正确");
 		}
-		
+
 	}
-	
-	
-	
-	
+
 }

@@ -17,6 +17,8 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
 			  if(nodes.type =="0"){
 				  $("#clazzParentName").data("id",nodes.id);
 				  $("#clazzParentName").val(nodes.name);
+			  }else{
+				  layer.msg("选择的彩票类型不匹配",function(){});
 			  }
 			  
 		  },

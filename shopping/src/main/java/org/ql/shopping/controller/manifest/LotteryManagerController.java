@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LotteryManagerController {
 
 	@RequestMapping("/lottery0")
-	public String lotteryMangerView(HttpServletRequest request){
+	public String lotteryMangerView(HttpServletRequest request) {
 		return "/page/lottery_0.jsp";
 	}
 }

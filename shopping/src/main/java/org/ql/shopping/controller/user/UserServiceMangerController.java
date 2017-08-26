@@ -32,29 +32,29 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/userService")
 public class UserServiceMangerController {
-	private Logger logger = LoggerFactory
-			.getLogger(UserServiceMangerController.class);
+	private Logger logger = LoggerFactory.getLogger(UserServiceMangerController.class);
 
-	private String url(String url){
-		return HttpUrl.BASE_URL +"/userService" +url;
+	private String url(String url) {
+		return HttpUrl.BASE_URL + "/userService" + url;
 	}
-	
+
 	@Resource
 	private IUserServiceManagerService mUserManagerService;
 
 	/**
-	 * 查询用户，条件选择页面
-	 *userService/userServiceManagerSearch.jsp
+	 * 查询用户，条件选择页面 userService/userServiceManagerSearch.jsp
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/view/search")
 	public String userServiceSearch(Model model) {
-		model.addAttribute("searchUrl",url("/list"));
+		model.addAttribute("searchUrl", url("/list"));
 		return "page/user_service_search.jsp";
 	}
 
 	/**
 	 * 显示添加用户页面
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/view/add")
@@ -62,37 +62,36 @@ public class UserServiceMangerController {
 		model.addAttribute("addUrl", url("/operate/add"));
 		return "page/user_service_add.jsp";
 	}
+
 	/**
 	 * 顯示修改詳情頁面
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/view/change")
-	public ModelAndView userServiceChange(@RequestParam("id")int id) {
+	public ModelAndView userServiceChange(@RequestParam("id") int id) {
 		ModelAndView mav = new ModelAndView();
 		UserManager changeUser = mUserManagerService.findUserById(id);
-		if(changeUser == null){
-			
-		}else{
+		if (changeUser == null) {
+
+		} else {
 			mav.setViewName("page/user_service_change.jsp");
-			mav.addObject("user",changeUser);
+			mav.addObject("user", changeUser);
 			mav.addObject("changeUrl", url("/operate/change"));
 		}
-	
+
 		return mav;
 	}
-	
-	
-	
+
 	/**
-	 * userService/userServiceManagerSerach.do?account=&name=&power=&phone=
-	 * 分页查询
+	 * userService/userServiceManagerSerach.do?account=&name=&power=&phone= 分页查询
+	 * 
 	 * @param request
 	 * @param params
 	 * @return
 	 */
 	@RequestMapping("/list")
-	public ModelAndView showUserManger(HttpServletRequest request,
-			UserManager params) {
+	public ModelAndView showUserManger(HttpServletRequest request, UserManager params) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("page/user_service_manager.jsp");
 		Long page = params.getPage();
@@ -109,15 +108,15 @@ public class UserServiceMangerController {
 		Long total = mUserManagerService.getUserTotalCount(params);
 		Long totlaUser = total;
 		total = total / params.getPageSize() + 1;
-		mav.addObject("page",page);
+		mav.addObject("page", page);
 		mav.addObject("total", total);
 		mav.addObject("userList", userList);
-		mav.addObject("totalUser",totlaUser);
-		mav.addObject("searchUrl",url("/list"));
-		mav.addObject("searchViewUrl",url("/view/search"));
-		mav.addObject("addUserViewUrl",url("/view/add"));
-		mav.addObject("changeViewUrl",url("/view/change"));
-		mav.addObject("deleteUrl",url("/operate/delete"));
+		mav.addObject("totalUser", totlaUser);
+		mav.addObject("searchUrl", url("/list"));
+		mav.addObject("searchViewUrl", url("/view/search"));
+		mav.addObject("addUserViewUrl", url("/view/add"));
+		mav.addObject("changeViewUrl", url("/view/change"));
+		mav.addObject("deleteUrl", url("/operate/delete"));
 		return mav;
 	}
 
@@ -150,39 +149,40 @@ public class UserServiceMangerController {
 		}
 		return result;
 	}
+
 	/**
 	 * 通過用戶的id進行刪除
+	 * 
 	 * @param request
 	 * @param delUser
 	 * @return
 	 */
 	@RequestMapping("/operate/delete")
 	@ResponseBody
-	public Result userDelete(HttpServletRequest request,UserManager delUser){
+	public Result userDelete(HttpServletRequest request, UserManager delUser) {
 		Result result = new Result();
-		try{
+		try {
 			mUserManagerService.deleteUserById(delUser.getId());
 			result.setCode(Code.SUCCESS);
-		}catch(Exception e){
+		} catch (Exception e) {
 			ResultHintUtils.setSystemError(result);
-			logger.error("userDelete",e);
+			logger.error("userDelete", e);
 		}
 		return result;
 	}
 
-
 	@RequestMapping("/operate/change")
 	@ResponseBody
-	public Result changeUserDetails(HttpServletRequest request,UserManager user){
+	public Result changeUserDetails(HttpServletRequest request, UserManager user) {
 		Result result = new Result();
-		try{
+		try {
 			mUserManagerService.updateUser(user);
 			result.setCode(Code.SUCCESS);
-		}catch(Exception e){
-			logger.error("changeUserDetails",e);
+		} catch (Exception e) {
+			logger.error("changeUserDetails", e);
 			ResultHintUtils.setSystemError(result);
 		}
-		
+
 		return result;
 	}
 }

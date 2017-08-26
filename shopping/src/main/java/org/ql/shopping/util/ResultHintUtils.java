@@ -7,16 +7,16 @@ import org.ql.shopping.pojo.result.Result;
 
 public class ResultHintUtils {
 
-	public static void setSystemError(Result result){
+	public static void setSystemError(Result result) {
 		result.setCode(Code.ERROR);
 		result.setMessage("系統內部錯誤");
 	}
 
-	public static<T extends IResultError> void setSystemError(T result, Exception e) {
-		if(e instanceof LotteryException){
+	public static <T extends IResultError> void setSystemError(T result, Exception e) {
+		if (e instanceof LotteryException) {
 			result.setCode(Code.ERROR);
 			result.setMessage(e.getMessage());
-		}else{
+		} else {
 			result.setCode(Code.ERROR);
 			result.setMessage("系统内部错误");
 		}

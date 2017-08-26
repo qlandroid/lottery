@@ -16,7 +16,6 @@ public class UserLoginServiceImpl implements IUserLoginService {
 	@Resource
 	private IUserDao userDao;
 
-	
 	public List<UserLogin> queryUserOfAccount(String account) {
 		UserLogin user = new UserLogin();
 		user.setAccount(account);
@@ -28,24 +27,21 @@ public class UserLoginServiceImpl implements IUserLoginService {
 		return rows;
 	}
 
-	
 	public long inserteUser(UserLogin user) {
 		int row = userDao.inserte(user);
 		return row;
 	}
 
-	
 	public List<UserLogin> queryUser(UserLogin user) {
 		return userDao.queryUser(user);
 	}
 
-
 	public List<UserLogin> findAll(ListParams params) {
-		int firstIndex = (params.getPage() -1 )* params.getPageSize();
+		int firstIndex = (params.getPage() - 1) * params.getPageSize();
 		int footIndex = params.getPage() * params.getPageSize();
 		params.setFirstIndex(firstIndex);
 		params.setFootIndex(footIndex);
-		
+
 		return userDao.findAll(params);
 	}
 
@@ -59,9 +55,7 @@ public class UserLoginServiceImpl implements IUserLoginService {
 
 	public void deleteAllUser() {
 		userDao.deletAllUser();
-		
-	}
 
-	
+	}
 
 }

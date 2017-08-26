@@ -8,6 +8,7 @@ import org.ql.shopping.pojo.result.MainLeftNav;
 public class MainNavFactroy {
 	private static MainNavFactroy instans;
 	private List<MainLeftNav> navList;
+
 	public static MainNavFactroy getInstans() {
 		if (instans == null) {
 			synchronized (MainNavFactroy.class) {
@@ -15,10 +16,10 @@ public class MainNavFactroy {
 					instans = new MainNavFactroy();
 			}
 		}
-		
+
 		return instans;
 	}
-	
+
 	public MainNavFactroy() {
 		List<MainLeftNav> list = new ArrayList<MainLeftNav>();
 		MainLeftNav firstIndex = new MainLeftNav();
@@ -26,29 +27,25 @@ public class MainNavFactroy {
 		firstIndex.setIcon("&#xe622;");
 		firstIndex.setHref("#");
 		list.add(firstIndex);
-		
-		
+
 		MainLeftNav userManager = createUserManagerNavGroup();
 		list.add(userManager);
-		
+
 		MainLeftNav manifestManager = createManifestManagerNavGroup();
 		list.add(manifestManager);
-		
+
 		MainLeftNav lotteryManager = createLotteryManagerNavGroup();
 		list.add(lotteryManager);
-		
-		MainLeftNav noticeManager =createNoticeManagerNavGroup();
+
+		MainLeftNav noticeManager = createNoticeManagerNavGroup();
 		list.add(noticeManager);
-		
+
 		navList = list;
 	}
 
-	public List<MainLeftNav> getMianNavList(){
+	public List<MainLeftNav> getMianNavList() {
 		return navList;
 	}
-
-
-
 
 	private MainLeftNav createNoticeManagerNavGroup() {
 		MainLeftNav lotteryManager = new MainLeftNav();
@@ -99,15 +96,13 @@ public class MainNavFactroy {
 		lotteryManager.setHref("");
 
 		List<MainLeftNav> lotteryManagerList = new ArrayList<MainLeftNav>();
-		
-		
+
 		MainLeftNav clazz = new MainLeftNav();
 		clazz.setTitle("彩票大类管理");
 		clazz.setIcon("&#xe654;");// &#xe612;
 		clazz.setHref("lottery/clazz/view/list");
 		lotteryManagerList.add(clazz);
-		
-		
+
 		MainLeftNav ssqOpen = new MainLeftNav();
 		ssqOpen.setTitle("双色球开奖");
 		ssqOpen.setIcon("&#xe654;");// &#xe612;

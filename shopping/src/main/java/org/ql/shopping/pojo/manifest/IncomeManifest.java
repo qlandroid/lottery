@@ -5,42 +5,39 @@ import java.sql.Timestamp;
 
 public class IncomeManifest {
 
-	private Long incomeId;//任务单Id;
-	
-	private Long userId;//所属用户id
+	private Long incomeId;// 任务单Id;
+
+	private Long userId;// 所属用户id
 	private String name;
 	private String account;
-	private Timestamp createDate;//充值日期
-	
-	private Double inQty;//充值数量
-	private Double beforeQty;//之前的积分数量；
-	private Double afterQty;//充值之后的积分数量；
-	private Double payMoney;//充值金额；
-	
-	private String status;//订单状态；当前交易状态0-未支付，1-支付完成，2-订单超时，3-取消订单
+	private Timestamp createDate;// 充值日期
 
-	
-	private String zhifubaoDoc;//支付宝的订单
-	private Long page; //查询的当前页数
-	private Integer pageSize;//查询当前页数的数量
-	private Long total;//总数量
-	private Long pageTotal;//一共有多少页
-	private Long firstIndex;//从第几条数据开始查询
-	
-	private String incomeDocNo;//当前任务单的单据号
-	
-	private Timestamp endDate;//任务单结束时间
-	private double lBi;//用户的当前积分
-	
-	private String zhifubao;//用户的支付宝账号
-	
-	private Double totalIncomeInQty;//总充值积分
-	private Double totalPayMoney;//总支付金额
-	
-	private Double totalSelectInQty;//筛选后的总充值积分
-	private Double totalSelectPayMoney;//筛选后的总支付金额
-	
-	
+	private Double inQty;// 充值数量
+	private Double beforeQty;// 之前的积分数量；
+	private Double afterQty;// 充值之后的积分数量；
+	private Double payMoney;// 充值金额；
+
+	private String status;// 订单状态；当前交易状态0-未支付，1-支付完成，2-订单超时，3-取消订单
+
+	private String zhifubaoDoc;// 支付宝的订单
+	private Long page; // 查询的当前页数
+	private Integer pageSize;// 查询当前页数的数量
+	private Long total;// 总数量
+	private Long pageTotal;// 一共有多少页
+	private Long firstIndex;// 从第几条数据开始查询
+
+	private String incomeDocNo;// 当前任务单的单据号
+
+	private Timestamp endDate;// 任务单结束时间
+	private double lBi;// 用户的当前积分
+
+	private String zhifubao;// 用户的支付宝账号
+
+	private Double totalIncomeInQty;// 总充值积分
+	private Double totalPayMoney;// 总支付金额
+
+	private Double totalSelectInQty;// 筛选后的总充值积分
+	private Double totalSelectPayMoney;// 筛选后的总支付金额
 
 	public Double getTotalIncomeInQty() {
 		return totalIncomeInQty;
@@ -233,9 +230,5 @@ public class IncomeManifest {
 	public void setZhifubao(String zhifubao) {
 		this.zhifubao = zhifubao;
 	}
-	
-	
-	
-	
-	
+
 }

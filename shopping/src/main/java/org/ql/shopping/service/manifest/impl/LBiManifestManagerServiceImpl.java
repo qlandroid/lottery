@@ -14,7 +14,7 @@ public class LBiManifestManagerServiceImpl implements ILBiManifestManagerService
 
 	@Resource
 	private ILBiChangeManagerDao mLBiChangeManagerDao;
-	
+
 	public void addManifest(LBiChangeManager manager) {
 		mLBiChangeManagerDao.insert(manager);
 	}
@@ -30,7 +30,7 @@ public class LBiManifestManagerServiceImpl implements ILBiManifestManagerService
 	public List<LBiChangeManager> findAnd(LBiChangeManager manager) {
 		Long page = manager.getPage();
 		Integer pageSize = manager.getPageSize();
-		Long firstIndex = (page -1 )* pageSize;
+		Long firstIndex = (page - 1) * pageSize;
 		manager.setFirstIndex(firstIndex);
 		return mLBiChangeManagerDao.findAnd(manager);
 	}
@@ -38,7 +38,7 @@ public class LBiManifestManagerServiceImpl implements ILBiManifestManagerService
 	public List<LBiChangeManager> findOr(LBiChangeManager manager) {
 		Long page = manager.getPage();
 		Integer pageSize = manager.getPageSize();
-		Long firstIndex = (page -1 )* pageSize;
+		Long firstIndex = (page - 1) * pageSize;
 		manager.setFirstIndex(firstIndex);
 		return mLBiChangeManagerDao.findOr(manager);
 	}

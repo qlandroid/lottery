@@ -11,11 +11,11 @@
 		a.lottery_remark,
 		a.lottery_clazz_id
 		FROM lottery_type a
-		LEFT JOIN
+		JOIN
 		lottery_clazz b ON a.lottery_clazz_id = b.lottery_clazz_id
 		<where>
 			<trim prefixOverrides="OR">
-				<if test="lotteryClazzId != null and lotteryClazzId !=''">
+				<if test="lotteryClazzId != null">
 					OR a.lottery_clazz_id = #{lotteryClazzId
 					,jdbcType=INTEGER}
 				</if>

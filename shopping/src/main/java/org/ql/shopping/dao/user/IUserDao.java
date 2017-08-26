@@ -9,6 +9,7 @@ public interface IUserDao {
 
 	/**
 	 * 添加用户
+	 * 
 	 * @param user
 	 * @return
 	 */
@@ -48,17 +49,19 @@ public interface IUserDao {
 
 	/**
 	 * 查询用户数量
+	 * 
 	 * @return
 	 */
 	public int queryTotalCount();
 
 	/**
 	 * 通过用户id删除用户
+	 * 
 	 * @param id
 	 * @return
 	 */
 	public long deletUserById(long id);
-	
+
 	public void deletAllUser();
 
 }

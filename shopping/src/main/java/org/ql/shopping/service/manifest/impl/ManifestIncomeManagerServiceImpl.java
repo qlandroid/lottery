@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 @Service("manifestIncomeManagerService")
 public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerService {
-	
 
 	@Resource
 	private IIncomeManifestManagerDao mIncomeManifestManagerDao;
@@ -35,7 +34,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	public void createIncomeManifest(IncomeManifest params) {
 		params.setStatus(C.ManifestIncome.INCOME_STATUS_WAITING);
 		params.setCreateDate(new Timestamp(System.currentTimeMillis()));
-		//生成订单号
+		// 生成订单号
 		String manifestNo = MakeManifest.makeIncomeManifestNo();
 		params.setIncomeDocNo(manifestNo);
 		mIncomeManifestManagerDao.insert(params);
@@ -102,7 +101,6 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		mIncomeManifestManagerDao.updateById(i);
 	}
 
-
 	public void timeOutCancelManifest(Long id) {
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
@@ -115,12 +113,14 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	 * 充值成功 修改订单状态， 获得当前用户的积分值， 为用户充值，改变用户详情 充值后的金额保存到任务单 插入 积分变更表中
 	 */
 	public void incomeSuccessById(Long id) {
-		incomeSuccessById(id,"");
+		incomeSuccessById(id, "");
 	}
+
 	public void incomeSuccessById(Long id, String remark) {
-		incomeSuccessById(id,remark,C.CHANGE_OPERATE_TYPE_INCOME);
+		incomeSuccessById(id, remark, C.CHANGE_OPERATE_TYPE_INCOME);
 	}
-	public void incomeSuccessById(Long id, String remark,String operateType) {
+
+	public void incomeSuccessById(Long id, String remark, String operateType) {
 		// 通过id,查询到当前交易成功的 详情
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
@@ -176,11 +176,11 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	}
 
 	public List<ManifestIncomeSearch> searchPageOrderByCreateDate(ManifestIncomeSearch params) {
-		
+
 		return mManifestIncomeMapper.searchPageOrderByCreateDate(params);
 	}
-	
-	public long getSearchPageCount(ManifestIncomeSearch params){
+
+	public long getSearchPageCount(ManifestIncomeSearch params) {
 		return mManifestIncomeMapper.getSearchPageCount(params);
 	}
 

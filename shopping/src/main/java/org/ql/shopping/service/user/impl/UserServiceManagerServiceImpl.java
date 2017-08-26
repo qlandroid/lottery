@@ -12,21 +12,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service("userManagerService")
-public class UserServiceManagerServiceImpl implements IUserServiceManagerService{
+public class UserServiceManagerServiceImpl implements IUserServiceManagerService {
 
-	
 	@Resource
 	private IUserManagerDao mUserManagerDao;
-	
+
 	public UserManager findUserOfAccount(String account) {
-		
-		UserManager user = new  UserManager();
+
+		UserManager user = new UserManager();
 		user.setAccount(account);
 		List<UserManager> list = mUserManagerDao.findUser(user);
-		if(list == null || list.size() == 0){
+		if (list == null || list.size() == 0) {
 			return null;
 		}
-		
+
 		return list.get(0);
 	}
 
@@ -47,29 +46,27 @@ public class UserServiceManagerServiceImpl implements IUserServiceManagerService
 	}
 
 	public List<UserManager> findPage(UserManager page) {
-		Long firstIndex = (long) ((page.getPage() - 1)* page.getPageSize());
+		Long firstIndex = (long) ((page.getPage() - 1) * page.getPageSize());
 		page.setFirstIndex(firstIndex);
 		return mUserManagerDao.findAll(page);
 	}
-
 
 	public UserManager findUserByAccount(String account) {
 		UserManager acc = new UserManager();
 		acc.setAccount(account);
 		List<UserManager> list = mUserManagerDao.findUser(acc);
-		if(list == null || list.size() == 0){
+		if (list == null || list.size() == 0) {
 			return null;
 		}
-		
+
 		return list.get(0);
 	}
 
-	public void deleteUserById(Long id) {
+	public void deleteUserById(Integer id) {
 		UserManager delUser = new UserManager();
 		delUser.setId(id);
 		mUserManagerDao.deleteUser(delUser);
-		
-		
+
 	}
 
 	public void deleteUser(UserManager user) {
@@ -78,19 +75,18 @@ public class UserServiceManagerServiceImpl implements IUserServiceManagerService
 
 	public UserManager findUserById(Integer id) {
 		UserManager userManager = new UserManager();
-		userManager.setId(new Long(id));
+		userManager.setId(id);
 		List<UserManager> list = mUserManagerDao.findUser(userManager);
-		if(list == null && list.size()==0){
+		if (list == null && list.size() == 0) {
 			return null;
 		}
 		return list.get(0);
 	}
 
 	public long getUserTotalCount(UserManager queryUser) {
-		
+
 		return mUserManagerDao.queryTotalCount(queryUser);
 
 	}
-
 
 }

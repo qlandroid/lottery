@@ -26,8 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping
 public class UserManagerController {
-	private Logger logger = LoggerFactory
-			.getLogger(UserManagerController.class);
+	private Logger logger = LoggerFactory.getLogger(UserManagerController.class);
 
 	@Resource
 	private IUserLoginService mUserService;
@@ -50,8 +49,7 @@ public class UserManagerController {
 
 	@RequestMapping(value = "/toLogin", method = RequestMethod.POST)
 	@ResponseBody
-	public Result userManagerLogin(HttpServletRequest request,
-			UserManager userParams) {
+	public Result userManagerLogin(HttpServletRequest request, UserManager userParams) {
 		Result result = new Result();
 		try {
 			String account = userParams.getAccount();
@@ -61,8 +59,7 @@ public class UserManagerController {
 				result.setMessage("账号或密码不能为空");
 			} else {
 
-				UserManager userLogin = mUserManagerService
-						.findUserByAccount(account);
+				UserManager userLogin = mUserManagerService.findUserByAccount(account);
 
 				if (userLogin == null || !pw.equals(userLogin.getPw())) {
 					result.setCode(Code.ACCOUNT_OR_PW_ERROR);
@@ -74,6 +71,7 @@ public class UserManagerController {
 					result.setData(login);
 					HttpSession s = request.getSession();
 					s.setAttribute("token", account);
+					s.setAttribute("userId", userLogin.getId());
 					s.setAttribute("power", userLogin.getPower());
 				}
 			}
@@ -85,15 +83,12 @@ public class UserManagerController {
 		return result;
 	}
 
-	
 	@RequestMapping(value = "/main")
 	public ModelAndView showMainView(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("main.jsp");
 		return mav;
 	}
-
-	
 
 	@RequestMapping("/page/mainLeftNav")
 	@ResponseBody
@@ -105,6 +100,5 @@ public class UserManagerController {
 	public String index() {
 		return "page/index.jsp";
 	}
-
 
 }

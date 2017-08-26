@@ -29,7 +29,8 @@ public class MakeManifestNo {
 		}
 		return instance;
 	}
-	public static String makeId(){
+
+	public static String makeId() {
 		return getInstance().nextId();
 	}
 

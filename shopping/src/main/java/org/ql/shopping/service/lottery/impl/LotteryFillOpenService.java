@@ -12,11 +12,9 @@ import org.springframework.stereotype.Service;
 @Service("lotteryFillOpenService")
 public class LotteryFillOpenService implements ILotteryFillOpenService {
 
-	
 	@Resource
 	private LotteryFillOpenMapper mLotteryFillOpenMapper;
-	
-	
+
 	public int addFillOpen(LotteryFillOpen params) {
 		return mLotteryFillOpenMapper.insertSelective(params);
 	}
@@ -30,12 +28,13 @@ public class LotteryFillOpenService implements ILotteryFillOpenService {
 	}
 
 	public List<LotteryFillOpen> selectByLotteryTypeId(Integer typeId) {
-		return mLotteryFillOpenMapper.selectByLotteryTypeId(typeId);
+		LotteryFillOpen p = new LotteryFillOpen();
+		p.setLotteryTypeId(typeId);
+		return mLotteryFillOpenMapper.selectByParams(p);
 	}
 
 	public LotteryFillOpen selectById(Integer lotteryId) {
 		return mLotteryFillOpenMapper.selectByPrimaryKey(lotteryId);
 	}
-	
 
 }

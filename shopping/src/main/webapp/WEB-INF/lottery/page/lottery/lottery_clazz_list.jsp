@@ -16,9 +16,9 @@
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
-	<button class="layui-btn btn-add" url="${addClassUrl}">添加大类</button>
-	<button class="layui-btn btn-add" url="${addTypeUrl}">添加彩票类型</button>
-	<button class="layui-btn btn-add" url="${addFillUrl}">添加满积分彩票</button>
+	<button class="layui-btn btn-add" title="添加大类" url="${addClassUrl}">添加大类</button>
+	<button class="layui-btn btn-add" title="添加彩票类型" url="${addTypeUrl}">添加彩票类型</button>
+	<button class="layui-btn btn-add" title="添加满积分彩票" url="${addFillUrl}">添加满积分彩票</button>
 	<ul id="clazzTree" data-url="${treeAll }"></ul>
 
 	<script type="text/javascript"

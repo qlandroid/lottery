@@ -23,33 +23,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/lbichange")
 public class LBiChangeManifestController {
-	private Logger logger = LoggerFactory
-			.getLogger(LBiChangeManifestController.class);
+	private Logger logger = LoggerFactory.getLogger(LBiChangeManifestController.class);
 
-	@Resource 
+	@Resource
 	private ILBiManifestManagerService mLBiManifestMangerService;
-	
+
 	private String url(String url) {
 		return HttpUrl.replaceUrl("/lbichange" + url);
 	}
 
 	@RequestMapping("/view/list")
-	public String showList(Model model ,LBiChangeManager params) {
-			
+	public String showList(Model model, LBiChangeManager params) {
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long page = params.getPage();
 		Integer pageSize = params.getPageSize();
-		if(page == null){
+		if (page == null) {
 			params.setPage(1l);
 		}
-		if(pageSize == null){
+		if (pageSize == null) {
 			params.setPageSize(10);
 		}
-		try{
+		try {
 			map.put("listUrl", url("/operate/list"));
 			map.put("params", params);
-		}catch(Exception e){
-			logger.error("showList",e);
+		} catch (Exception e) {
+			logger.error("showList", e);
 		}
 		model.addAllAttributes(map);
 
@@ -67,7 +66,7 @@ public class LBiChangeManifestController {
 	@ResponseBody
 	public TabelResult getList(LBiChangeManager params) {
 		TabelResult result = new TabelResult();
-		
+
 		Integer limit = params.getLimit();
 		Integer pageSize = params.getPageSize();
 		if (limit != null) {
@@ -76,17 +75,17 @@ public class LBiChangeManifestController {
 		if (pageSize == null) {
 			pageSize = C.PAGE_SIZE;
 		}
-		if(params.getPage( ) == null){
+		if (params.getPage() == null) {
 			params.setPage(1l);
 		}
-		
+
 		params.setPageSize(pageSize);
 		try {
 			checkListParams(params);
 			List<LBiChangeManager> data = mLBiManifestMangerService.findAnd(params);
-			
+
 			Long count = mLBiManifestMangerService.getTotalCountAnd(params);
-			
+
 			result.setCount(count);
 			result.setData(data);
 			result.setCode(Code.SUCCESS);
@@ -101,6 +100,6 @@ public class LBiChangeManifestController {
 
 	private void checkListParams(LBiChangeManager params) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

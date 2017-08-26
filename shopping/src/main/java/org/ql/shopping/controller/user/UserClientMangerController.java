@@ -52,7 +52,7 @@ public class UserClientMangerController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("page/user_client_add.jsp");
 		mav.addObject("addUrl", url("/operate/addUser"));
-		mav.addObject("addOperateUrl",url("/operate/add"));
+		mav.addObject("addOperateUrl", url("/operate/add"));
 		return mav;
 	}
 
@@ -74,26 +74,26 @@ public class UserClientMangerController {
 		}
 		return "error/page/iframe_error.jsp";
 	}
-	
+
 	/**
 	 * 充值 页面
+	 * 
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping("/view/recharge")
-	public String showRechargeView(Model model,UserClient params){
-		
-		try{
+	public String showRechargeView(Model model, UserClient params) {
+
+		try {
 			UserClient userClient = mUserClientManagerService.findUserById(params.getId());
-			model.addAttribute("user",userClient);
-			model.addAttribute("submitUrl",url("/operate/rechager"));
-			
-			
-		}catch(Exception e){
-			logger.error("showRechargeView",e);
+			model.addAttribute("user", userClient);
+			model.addAttribute("submitUrl", url("/operate/rechager"));
+
+		} catch (Exception e) {
+			logger.error("showRechargeView", e);
 			return UrlFactory.iframeError;
 		}
-		
+
 		return "page/recharge.jsp";
 	}
 
@@ -156,9 +156,9 @@ public class UserClientMangerController {
 			if (StringUtils.isEmpty(pw)) {
 				throw new AccountErrorException("密码不能为空");
 			}
-			account = new String(account.getBytes(),"gbk");
+			account = new String(account.getBytes(), "gbk");
 			UserClient u = mUserClientManagerService.findUserByAccount(params.getAccount());
-			if(u != null){
+			if (u != null) {
 				throw new LotteryException("账号已存在，请重新填写");
 			}
 			mUserClientManagerService.inserte(params);
@@ -214,21 +214,23 @@ public class UserClientMangerController {
 
 		return result;
 	}
+
 	@RequestMapping(value = "/operate/rechager", method = RequestMethod.POST)
 	@ResponseBody
 	public Result rechagerLBi(HttpServletRequest request, RechagerHanderLBiParams params) {
 		Result result = new Result();
 		try {
 			checkRechagerParams(params);
-			//先生成订单
+			// 先生成订单
 			IncomeManifest createManifest = new IncomeManifest();
 			createManifest.setUserId(params.getUserId());
 			createManifest.setPayMoney(params.getPayMoney());
 			createManifest.setInQty(params.getInQty());
 			createManifest.setZhifubaoDoc(params.getZhifubaoDoc());
 			mIncomeManifestManagerService.createIncomeManifest(createManifest);
-			//完成订单
-			mIncomeManifestManagerService.incomeSuccessById(createManifest.getIncomeId(),params.getRemark(),C.CHANGE_OPERATE_TYPE_OTHER);
+			// 完成订单
+			mIncomeManifestManagerService.incomeSuccessById(createManifest.getIncomeId(), params.getRemark(),
+					C.CHANGE_OPERATE_TYPE_OTHER);
 			result.setCode(Code.SUCCESS);
 
 		} catch (Exception e) {
@@ -244,13 +246,13 @@ public class UserClientMangerController {
 		Double payMoney = params.getPayMoney();
 		Double inQty = params.getInQty();
 		String mark = params.getRemark();
-		if(id == null || isEmpte(payMoney)|| isEmpte(inQty)||StringUtils.isEmpty(mark)){
+		if (id == null || isEmpte(payMoney) || isEmpte(inQty) || StringUtils.isEmpty(mark)) {
 			throw new ParamsErrorException("参数不正确");
 		}
 	}
-	
-	private boolean isEmpte(Double qty){
-		if(qty == null || qty <= 0 ){
+
+	private boolean isEmpte(Double qty) {
+		if (qty == null || qty <= 0) {
 			return true;
 		}
 		return false;

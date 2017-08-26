@@ -22,7 +22,7 @@
 		<hr class="layui-bg-red">
 		<ul id="clazzTree" data-url="${treeAllUrl}"></ul>
 	</div>
-	
+
 	<div class="form-content fl">
 		<div class="layui-form" action="">
 			<div class="layui-form-item">
@@ -41,17 +41,25 @@
 						autocomplete="off" placeholder="彩票名称" class="layui-input">
 				</div>
 			</div>
-
-			<div class="layui-form-item layui-form-text">
-				<label class="layui-form-label">规则描述</label>
+			<div class="layui-form-item">
+				<label class="layui-form-label">满足积分数量</label>
 				<div class="layui-input-block">
-					<textarea placeholder="请输入内容" id="rule" class="layui-textarea"></textarea>
+					<input type="text" id="fillQty" name="title" lay-verify="title"
+						autocomplete="off" placeholder="满足积分数量" class="layui-input">
 				</div>
 			</div>
 			<div class="layui-form-item layui-form-text">
-				<label class="layui-form-label">备注</label>
+				<label class="layui-form-label">中奖积分数量</label>
 				<div class="layui-input-block">
-					<textarea placeholder="请输入内容" id="remark" class="layui-textarea"></textarea>
+					<input type="text" id="awardQty" name="title" lay-verify="title"
+						autocomplete="off" placeholder="中奖积分数量" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">单价</label>
+				<div class="layui-input-block">
+					<input type="text" id="unitPrice" name="title" lay-verify="title"
+						autocomplete="off" placeholder="单价" class="layui-input">
 				</div>
 			</div>
 			<div class="layui-form-item btn-group">

@@ -56,7 +56,7 @@ public class UserLoginController {
 			}
 			UserLogin queryU = queryUser.get(0);
 			HttpSession session = request.getSession();
-			session.setAttribute("token", queryU.getAccount());
+			session.setAttribute("userId", queryU.getId());
 			modelAndView.setViewName("redirect:/user/main.do");
 
 		} catch (AccountNotFindException e) {
@@ -75,11 +75,11 @@ public class UserLoginController {
 
 		return modelAndView;
 	}
-	
+
 	@RequestMapping("/main")
-	public String mainView(HttpServletRequest request,ModelAndView modeAndView){
+	public String mainView(HttpServletRequest request, ModelAndView modeAndView) {
 		String account = (String) request.getSession().getAttribute("token");
-		if(StringUtils.isEmpty(account)){
+		if (StringUtils.isEmpty(account)) {
 			modeAndView.setViewName("redirect:/user/login.do");
 		}
 		return "main.jsp";
@@ -100,8 +100,6 @@ public class UserLoginController {
 	public String addUserHtml() {
 		return "page/add_user.html";
 	}
-
-	
 
 	@RequestMapping("/register.do")
 	@ResponseBody
@@ -135,20 +133,20 @@ public class UserLoginController {
 		}
 		return result;
 	}
-	
+
 	@RequestMapping("/deleteAll")
 	@ResponseBody
-	public Result deleteAllUser(HttpServletRequest request){
+	public Result deleteAllUser(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Result res = new Result();
-		if(session == null || session.getAttribute("token") == null){
+		if (session == null || session.getAttribute("token") == null) {
 			res.setCode(Code.ERROR);
 			res.setMessage("账号没有登陆");
-		}else{
+		} else {
 			mUserService.deleteAllUser();
 			res.setCode(Code.SUCCESS);
 		}
-		
+
 		return res;
 	}
 

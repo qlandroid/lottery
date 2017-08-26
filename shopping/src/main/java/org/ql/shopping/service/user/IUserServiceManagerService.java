@@ -6,7 +6,6 @@ import org.ql.shopping.pojo.user.UserManager;
 
 public interface IUserServiceManagerService {
 
-
 	/**
 	 * 添加用户，并返回当前用户的所有信息
 	 * 
@@ -19,7 +18,7 @@ public interface IUserServiceManagerService {
 
 	public void deleteAll();
 
-	public void deleteUserById(Long id);
+	public void deleteUserById(Integer id);
 
 	public void deleteUser(UserManager user);
 
@@ -34,7 +33,7 @@ public interface IUserServiceManagerService {
 	public List<UserManager> findPage(UserManager page);
 
 	public UserManager findUserByAccount(String account);
-	
+
 	public UserManager findUserById(Integer id);
 
 }

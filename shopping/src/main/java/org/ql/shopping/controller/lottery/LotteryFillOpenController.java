@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
@@ -31,64 +33,68 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/lottery/fill")
 public class LotteryFillOpenController {
 	private Logger logger = LoggerFactory.getLogger(LotteryFillOpenController.class);
-	
+
 	@Resource
 	private ILotteryFillOpenService mLotteryFillOpenService;
 	@Resource
 	private IUserServiceManagerService mUserServiceManagerService;
-	
-	private String url(String url){
+
+	private String url(String url) {
 		return HttpUrl.replaceUrl("/lottery/fill/" + url);
 	}
+
 	@RequestMapping("/view/add")
-	public String showAddView(Model model){
-		
-		model.addAttribute("addFillUrl",url("operate/add"));
-		model.addAttribute("treeAllUrl",HttpUrl.replaceUrl("/lottery/clazz/operate/all"));
+	public String showAddView(Model model) {
+
+		model.addAttribute("addFillUrl", url("operate/add"));
+		model.addAttribute("treeAllUrl", HttpUrl.replaceUrl("/lottery/clazz/operate/all"));
 		return "page/lottery/lottery_fill_add.jsp";
 	}
-	
-	@RequestMapping(value="/operate/add",method=RequestMethod.POST)
+
+	@RequestMapping(value = "/operate/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Result addFillOpen(LotteryFillOpen params){
+	public Result addFillOpen(HttpServletRequest request,LotteryFillOpen params) {
 		Result result = new Result();
-		
-		try{
+		HttpSession session = request.getSession();
+		Integer userId = (Integer) session.getAttribute("userId");
+		params.setCreateUserId(userId);
+		try {
 			checkAddFillOpenParams(params);
-			
-			//需要创建时间
+
+			// 需要创建时间
 			params.setLotteryFillCreaterDate(new Date());
 			params.setSendStatus(C.LotteryType.SEND_STATUS_UNFINSH);
-			
+
 			mLotteryFillOpenService.addFillOpen(params);
-			
+
 			result.setCode(Code.SUCCESS);
-		}catch(Exception e){
-			logger.error("addFillOpen",e);
+		} catch (Exception e) {
+			logger.error("addFillOpen", e);
 			ResultHintUtils.setSystemError(result, e);
 		}
 		return result;
 	}
-	
+
 	@RequestMapping("/operate/list")
 	@ResponseBody
-	public Rows findByParams(LotteryFillOpen params){
+	public Rows findByParams(LotteryFillOpen params) {
 		Rows rows = new Rows();
-		
-		try{
+
+		try {
 			List<LotteryFillOpen> selectByParams = mLotteryFillOpenService.selectByParams(params);
 			rows.setCode(Code.SUCCESS);
 			rows.setList(selectByParams);
-		}catch(Exception e ){
-			logger.error("findByParams",e);
+		} catch (Exception e) {
+			logger.error("findByParams", e);
 			ResultHintUtils.setSystemError(rows, e);
 		}
-		
+
 		return rows;
 	}
 
 	/**
 	 * 添加 彩票类型 的检测 创建的参数 是否正确
+	 * 
 	 * @param params
 	 */
 	private void checkAddFillOpenParams(LotteryFillOpen params) {
@@ -97,6 +103,11 @@ public class LotteryFillOpenController {
 		BigDecimal fillLBi = params.getFillLBi();
 		BigDecimal lotteryFillUnitPrice = params.getLotteryFillUnitPrice();
 		Integer lotteryTypeId = params.getLotteryTypeId();
+		String name = params.getLotteryFillName();
+		if(StringUtils.isEmpty(name)){
+			throw new ParamsErrorException("参数不正确");
+		}
+		
 		if (NumberUtils.isZero(awardLBi)) {
 			throw new ParamsErrorException("参数数值不正确");
 		}
@@ -112,11 +123,11 @@ public class LotteryFillOpenController {
 		if (NumberUtils.isZero(lotteryTypeId)) {
 			throw new ParamsErrorException("参数数值不正确");
 		}
-		
+
 		UserManager createUser = mUserServiceManagerService.findUserById(createUserId);
-		if(createUser== null){
+		if (createUser == null) {
 			throw new ParamsErrorException("参数不正确");
 		}
 	}
-	
+
 }

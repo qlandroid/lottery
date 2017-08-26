@@ -29,7 +29,7 @@ public class UserClientManagerServiceImpl implements IUserClientManagerService {
 	}
 
 	public List<UserClient> findUser(UserClientManagerParams params) {
-		Long firstIndex = (long) ((params.getPage()  -1)* params.getPageSize());
+		Long firstIndex = (long) ((params.getPage() - 1) * params.getPageSize());
 		params.setFirstIndex(firstIndex);
 		return mUserClientManagerDao.findUser(params);
 	}
@@ -59,7 +59,7 @@ public class UserClientManagerServiceImpl implements IUserClientManagerService {
 		UserClientManagerParams u = new UserClientManagerParams();
 		u.setAccount(account);
 		List<UserClient> list = mUserClientManagerDao.findUser(u);
-		if(list == null || list.size()==0){
+		if (list == null || list.size() == 0) {
 			return null;
 		}
 		return list.get(0);

@@ -5,8 +5,7 @@ public class Model {
 	private Integer pageSize;
 	private Integer firstIndex;
 	private Long count;
-	
-	
+
 	public Long getCount() {
 		return count;
 	}
@@ -15,15 +14,15 @@ public class Model {
 		this.count = count;
 	}
 
-	public void initPageSize(){
-		if(page == null){
+	public void initPageSize() {
+		if (page == null) {
 			page = 1;
 		}
-		
-		if(pageSize == null){
+
+		if (pageSize == null) {
 			pageSize = 10;
 		}
-		firstIndex = (page-1) * pageSize;
+		firstIndex = (page - 1) * pageSize;
 	}
 
 	public Integer getPage() {
@@ -49,6 +48,5 @@ public class Model {
 	public void setFirstIndex(Integer firstIndex) {
 		this.firstIndex = firstIndex;
 	}
-	
-	
+
 }

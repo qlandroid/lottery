@@ -16,12 +16,13 @@ $(document).ready(layui.use([ 'laypage','tree', 'layer' ], function() {
 	
 	$(".btn-add").on("click", function() {
 		var url = $(this).attr('url');
+		var title = $(this).attr('title');
 		// iframe层
 		layer.open({
 			tips : [ 1, '#c00' ],
 			type : 2,
 			move : false,
-			title : '添加大类',
+			title : title,
 			shadeClose : true,
 			shade : 0.8,
 			area : [ '60%', '80%' ],

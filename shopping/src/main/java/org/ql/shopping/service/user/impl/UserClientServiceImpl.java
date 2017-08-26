@@ -9,12 +9,13 @@ import org.ql.shopping.pojo.user.UserClient;
 import org.ql.shopping.pojo.user.UserManager;
 import org.ql.shopping.service.user.IUserClientService;
 import org.springframework.stereotype.Service;
+
 @Service("userClientService")
-public class UserClientServiceImpl implements IUserClientService{
+public class UserClientServiceImpl implements IUserClientService {
 
 	@Resource
 	private IUserClientDao mUserClientDao;
-	
+
 	public int addUserClient(UserClient user) {
 		return mUserClientDao.addUser(user);
 	}
@@ -30,7 +31,5 @@ public class UserClientServiceImpl implements IUserClientService{
 	public long deleteUser(long id) {
 		return mUserClientDao.deleteUser(id);
 	}
-
-
 
 }
