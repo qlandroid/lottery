@@ -11,6 +11,7 @@ import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.pojo.lottery.LotteryClazz;
 import org.ql.shopping.pojo.lottery.LotteryClazzSearch;
 import org.ql.shopping.pojo.lottery.LotteryFillOpen;
+import org.ql.shopping.pojo.lottery.LotteryFillOpenSearch;
 import org.ql.shopping.pojo.lottery.LotteryTypeWithBLOBs;
 import org.ql.shopping.pojo.result.LotteryClazzTree;
 import org.ql.shopping.pojo.result.Result;
@@ -60,6 +61,7 @@ public class LotteryClazzController {
 		model.addAttribute("treeAll", url("operate/all"));
 		model.addAttribute("addTypeUrl", HttpUrl.replaceUrl("/lottery/type/view/add"));
 		model.addAttribute("addFillUrl", HttpUrl.replaceUrl("/lottery/fill/view/add"));
+		model.addAttribute("staticTypeUrl", HttpUrl.replaceUrl("/static/lottery/type/view/add"));
 		return "page/lottery/lottery_clazz_list.jsp";
 	}
 
@@ -216,6 +218,7 @@ public class LotteryClazzController {
 			tree.setName(fillItem.getLotteryFillName());
 			tree.setType(ResultClazzTree.TYPE_FILL_OPEN);
 			tree.setId(fillItem.getLotteryFillOpenId());
+			tree.setUrl(HttpUrl.replaceUrl("/lottery/fill/view/list"));
 			treeList.add(tree);
 		}
 		

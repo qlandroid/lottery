@@ -22,7 +22,7 @@
 		<hr class="layui-bg-red">
 		<ul id="clazzTree" data-url="${treeAllUrl }"></ul>
 	</div>
-	
+
 	<div class="form-content fl">
 		<div class="layui-form" action="">
 			<div class="layui-form-item">
@@ -41,7 +41,15 @@
 						autocomplete="off" placeholder="彩票名称" class="layui-input">
 				</div>
 			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">类型选择</label>
+				<div class="layui-input-block" id="lotteryType"
+					data-url="${lotteryTypeUrl }">
+					<input type='radio' name='type' value='0' title='满n返m积分'><input
+						type='radio' name='type' value='1' title='满n返m人民币'>
+				</div>
 
+			</div>
 			<div class="layui-form-item layui-form-text">
 				<label class="layui-form-label">规则描述</label>
 				<div class="layui-input-block">

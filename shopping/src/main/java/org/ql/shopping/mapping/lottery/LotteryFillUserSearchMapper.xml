@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.lottery.LotteryFillUserMapper">
+	<select id="selectByParams" resultMap="BaseResultMap"
+		parameterType="org.ql.shopping.pojo.lottery.LotteryFillUser">
+		SELECT lottery_fill_user.lottery_fill_user_id,
+		lottery_fill_user.lottery_type_id,
+		lottery_fill_user.user_id,
+		lottery_fill_user.lottery_fill_open_id,
+		lottery_fill_user.number,
+		lottery_fill_user.lottery_filld_buy_qty,
+		lottery_fill_user.lottery_fill_status
+		FROM lottery_fill_user
+		<include refid="WHERE_AND"></include>
+		LIMIT #{firstIndex} ,#{pageSize}
+
+	</select>
+
+	<select id="selectCountByParams" resultType="java.lang.Integer"
+		parameterType="org.ql.shopping.pojo.lottery.LotteryFillUser">
+		SELECT count(*) FROM lottery_fill_user
+		<include refid="WHERE_AND"></include>
+	</select>
+
+	<select id="getByLBiByOpenId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		SELECT SUM(lottery_fill_buy_qty)
+		FROM lottery_fill_user
+		WHERE lottery_type_id = #{typeId}
+	</select>
+
+	<sql id="WHERE_AND">
+		<where>
+			<trim prefixOverrides="AND">
+				<if test="lotteryFillUserId != null">
+					AND lottery_fill_user_id =
+					#{lotteryFillUserId,jdbcType=INTEGER}
+				</if>
+				<if test="lotteryTypeId != null">
+					AND lottery_type_id = #{lotteryTypeId,jdbcType=INTEGER}
+				</if>
+				<if test="userId != null">
+					AND user_id = #{userId,jdbcType=INTEGER}
+				</if>
+				<if test="lotteryFillOpenId != null">
+					AND lottery_fill_open_id =
+					#{lotteryFillOpenId,jdbcType=INTEGER}
+				</if>
+				<if test="lotteryFillBuyQty != null">
+					AND lottery_fill_buy_qty =
+					#{lotteryFillBuyQty,jdbcType=INTEGER}
+				</if>
+				<if test="number != null">
+					AND number = #{number,jdbcType=VARCHAR}
+				</if>
+				<if test="lotteryFillStatus != null">
+					AND lottery_fill_status =
+					#{lotteryFillStatus,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
+	</sql>
+</mapper>

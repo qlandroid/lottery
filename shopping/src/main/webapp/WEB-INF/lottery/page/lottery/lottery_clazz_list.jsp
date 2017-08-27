@@ -8,18 +8,40 @@
 <meta charset="UTF-8">
 <title>添加用户</title>
 <link rel="stylesheet" href="${contextPath}/lottery/layui/css/layui.css">
-<link rel="stylesheet"
-	href="${contextPath}/lottery/css/page/add_user.css">
+<link rel="stylesheet" href="${contextPath}/lottery/css/main.css">
 <link rel="stylesheet" href="${contextPath}/lottery/css/base.css">
 <link rel="stylesheet"
-	href="${contextPath}/lottery/css/page/user_service_manager.css">
+	href="${contextPath}/lottery/css/page/lottery/lottery_clazz_list.css">
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
-	<button class="layui-btn btn-add" title="添加大类" url="${addClassUrl}">添加大类</button>
-	<button class="layui-btn btn-add" title="添加彩票类型" url="${addTypeUrl}">添加彩票类型</button>
-	<button class="layui-btn btn-add" title="添加满积分彩票" url="${addFillUrl}">添加满积分彩票</button>
-	<ul id="clazzTree" data-url="${treeAll }"></ul>
+	<div class="layui-side layui-bg-blac">
+		<div class="nav-btn-group">
+			<div class="layui-container">
+				<button class="layui-btn layui-bg-cyan btn-add nav-btn layui-show"
+					title="彩票类型" url="${staticTypeUrl}">彩票类型</button>
+			</div>
+			<div class="layui-container">
+				<button class="layui-btn layui-bg-cyan btn-add nav-btn layui-show"
+					title="添加大类" url="${addClassUrl}">添加大类</button>
+			</div>
+			<div class="layui-container">
+				<button class="layui-btn btn-add nav-btn layui-show" title="添加彩票类型"
+					url="${addTypeUrl}">添加彩票类型</button>
+			</div>
+			<div class="layui-container">
+				<button class="layui-btn layui-bg-orange btn-add nav-btn layui-show"
+					title="添加满积分彩票" url="${addFillUrl}">添加满积分彩票</button>
+			</div>
+		</div>
+		<div class="nav-tree">
+			<ul id="clazzTree" data-url="${treeAll }"></ul>
+		</div>
+	</div>
+	<div class="layui-body layui-form">
+		<iframe id="clazzFrame" style="width:100%;height:100%"></iframe>
+	</div>
+
 
 	<script type="text/javascript"
 		src="${contextPath }/lottery/js/jquery.js"></script>

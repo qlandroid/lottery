@@ -142,6 +142,35 @@ public class UserClientMangerController {
 
 		return mav;
 	}
+	
+	@RequestMapping(value = "/operate/login" ,method = RequestMethod.POST)
+	public Result loginUser(UserClientManagerParams params){
+		Result result = new Result();
+		try{
+			checkLoginParams(params);
+			
+		}catch(Exception e){
+			logger.error("loginUser",e);
+			ResultHintUtils.setSystemError(result,e);
+		}
+		return result ;
+	}
+
+	private void checkLoginParams(UserClientManagerParams params) {
+		String account = params.getAccount();
+		String pw = params.getPw();
+		if(StringUtils.isEmpty(account)|| StringUtils.isEmpty(pw)){
+			throw new ParamsErrorException("登陆失败");
+		}
+		UserClient findUserByAccount = mUserClientManagerService.findUserByAccount(account);
+		if(findUserByAccount == null){
+			throw new ParamsErrorException("账号或密码不正确");
+		}
+		
+		if(!pw.equals(params.getPw())){
+			throw new ParamsErrorException("账号或密码不正确");
+		}
+	}
 
 	@RequestMapping(value = "/operate/add", method = RequestMethod.POST)
 	@ResponseBody

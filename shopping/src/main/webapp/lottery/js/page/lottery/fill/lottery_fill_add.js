@@ -104,12 +104,7 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
   
 })
 });
-function isEmpty(str){
-	if( str == null || str.trim().length == 0 ){
-		  return true;
-	  }
-	return false;
-}
+
 
 function createNodes(list){
 	var nodes = new Array();

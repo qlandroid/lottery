@@ -181,3 +181,14 @@
 	.top_menu .layui-nav-item.showNotice[pc]{ display:none !important; }
 	.panel{ width:100%; }
 }
+
+.send-status-not{
+	width:100%;
+	height:100%;
+	background-color: red;
+	color:white;
+}
+.send-status{
+	background-color: blue;
+	color:white;
+}

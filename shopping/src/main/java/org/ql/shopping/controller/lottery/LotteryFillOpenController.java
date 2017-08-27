@@ -12,12 +12,18 @@ import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
 import org.ql.shopping.exception.ParamsErrorException;
 import org.ql.shopping.pojo.lottery.LotteryFillOpen;
+import org.ql.shopping.pojo.lottery.LotteryFillOpenSearch;
 import org.ql.shopping.pojo.result.Result;
 import org.ql.shopping.pojo.result.Rows;
+import org.ql.shopping.pojo.result.TabelResult;
 import org.ql.shopping.pojo.user.UserManager;
 import org.ql.shopping.service.lottery.ILotteryFillOpenService;
+import org.ql.shopping.service.lottery.ILotteryFillUserService;
 import org.ql.shopping.service.user.IUserServiceManagerService;
 import org.ql.shopping.util.HttpUrl;
+import org.ql.shopping.util.LotteryStageUtils;
+import org.ql.shopping.util.MakeManifest;
+import org.ql.shopping.util.MakeManifestNo;
 import org.ql.shopping.util.NumberUtils;
 import org.ql.shopping.util.ResultHintUtils;
 import org.ql.shopping.util.StringUtils;
@@ -38,17 +44,24 @@ public class LotteryFillOpenController {
 	private ILotteryFillOpenService mLotteryFillOpenService;
 	@Resource
 	private IUserServiceManagerService mUserServiceManagerService;
+	@Resource 
+	private ILotteryFillUserService mLotteryFillUserService;
 
 	private String url(String url) {
 		return HttpUrl.replaceUrl("/lottery/fill/" + url);
 	}
+	
+	@RequestMapping("/view/list")
+	public String showListView(Model model){
+		model.addAttribute("fillOpenList",url("/operate/list"));
+		return "page/lottery/fill/lottery_open.jsp";
+	}
 
 	@RequestMapping("/view/add")
 	public String showAddView(Model model) {
-
 		model.addAttribute("addFillUrl", url("operate/add"));
 		model.addAttribute("treeAllUrl", HttpUrl.replaceUrl("/lottery/clazz/operate/all"));
-		return "page/lottery/lottery_fill_add.jsp";
+		return "page/lottery/fill/lottery_fill_add.jsp";
 	}
 
 	@RequestMapping(value = "/operate/add", method = RequestMethod.POST)
@@ -60,36 +73,21 @@ public class LotteryFillOpenController {
 		params.setCreateUserId(userId);
 		try {
 			checkAddFillOpenParams(params);
-
+				
 			// 需要创建时间
 			params.setLotteryFillCreaterDate(new Date());
 			params.setSendStatus(C.LotteryType.SEND_STATUS_UNFINSH);
-
+			
 			mLotteryFillOpenService.addFillOpen(params);
-
+			String stage = LotteryStageUtils.createStage(C.LotteryStageFlag.FILL, params.getLotteryFillOpenId());
+			params.setLotteryStage(stage);
+			mLotteryFillOpenService.updateFillOpenById(params);
 			result.setCode(Code.SUCCESS);
 		} catch (Exception e) {
 			logger.error("addFillOpen", e);
 			ResultHintUtils.setSystemError(result, e);
 		}
 		return result;
-	}
-
-	@RequestMapping("/operate/list")
-	@ResponseBody
-	public Rows findByParams(LotteryFillOpen params) {
-		Rows rows = new Rows();
-
-		try {
-			List<LotteryFillOpen> selectByParams = mLotteryFillOpenService.selectByParams(params);
-			rows.setCode(Code.SUCCESS);
-			rows.setList(selectByParams);
-		} catch (Exception e) {
-			logger.error("findByParams", e);
-			ResultHintUtils.setSystemError(rows, e);
-		}
-
-		return rows;
 	}
 
 	/**
@@ -128,6 +126,28 @@ public class LotteryFillOpenController {
 		if (createUser == null) {
 			throw new ParamsErrorException("参数不正确");
 		}
+	}
+	
+	
+	@RequestMapping("/operate/list")
+	@ResponseBody
+	public TabelResult getList(LotteryFillOpenSearch params){
+		TabelResult result = new TabelResult();
+		try{
+			if(params.getLimit() != null){
+				params.setPageSize(params.getLimit());
+			}
+			List<LotteryFillOpenSearch> list = mLotteryFillOpenService.selectSearchByParams(params);
+			int count = mLotteryFillOpenService.getSearchCountParams(params);
+			result.setCount(new Long(count));
+			result.setData(list);
+			result.setCode(0);
+		}catch(Exception e){
+			logger.error("getList",e);
+			ResultHintUtils.setSystemError(result,e);
+		}
+		
+		return result;
 	}
 
 }

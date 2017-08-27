@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.ql.shopping.pojo.lottery.LotteryFillUser;
 
-public interface ILotteryFIllUserService {
+public interface ILotteryFillUserService {
 
 	int addFillLottery(LotteryFillUser params);
 
@@ -24,15 +24,7 @@ public interface ILotteryFIllUserService {
 	 * @param userId
 	 * @return
 	 */
-	List<LotteryFillUser> selectByUserId(Integer userId);
-
-	/**
-	 * 通过开奖彩票的id 获取所有中奖人
-	 * 
-	 * @param openId 所属创建彩票的id
-	 * @return 
-	 */
-	List<LotteryFillUser> selectAwardUserByOpenNumber(Integer openId);
+	List<LotteryFillUser> selectByUserId(LotteryFillUser userId);
 
 	
 	/**
@@ -40,14 +32,21 @@ public interface ILotteryFIllUserService {
 	 * @param openId
 	 * @return
 	 */
-	List<LotteryFillUser> selectAllByOpenId(Integer openId);
+	List<LotteryFillUser> selectAllByOpenId(LotteryFillUser openId);
+	
+	/**
+	 * 通过开奖 ID 获取 用户购买的数量;
+	 * @param openId
+	 * @return
+	 */
+	int getBuyLBiByOpenId(Integer openId);
 	
 	/**
 	 * 通过开奖彩票的id 获取购买该彩票的所有数量
 	 * @param count
 	 * @return
 	 */
-	Integer selectCountByOpenId(Integer count);
+	Integer selectCountByOpenId(Integer openId);
 	
 	/**
 	 * 通过主键查询

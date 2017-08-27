@@ -1,65 +1,135 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.ql.shopping.dao.lottery.LotteryFillOpenMapper">
+	<resultMap type="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch"
+		id="SearchResultMap" extends="BaseResultMap">
+		<result column="account" property="createUserName" jdbcType="VARCHAR" />
+		<result column="bugQty" property="overBuyQty" jdbcType="VARCHAR" />
+	</resultMap>
 
 	<select id="selectByParams" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpen">
-		SELECT lottery_fill_open.lottery_fill_open_id,
-		lottery_fill_open.open_number,
-		lottery_fill_open.lottery_fill_creater_date,
-		lottery_fill_open.lottery_fill_end_date,
-		lottery_fill_open.create_user_id,
-		lottery_fill_open.fill_l_bi,
-		lottery_fill_open.award_l_bi,
-		lottery_fill_open.send_status,
-		lottery_fill_open.lottery_fill_unit_price,
-		lottery_fill_open.lottery_type_id,
-		lottery_fill_open.lottery_fill_name
-		FROM lottery_fill_open
+		SELECT fill.lottery_fill_open_id,
+		fill.open_number,
+		fill.lottery_fill_creater_date,
+		fill.lottery_fill_end_date,
+		fill.create_user_id,
+		fill.fill_l_bi,
+		fill.award_l_bi,
+		fill.send_status,
+		fill.lottery_fill_unit_price,
+		fill.lottery_type_id,
+		fill.lottery_fill_name,
+		fill.lottery_stage
+		FROM lottery_fill_open fill
 		<where>
+			<include refid="WHERE_FILL_AND"></include>
+		</where>
+	</select>
+
+
+	<select id="selectSearchByParams" resultMap="SearchResultMap"
+		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch">
+		SELECT fill.lottery_fill_open_id,
+		fill.open_number,
+		fill.lottery_fill_creater_date,
+		fill.lottery_fill_end_date,
+		fill.create_user_id,
+		fill.fill_l_bi,
+		fill.award_l_bi,
+		fill.send_status,
+		fill.lottery_fill_unit_price,
+		fill.lottery_type_id,
+		fill.lottery_fill_name,
+		fill.lottery_stage,
+		userM .account,
+		userM .id,
+		SUM(userBuy.lottery_fill_buy_qty) as bugQty
+		FROM lottery_fill_open
+		fill
+		JOIN user_manager userM ON fill.create_user_id = userM.id
+		LEFT JOIN lottery_fill_user userBuy ON fill.lottery_fill_open_id = userBuy.lottery_type_id
+		ORDER BY
+		fill.lottery_fill_creater_date
+		<where>
+			<include refid="WHERE_FILL_AND"></include>
 			<trim prefixOverrides="AND">
-				<if test="lotteryFillOpenId != null and lotteryFillOpenId != ''">
-					AND lottery_fill_open_id =
-					#{lotteryFillOpenId,jdbcType=INTEGER}
-				</if>
-				<if test="openNumber != null and openNumber != ''">
-					AND open_number = #{openNumber,jdbcType=INTEGER}
-				</if>
-				<if test="lotteryFillCreaterDate != null and lotteryFillCreaterDate != ''">
-					AND lottery_fill_creater_date =
-					#{lotteryFillCreaterDate,jdbcType=TIMESTAMP}
-				</if>
-				<if test="createUserId != null and createUserId != ''">
-					AND create_user_id =
-					#{createUserId,jdbcType=INTEGER}
-				</if>
-				<if test="lotteryFillEndDate != null and lotteryFillEndDate != ''">
-					AND lottery_fill_end_date =
-					#{lotteryFillEndDate,jdbcType=TIMESTAMP}
-				</if>
-				<if test="fillLBi != null and fillLBi != ''">
-					AND fill_l_bi = #{fillLBi,jdbcType=INTEGER}
-				</if>
-				<if test="awardLBi != null and awardLBi != ''">
-					AND award_l_bi = #{awardLBi,jdbcType=INTEGER}
-				</if>
-				<if test="sendStatus != null and sendStatus != ''">
-					AND send_status = #{sendStatus,jdbcType=VARCHAR}
-				</if>
-				<if test="lotteryFillUnitPrice != null and lotteryFillUnitPrice != ''">
-					AND lottery_fill_unit_price =
-					#{lotteryFillUnitPrice,jdbcType=INTEGER}
-				</if>
-				<if test="lotteryTypeId != null and lotteryTypeId != ''">
-					AND lottery_type_id =
-					#{lotteryTypeId,jdbcType=INTEGER}
-				</if>
-				<if test="lotteryFillName != null and lotteryFillName != ''">
-					AND lottery_fill_name =
-					#{lotteryFillName,jdbcType=VARCHAR}
+				<if test="createUserName != null">
+					AND userM.account =
+					#{createUserName,jdbcType=VARCHAR}
 				</if>
 			</trim>
 		</where>
+		LIMIT #{firstIndex},#{pageSize}
 	</select>
 	
+	<select id="getSearchCountParams" resultType="java.lang.Integer" 
+	parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch">
+		SELECT count(*) 
+		FROM lottery_fill_open
+		fill
+		JOIN user_manager userM ON fill.create_user_id = userM.id
+		<where>
+			<include refid="WHERE_FILL_AND"></include>
+			<trim prefixOverrides="AND">
+				<if test="createUserName != null">
+					AND userM.account =
+					#{createUserName,jdbcType=VARCHAR}
+				</if>
+
+			</trim>
+		</where>
+	</select>
+
+	<sql id="WHERE_FILL_AND">
+		<trim prefixOverrides="AND">
+			<if test="lotteryFillOpenId != null ">
+				AND fill.lottery_fill_open_id =
+				#{lotteryFillOpenId,jdbcType=INTEGER}
+			</if>
+			<if test="openNumber != null ">
+				AND fill.open_number = #{openNumber,jdbcType=INTEGER}
+			</if>
+			<if test="lotteryFillCreaterDate != null ">
+				AND fill.lottery_fill_creater_date =
+				#{lotteryFillCreaterDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createUserId != null ">
+				AND fill.create_user_id =
+				#{createUserId,jdbcType=INTEGER}
+			</if>
+			<if test="lotteryFillEndDate != null">
+				AND fill.lottery_fill_end_date =
+				#{lotteryFillEndDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="fillLBi != null">
+				AND fill.fill_l_bi = #{fillLBi,jdbcType=INTEGER}
+			</if>
+			<if test="awardLBi != null">
+				AND fill.award_l_bi = #{awardLBi,jdbcType=INTEGER}
+			</if>
+			<if test="sendStatus != null ">
+				AND fill.send_status = #{sendStatus,jdbcType=VARCHAR}
+			</if>
+			<if test="lotteryFillUnitPrice != null ">
+				AND fill.lottery_fill_unit_price =
+				#{lotteryFillUnitPrice,jdbcType=INTEGER}
+			</if>
+			<if test="lotteryTypeId != null">
+				AND fill.lottery_type_id =
+				#{lotteryTypeId,jdbcType=INTEGER}
+			</if>
+			<if test="lotteryFillName != null">
+				AND fill.lottery_fill_name =
+				#{lotteryFillName,jdbcType=VARCHAR}
+			</if>
+			<if test="lotteryStage != null">
+				AND fill.lottery_stage =
+				#{lotteryStage,jdbcType=VARCHAR}
+			</if>
+		</trim>
+
+	</sql>
+
+
 </mapper>

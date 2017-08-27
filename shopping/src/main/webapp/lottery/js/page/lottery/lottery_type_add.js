@@ -25,6 +25,7 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
 		  skin: 'shihuang'
 		});
   })
+
   
   $("#clearParent").on('click',function(){
 	  $("#clazzParentName").data("id",'');
@@ -48,6 +49,13 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
 		  layer.msg("请填写名称");
 		  return false;
 	  }
+	  
+	  var lotteryType = $("input[type='radio']:checked").val();
+	  if(isEmpty(lotteryType)){
+		  layer.msg("请选择类型");
+		  return false;
+	  }
+	  
 	  var rule = $("#rule").val();
 	  if(isEmpty(rule)){
 		  $("#rule").focus();
@@ -55,7 +63,7 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
 		  return false;
 	  }
 	  var remark = $("#remark").val();
-	  if(isEmpty(remark)){
+	  if(remark &&isEmpty(remark)){
 		  $("#remark").focus();
 		  layer.msg("请填写备注信息");
 		  return false;
@@ -64,6 +72,7 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
 		  data:{
 			  lotteryName:$("#lotteryName").val().trim(),
 			  lotteryRule:$("#rule").val().trim(),
+			  lotteryType:$("input[type='radio']:checked").val(),
 			  lotteryClazzId:$("#clazzParentName").data("id"),
 			  lotteryRemark:$("#remark").val().trim()
 		  }
@@ -95,6 +104,21 @@ function isEmpty(str){
 		  return true;
 	  }
 	return false;
+}
+
+function addLotteryTypeHtml(typeList) {
+	var typeHtml = "";
+	for (var i = 0; i < typeList.length; i++) {
+		/*
+		 * 
+<input type="radio" name="sex" value="nv" title="女" checked>
+<input type="radio" name="sex" value="" title="中性" disabled>
+		 */
+		//<label><input name="Fruit" type="radio" value="" />其它 </label>
+		var type = typeList[i];
+		typeHtml = typeHtml + "<input type='radio' name='type' value='0' title='"+type.name+"'>";
+	}
+	return typeHtml;
 }
 
 function createNodes(list){

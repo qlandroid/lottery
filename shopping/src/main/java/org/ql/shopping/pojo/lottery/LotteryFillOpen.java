@@ -3,7 +3,9 @@ package org.ql.shopping.pojo.lottery;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class LotteryFillOpen {
+import org.ql.shopping.pojo.Model;
+
+public class LotteryFillOpen  extends Model{
 	private Integer lotteryFillOpenId;//主键
 
 	private String openNumber;//中奖 号码
@@ -13,6 +15,7 @@ public class LotteryFillOpen {
 	private Date lotteryFillEndDate;//结束日期
 
 	private Integer createUserId;//创建人id
+	private String lotteryStage;//lottery_stage 期数
 
 	private BigDecimal fillLBi;//满多少积分进行抽奖
 
@@ -25,6 +28,16 @@ public class LotteryFillOpen {
 	private Integer lotteryTypeId;//所属typeid
 
 	private String lotteryFillName;//彩票名称
+
+	
+	
+	public String getLotteryStage() {
+		return lotteryStage;
+	}
+
+	public void setLotteryStage(String lotteryStage) {
+		this.lotteryStage = lotteryStage;
+	}
 
 	public Integer getLotteryFillOpenId() {
 		return lotteryFillOpenId;

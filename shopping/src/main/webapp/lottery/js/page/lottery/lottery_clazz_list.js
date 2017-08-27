@@ -5,14 +5,22 @@ $(document).ready(layui.use([ 'laypage','tree', 'layer' ], function() {
 	laypage = layui.laypage;
 	layer = layui.layer;
 	
-	
+	function addMsg(msg){
+		layer.msg(msg);
+	}
 	$.get($("#clazzTree").data("url"),function(data){
 		layui.tree({
 			  elem: '#clazzTree' //传入元素选择器
 			  ,nodes: data.list
+			  ,click:function(nodes){
+				  console.log(nodes);
+				  if(nodes.type== 2){
+					  $("#clazzFrame").attr("src",nodes.url+"?id="+nodes.id);
+				  }
+			  }
 			});
 	});
-	
+
 	
 	$(".btn-add").on("click", function() {
 		var url = $(this).attr('url');

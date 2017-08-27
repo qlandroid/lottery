@@ -12,6 +12,7 @@ public class DefaultFilterInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+
 		response.setContentType("text/hmtl;charset=utf-8");
 		return super.preHandle(request, response, handler);
 	}

@@ -38,7 +38,7 @@
 				<label class="layui-form-label">彩票名称</label>
 				<div class="layui-input-block">
 					<input type="text" id="lotteryName" name="title" lay-verify="title"
-						autocomplete="off" placeholder="彩票名称" class="layui-input">
+						autocomplete="off" value="${lotteryName }" class="layui-input">
 				</div>
 			</div>
 			<div class="layui-form-item">
@@ -74,6 +74,6 @@
 	<script type="text/javascript"
 		src="${contextPath }/lottery/layui/layui.js"></script>
 	<script type="text/javascript"
-		src="${contextPath }/lottery/js/page/lottery/lottery_fill_add.js"></script>
+		src="${contextPath }/lottery/js/page/lottery/fill/lottery_fill_add.js"></script>
 </body>
 </html>

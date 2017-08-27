@@ -77,3 +77,10 @@ function formatDateTime(timeStamp) {
 	second = second < 10 ? ('0' + second) : second;
 	return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
 };
+
+function isEmpty(str){
+	if( str == null || str.trim().length == 0 ){
+		  return true;
+	  }
+	return false;
+}

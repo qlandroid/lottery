@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.lottery.StaticLotteryTypeMapper">
+	<select id="selectAll" resultMap="ResultMapWithBLOBs">
+		SELECT static_lottery_type.static_lottery_type_id,
+		static_lottery_type.`name`,
+		static_lottery_type.type,
+		static_lottery_type.ramark
+		FROM static_lottery_type
+	</select>
+	
+	<select id="selectByLotteryType" resultMap="ResultMapWithBLOBs"
+	parameterType="java.lang.String">
+	SELECT static_lottery_type.static_lottery_type_id,
+		static_lottery_type.`name`,
+		static_lottery_type.type,
+		static_lottery_type.ramark
+		FROM static_lottery_type
+		where static_lottery_type.type = ${type};
+	</select>
+</mapper>
