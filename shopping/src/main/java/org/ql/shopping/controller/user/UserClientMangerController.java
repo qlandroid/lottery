@@ -47,6 +47,15 @@ public class UserClientMangerController {
 		return HttpUrl.replaceUrl("/userClient" + url);
 	}
 
+	@RequestMapping("/view/login")
+	public ModelAndView showLoginView() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("client/main.jsp");
+		mav.addObject("addUrl", url("/operate/addUser"));
+		mav.addObject("addOperateUrl", url("/operate/add"));
+		return mav;
+	}
+	
 	@RequestMapping("/view/add")
 	public ModelAndView showAddView() {
 		ModelAndView mav = new ModelAndView();
@@ -144,11 +153,12 @@ public class UserClientMangerController {
 	}
 	
 	@RequestMapping(value = "/operate/login" ,method = RequestMethod.POST)
+	@ResponseBody
 	public Result loginUser(UserClientManagerParams params){
 		Result result = new Result();
 		try{
 			checkLoginParams(params);
-			
+			result.setCode(Code.SUCCESS);
 		}catch(Exception e){
 			logger.error("loginUser",e);
 			ResultHintUtils.setSystemError(result,e);
