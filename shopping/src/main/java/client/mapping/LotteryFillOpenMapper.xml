@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.lottery.LotteryFillOpenMapper">
+	<resultMap id="ClientSearch" extends="BaseResultMap"
+		type="client.pojo.fill.FillOpenSearch">
+		<result column="overBuyQty" property="overBuyQty" jdbcType="DECIMAL" />
+		<result column="totalQty" property="totalQty" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<select id="selectBuyDetails" resultMap="ClientSearch"
+		parameterType="client.pojo.fill.FillOpenSearch">
+		SELECT
+		openf.lottery_fill_open_id,
+		openf.lottery_fill_creater_date,
+		openf.lottery_fill_end_date,
+		openf.fill_l_bi as totalQty,
+		openf.award_l_bi,
+		openf.send_status,
+		openf.lottery_fill_unit_price,
+		openf.lottery_stage,
+		openf.lottery_fill_name,
+		openf.lottery_type_id,
+		openf.create_user_id,
+		openf.open_number,
+		SUM(userf.lottery_fill_buy_qty) AS overBuyQty
+		FROM
+		lottery_fill_open openf
+		JOIN
+		lottery_fill_user userf ON
+		userf.lottery_fill_open_id = openf.lottery_fill_open_id
+
+		WHERE
+		openf.lottery_fill_open_id = #{fOpenId}
+	</select>
+</mapper>
