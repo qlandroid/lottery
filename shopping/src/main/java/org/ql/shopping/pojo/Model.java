@@ -1,10 +1,23 @@
 package org.ql.shopping.pojo;
 
 public class Model {
+	private String token;
+	
 	private Integer page;
 	private Integer pageSize;
 	private Integer firstIndex;
 	private Long count;
+	
+	
+	
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public Long getCount() {
 		return count;

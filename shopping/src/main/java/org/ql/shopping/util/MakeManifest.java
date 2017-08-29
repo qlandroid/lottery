@@ -8,6 +8,9 @@ public class MakeManifest {
 	public static String makeIncomeManifestNo() {
 		return TypeIncome + MakeManifestNo.makeId();
 	}
+	public static String makeExpendManifestNo() {
+		return TypeExpent + MakeManifestNo.makeId();
+	}
 
 	public static String makeManifestNo(String type) {
 		return type + MakeManifestNo.makeId();

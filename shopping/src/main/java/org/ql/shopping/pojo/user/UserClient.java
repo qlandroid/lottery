@@ -12,6 +12,16 @@ public class UserClient {
 	private String pw;
 	private String account;
 	private Double expendLBi;// 消费的积分
+	private String payPw;//支付密码
+	
+
+	public String getPayPw() {
+		return payPw;
+	}
+
+	public void setPayPw(String payPw) {
+		this.payPw = payPw;
+	}
 
 	public Long getUserId() {
 		return userId;

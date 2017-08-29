@@ -32,7 +32,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	private ManifestIncomeMapper mManifestIncomeMapper;
 
 	public void createIncomeManifest(IncomeManifest params) {
-		params.setStatus(C.ManifestIncome.INCOME_STATUS_WAITING);
+		params.setStatus(C.ManifestStatus.INCOME_STATUS_WAITING);
 		params.setCreateDate(new Timestamp(System.currentTimeMillis()));
 		// 生成订单号
 		String manifestNo = MakeManifest.makeIncomeManifestNo();
@@ -97,7 +97,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
 		i.setEndDate(new Timestamp(System.currentTimeMillis()));
-		i.setStatus(C.ManifestIncome.INCOME_STATUS_CANCEL);
+		i.setStatus(C.ManifestStatus.INCOME_STATUS_CANCEL);
 		mIncomeManifestManagerDao.updateById(i);
 	}
 
@@ -105,7 +105,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
 		i.setEndDate(new Timestamp(System.currentTimeMillis()));
-		i.setStatus(C.ManifestIncome.INCOME_STATUS_TIME_OUT);
+		i.setStatus(C.ManifestStatus.INCOME_STATUS_TIME_OUT);
 		mIncomeManifestManagerDao.updateById(i);
 	}
 
@@ -149,7 +149,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		// 更新当前充值表
 		incomeDoc.setAfterQty(afterQty);
 		incomeDoc.setBeforeQty(beforeQty);
-		incomeDoc.setStatus(C.ManifestIncome.INCOME_STATUS_SUCCESS);
+		incomeDoc.setStatus(C.ManifestStatus.INCOME_STATUS_SUCCESS);
 		Timestamp nowDate = new Timestamp(System.currentTimeMillis());
 		incomeDoc.setEndDate(nowDate);
 		mIncomeManifestManagerDao.updateById(incomeDoc);

@@ -13,7 +13,7 @@ public class LotteryFillUser extends Model {
 
 	private String number;
 
-	private Integer lotteryFillBuyQty;
+	private Double lotteryFillBuyQty;
 
 	private String lotteryFillStatus;
 
@@ -56,11 +56,11 @@ public class LotteryFillUser extends Model {
 		this.number = number == null ? null : number.trim();
 	}
 
-	public Integer getLotteryFilldBuyQty() {
+	public Double getLotteryFillBuyQty() {
 		return lotteryFillBuyQty;
 	}
 
-	public void setLotteryFilldBuyQty(Integer lotteryFillBuyQty) {
+	public void setLotteryFillBuyQty(Double lotteryFillBuyQty) {
 		this.lotteryFillBuyQty = lotteryFillBuyQty;
 	}
 
