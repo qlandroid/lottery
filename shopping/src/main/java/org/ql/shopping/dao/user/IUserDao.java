@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.ql.shopping.pojo.params.ListParams;
 import org.ql.shopping.pojo.user.UserLogin;
+import org.ql.shopping.service.user.impl.UserLoginServiceImpl;
+
+import client.pojo.user.UserLoginSearch;
 
 public interface IUserDao {
 
@@ -63,5 +66,8 @@ public interface IUserDao {
 	public long deletUserById(long id);
 
 	public void deletAllUser();
+	
+	public List<UserLoginSearch> selectUserByParams(UserLoginSearch params);
+	
 
 }

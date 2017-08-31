@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.ql.shopping.pojo.manifest.ManifestExpend;
 
-import client.pojo.manifest.ManifestExpentSearch;
+import client.pojo.manifest.ManifestExpendSearch;
 
 public interface ManifestExpendMapper {
     int deleteByPrimaryKey(Integer expendId);
@@ -19,5 +19,5 @@ public interface ManifestExpendMapper {
 
     int updateByPrimaryKey(ManifestExpend record);
 
-	List<ManifestExpentSearch> selectByParams(ManifestExpentSearch params);
+	List<ManifestExpendSearch> selectByParams(ManifestExpendSearch params);
 }

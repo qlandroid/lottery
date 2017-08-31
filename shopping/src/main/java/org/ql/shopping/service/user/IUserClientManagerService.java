@@ -36,5 +36,7 @@ public interface IUserClientManagerService {
 	public Long getTotalCount(UserClientManagerParams params);
 
 	public UserClient findUserByAccount(String account);
+	
+	public void updateLBi(Double lbi,Long id);
 
 }

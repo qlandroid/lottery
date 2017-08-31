@@ -5,59 +5,61 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.ql.shopping.dao.manifest.ManifestExpendMapper;
+import org.springframework.stereotype.Service;
 
-import client.pojo.manifest.ManifestExpentSearch;
+import client.pojo.manifest.ManifestExpendSearch;
 import client.service.manifest.IManifestExpendService;
 
+@Service("manifestExpendSearchService")
 public class ManifestExpendSearchServiceImpl implements IManifestExpendService {
 
 	@Resource
 	private ManifestExpendMapper mManifestExpendMapper;
 	
 	
-	public int createExpendManifest(ManifestExpentSearch params) {
+	public int createExpendManifest(ManifestExpendSearch params) {
 		return mManifestExpendMapper.insertSelective(params);
 	}
 
-	public int updateExpendManfiest(ManifestExpentSearch params) {
+	public int updateExpendManfiest(ManifestExpendSearch params) {
 		return mManifestExpendMapper.updateByPrimaryKeySelective(params);
 	}
 
-	public List<ManifestExpentSearch> selectByStatus(String status) {
-		ManifestExpentSearch params = new ManifestExpentSearch();
+	public List<ManifestExpendSearch> selectByStatus(String status) {
+		ManifestExpendSearch params = new ManifestExpendSearch();
 		params.setStatus(status);
 		return mManifestExpendMapper.selectByParams(params);
 	}
 
-	public List<ManifestExpentSearch> selectByUserId(Integer userId) {
+	public List<ManifestExpendSearch> selectByUserId(Integer userId) {
 		if(userId == null){
 			return null;
 		}
-		ManifestExpentSearch params = new ManifestExpentSearch();
+		ManifestExpendSearch params = new ManifestExpendSearch();
 		params.setUserId(userId);
 		return mManifestExpendMapper.selectByParams(params);
 	}
 
-	public List<ManifestExpentSearch> selectByLotteryTypeId(Integer typeId) {
-		ManifestExpentSearch params = new ManifestExpentSearch();
+	public List<ManifestExpendSearch> selectByLotteryTypeId(Integer typeId) {
+		ManifestExpendSearch params = new ManifestExpendSearch();
 		params.setLotteryTypeId(typeId);
 		return mManifestExpendMapper.selectByParams(params);
 	}
 
-	public ManifestExpentSearch selectByKey(Integer id) {
-		ManifestExpentSearch params = new ManifestExpentSearch();
+	public ManifestExpendSearch selectByKey(Integer id) {
+		ManifestExpendSearch params = new ManifestExpendSearch();
 		params.setExpendId(id);
-		List<ManifestExpentSearch> selectByParams = mManifestExpendMapper.selectByParams(params);
+		List<ManifestExpendSearch> selectByParams = mManifestExpendMapper.selectByParams(params);
 		if(selectByParams == null || selectByParams.size() <= 0){
 			return null;
 		}
 		return selectByParams.get(0);
 	}
 
-	public ManifestExpentSearch selectByDocNo(String docNo) {
-		ManifestExpentSearch params = new ManifestExpentSearch();
+	public ManifestExpendSearch selectByDocNo(String docNo) {
+		ManifestExpendSearch params = new ManifestExpendSearch();
 		params.setDocNo(docNo);
-		List<ManifestExpentSearch> selectByParams = mManifestExpendMapper.selectByParams(params);
+		List<ManifestExpendSearch> selectByParams = mManifestExpendMapper.selectByParams(params);
 		if(selectByParams == null || selectByParams.size() <= 0){
 			return null;
 		}

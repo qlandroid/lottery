@@ -1,6 +1,8 @@
 package org.ql.shopping.pojo.user;
 
-public class UserLogin {
+import org.ql.shopping.pojo.Model;
+
+public class UserLogin extends Model{
 	private Long id;
 	private String account;
 	private String pw;

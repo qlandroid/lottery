@@ -102,11 +102,7 @@
 	<update id="updateLBi" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
 		UPDATE user_client
 		<set>
-			<trim suffixOverrides="">
-				<if test="lBi != null and lBi !=''">
-					l_bi = #{lBi ,jdbcType=INTEGER},
-				</if>
-			</trim>
+			l_bi = #{lBi ,jdbcType=INTEGER}
 		</set>
 		WHERE user_id = #{id,jdbcType=INTEGER}
 	</update>

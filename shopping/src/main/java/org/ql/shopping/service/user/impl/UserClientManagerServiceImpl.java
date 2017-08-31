@@ -65,4 +65,11 @@ public class UserClientManagerServiceImpl implements IUserClientManagerService {
 		return list.get(0);
 	}
 
+	public void updateLBi(Double lbi, Long id) {
+		UserClient user = new UserClient();
+		user.setUserId(id);
+		user.setlBi(lbi);
+		mUserClientManagerDao.updateLBi(user);
+	}
+
 }

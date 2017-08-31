@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.user.IUserDao">
+	<resultMap id="SearchResultMap" type="client.pojo.user.UserLoginSearch"
+		extends="BaseResultMap">
+	</resultMap>
+
+
+	<select id="selectUserByParams" resultMap="SearchResultMap"
+		parameterType="client.pojo.user.UserLoginSearch">
+		SELECT
+		login.id,
+		login.account,
+		login.pw
+		FROM
+		user_login AS login
+		<where>
+			<trim prefixOverrides="AND">
+				<if test="account != null">
+					AND login.account = #{account,jdbcType=VARCHAR}
+				</if>
+				<if test="pw != null">
+					AND login.pw = #{pw,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
+	</select>
+
+</mapper>
