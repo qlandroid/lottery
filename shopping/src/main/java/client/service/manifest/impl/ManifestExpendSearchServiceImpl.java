@@ -66,4 +66,14 @@ public class ManifestExpendSearchServiceImpl implements IManifestExpendService {
 		return selectByParams.get(0);
 	}
 
+	public ManifestExpendSearch selectByDocNoAndUserId(String docNo,
+			Integer userId) {
+		
+		ManifestExpendSearch params = new ManifestExpendSearch();
+		params.setDocNo(docNo);
+		params.setUserId(userId);
+		ManifestExpendSearch expendManifest = mManifestExpendMapper.selectManifestByDocNoAndUserId(params);
+		return expendManifest;
+	}
+
 }

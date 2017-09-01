@@ -25,49 +25,50 @@ import client.utils.TokenUtils;
 @RequestMapping("/user/manager")
 public class ClientUserManagerController {
 
-	private Logger logger = LoggerFactory.getLogger(ClientUserManagerController.class);
-	
-	
+	private Logger logger = LoggerFactory
+			.getLogger(ClientUserManagerController.class);
+
 	@Resource
 	private IUserManagerService mUserManagerService;
-	
-	
+
 	@RequestMapping("/login")
 	@ResponseBody
-	public Result login(UserLoginSearch params){
+	public Result login(UserLoginSearch params) {
 		Result result = new Result();
-		
-		try{
+
+		try {
 			checkLoginParams(params);
-			
+
 			String account = params.getAccount();
 			String pw = params.getPw();
-			
-			UserLoginSearch user = mUserManagerService.selectyByAccountAndPw(account, pw);
-			if( user == null){
+
+			UserLoginSearch user = mUserManagerService.selectyByAccountAndPw(
+					account, pw);
+			if (user == null) {
 				throw new PasswordErrorException("账号或密码不正确");
 			}
 			result.setCode(Code.SUCCESS);
-			
+
 			UserLoginSearch token = new UserLoginSearch();
-			String tokenStr= TokenUtils.createToken(account,pw,user.getId());
+			String tokenStr = TokenUtils.createToken(account, pw, user.getId());
+
 			token.setToken(tokenStr);
+
 			result.setData(token);
 			
-		}catch(Exception e){
-			logger.error("login",e);
-			ResultHintUtils.setSystemError(result,e);
+		} catch (Exception e) {
+			logger.error("login", e);
+			ResultHintUtils.setSystemError(result, e);
 		}
-		
+
 		return result;
 	}
-
 
 	private void checkLoginParams(UserLogin params) {
 		String account = params.getAccount();
 		String pw = params.getPw();
-		if(StringUtils.isEmpty(account) || StringUtils.isEmpty(pw)){
-				throw new ParamsErrorException("参数不正确");
+		if (StringUtils.isEmpty(account) || StringUtils.isEmpty(pw)) {
+			throw new ParamsErrorException("参数不正确");
 		}
 	}
 }

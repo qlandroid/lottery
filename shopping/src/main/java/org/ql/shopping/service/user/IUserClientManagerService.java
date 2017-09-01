@@ -37,6 +37,6 @@ public interface IUserClientManagerService {
 
 	public UserClient findUserByAccount(String account);
 	
-	public void updateLBi(Double lbi,Long id);
+	public void updateLBi(Double lbi,Integer id);
 
 }

@@ -4,7 +4,7 @@ public class UserClient {
 
 	private Long id;
 	private String name;// 用户姓名
-	private Long userId;
+	private Integer userId;
 	private String zhifubao;// 支付宝账号
 	private String clientId;// 身份证号
 	private String phone;// 电话号码
@@ -23,11 +23,11 @@ public class UserClient {
 		this.payPw = payPw;
 	}
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 

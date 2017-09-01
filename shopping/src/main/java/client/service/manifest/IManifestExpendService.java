@@ -49,5 +49,7 @@ public interface IManifestExpendService {
 	 * @return
 	 */
 	ManifestExpendSearch selectByDocNo(String docNo);
+	
+	ManifestExpendSearch selectByDocNoAndUserId(String docNo,Integer userId);
 
 }

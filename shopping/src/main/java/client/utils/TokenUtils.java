@@ -2,13 +2,25 @@ package client.utils;
 
 public class TokenUtils {
 
-	public final static String TAG_ACCOUNT = "F";
+	public final static String TAG_ACCOUNT = "8975643158";
 
-	public final static String TAG_ID = "C";
+	public final static String TAG_ID = "ff55997ddaad23fg";
 
 	public static Integer getUserId(String token) {
 		try {
-			return Integer.parseInt(token);
+			
+			String[] split = token.split(TAG_ID);
+			if(split.length < 2){
+				return -1;
+			}
+			
+			String split2 = split[1];
+			String[] split3 = split2.split(TAG_ACCOUNT);
+			if(split3.length <2){
+				return -1;
+			}
+			
+			return Integer.parseInt(split3[0]);
 		} catch (Exception e) {
 			return -1;
 		}

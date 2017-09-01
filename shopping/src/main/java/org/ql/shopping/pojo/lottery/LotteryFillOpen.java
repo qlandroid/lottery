@@ -5,32 +5,30 @@ import java.util.Date;
 
 import org.ql.shopping.pojo.Model;
 
-public class LotteryFillOpen  extends Model{
-	private Integer lotteryFillOpenId;//主键
+public class LotteryFillOpen extends Model {
+	private Integer lotteryFillOpenId;// 主键
 
-	private String openNumber;//中奖 号码
+	private String openNumber;// 中奖 号码
 
-	private Date lotteryFillCreaterDate;//创建日期
+	private Date lotteryFillCreaterDate;// 创建日期
 
-	private Date lotteryFillEndDate;//结束日期
+	private Date lotteryFillEndDate;// 结束日期
 
-	private Integer createUserId;//创建人id
-	private String lotteryStage;//lottery_stage 期数
+	private Integer createUserId;// 创建人id
+	private String lotteryStage;// lottery_stage 期数
 
-	private BigDecimal fillLBi;//满多少积分进行抽奖
+	private BigDecimal fillLBi;// 满多少积分进行抽奖
 
-	private BigDecimal awardLBi;//中奖奖金金额
+	private BigDecimal awardLBi;// 中奖奖金金额
 
-	private String sendStatus;//是否发放奖金	
+	private String sendStatus;// 是否发放奖金
 
-	private BigDecimal lotteryFillUnitPrice;//购买单价
+	private BigDecimal lotteryFillUnitPrice;// 购买单价
 
-	private Integer lotteryTypeId;//所属typeid
+	private Integer lotteryTypeId;// 所属typeid
 
-	private String lotteryFillName;//彩票名称
+	private String lotteryFillName;// 彩票名称
 
-	
-	
 	public String getLotteryStage() {
 		return lotteryStage;
 	}
@@ -124,6 +122,7 @@ public class LotteryFillOpen  extends Model{
 	}
 
 	public void setLotteryFillName(String lotteryFillName) {
-		this.lotteryFillName = lotteryFillName == null ? null : lotteryFillName.trim();
+		this.lotteryFillName = lotteryFillName == null ? null : lotteryFillName
+				.trim();
 	}
 }

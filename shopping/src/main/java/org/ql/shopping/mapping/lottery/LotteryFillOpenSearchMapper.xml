@@ -7,6 +7,32 @@
 		<result column="bugQty" property="overBuyQty" jdbcType="VARCHAR" />
 	</resultMap>
 
+	<select id="selectBuyDetails" resultMap="SearchResultMap"
+		parameterType="client.pojo.fill.FillOpenSearch">
+		SELECT
+		openf.lottery_fill_open_id,
+		openf.lottery_fill_creater_date,
+		openf.lottery_fill_end_date,
+		openf.fill_l_bi as totalQty,
+		openf.award_l_bi,
+		openf.send_status,
+		openf.lottery_fill_unit_price,
+		openf.lottery_stage,
+		openf.lottery_fill_name,
+		openf.lottery_type_id,
+		openf.create_user_id,
+		openf.open_number,
+		SUM(userf.lottery_fill_buy_qty) AS overBuyQty
+		FROM
+		lottery_fill_open openf
+		JOIN
+		lottery_fill_user userf ON
+		userf.lottery_fill_open_id = openf.lottery_fill_open_id
+
+		WHERE
+		openf.lottery_fill_open_id = #{fOpenId}
+	</select>
+
 	<select id="selectByParams" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpen">
 		SELECT fill.lottery_fill_open_id,
@@ -48,7 +74,9 @@
 		FROM lottery_fill_open
 		fill
 		JOIN user_manager userM ON fill.create_user_id = userM.id
-		LEFT JOIN lottery_fill_user userBuy ON fill.lottery_fill_open_id = userBuy.lottery_type_id
+		LEFT JOIN
+		lottery_fill_user userBuy ON fill.lottery_fill_open_id =
+		userBuy.lottery_type_id
 		ORDER BY
 		fill.lottery_fill_creater_date
 		<where>
@@ -62,13 +90,14 @@
 		</where>
 		LIMIT #{firstIndex},#{pageSize}
 	</select>
-	
-	<select id="getSearchCountParams" resultType="java.lang.Integer" 
-	parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch">
-		SELECT count(*) 
+
+	<select id="getSearchCountParams" resultType="java.lang.Integer"
+		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch">
+		SELECT count(*)
 		FROM lottery_fill_open
 		fill
-		JOIN user_manager userM ON fill.create_user_id = userM.id
+		JOIN user_manager userM ON fill.create_user_id =
+		userM.id
 		<where>
 			<include refid="WHERE_FILL_AND"></include>
 			<trim prefixOverrides="AND">

@@ -20,4 +20,6 @@ public interface ManifestExpendMapper {
     int updateByPrimaryKey(ManifestExpend record);
 
 	List<ManifestExpendSearch> selectByParams(ManifestExpendSearch params);
+	
+	ManifestExpendSearch selectManifestByDocNoAndUserId(ManifestExpendSearch params);
 }

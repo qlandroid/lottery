@@ -3,7 +3,7 @@ package org.ql.shopping.pojo.user;
 import org.ql.shopping.pojo.Model;
 
 public class UserLogin extends Model{
-	private Long id;
+	private long id;
 	private String account;
 	private String pw;
 

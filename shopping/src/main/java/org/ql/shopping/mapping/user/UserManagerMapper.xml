@@ -8,6 +8,7 @@
 		<result column="power" property="power" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
 		<result column="address" property="address" jdbcType="VARCHAR" />
 	</resultMap>
 

@@ -9,6 +9,7 @@
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="l_bi" property="lBi" jdbcType="INTEGER" />
 		<result column="pw" property="pw" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
 		<result column="account" property="account" jdbcType="VARCHAR" />
 	</resultMap>
 
@@ -21,7 +22,7 @@
 		,#{name,jdbcType=VARCHAR}
 		,#{clientId,jdbcType=VARCHAR}
 		,#{phone,jdbcType=VARCHAR}
-		,#{id,jdbcType=INTEGER}
+		,#{userId,jdbcType=INTEGER}
 		);
 	</insert>
 	<insert id="insterUser" useGeneratedKeys="true" keyProperty="id"
@@ -39,7 +40,8 @@
 	<select id="findUser" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
 		SELECT
-		a.id,a.account,a.pw,b.zhifubao,b.name,b.client_id,b.phone,b.l_bi
+		a.account,a.pw,b.zhifubao,b.name,b.client_id,b.phone,b.l_bi
+		,b.user_id
 		FROM
 		user_login a
 		JOIN user_client b

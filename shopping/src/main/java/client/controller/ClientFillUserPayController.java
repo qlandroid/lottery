@@ -1,10 +1,8 @@
 package client.controller;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.annotation.Resource;
-import javax.security.auth.login.LoginException;
 
 import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
@@ -19,7 +17,6 @@ import org.ql.shopping.service.lottery.ILotteryFillOpenService;
 import org.ql.shopping.service.lottery.ILotteryFillUserService;
 import org.ql.shopping.service.user.IUserClientManagerService;
 import org.ql.shopping.util.MakeManifest;
-import org.ql.shopping.util.MakeManifestNo;
 import org.ql.shopping.util.NumberUtils;
 import org.ql.shopping.util.ResultHintUtils;
 import org.ql.shopping.util.StringUtils;
@@ -61,8 +58,9 @@ public class ClientFillUserPayController {
 		Result result = new Result();
 		try {
 			checkCreateManifestParams(params);
+			Integer userId = TokenUtils.getUserId(params.getToken());
 			UserClient payUser = mUserClientManagerService
-					.findUserById(new Long(params.getUserId()));
+					.findUserById(new Long(userId));
 			if (payUser == null) {
 				throw new LotteryException("账号不存在");
 			}
@@ -83,15 +81,6 @@ public class ClientFillUserPayController {
 				throw new LotteryException("积分余额不足，请充值");
 			}
 
-			// 生成支付订单
-			String expendDocNo = MakeManifest.makeExpendManifestNo();
-			ManifestExpendSearch createExpentManifest = new ManifestExpendSearch();
-			createExpentManifest.setCreateTime(new Date());
-			createExpentManifest.setDocNo(expendDocNo);
-			createExpentManifest.setLotteryTypeId(fillOpen
-					.getLotteryFillOpenId());
-			mManifestExpendService.createExpendManifest(createExpentManifest);
-
 			// 生成彩票
 			LotteryFillUser user = new LotteryFillUser();
 			user.setLotteryFillStatus(C.ManifestStatus.INCOME_STATUS_WAITING);
@@ -99,7 +88,18 @@ public class ClientFillUserPayController {
 			user.setUserId(TokenUtils.getUserId(params.getToken()));
 			user.setLotteryTypeId(fillOpen.getLotteryTypeId());
 			user.setLotteryFillOpenId(fillOpen.getLotteryFillOpenId());
-			mLotteryFillUserService.addFillLottery(params);
+			mLotteryFillUserService.addFillLottery(user);
+
+			// 生成支付订单
+			String expendDocNo = MakeManifest.makeExpendManifestNo();
+			ManifestExpendSearch createExpentManifest = new ManifestExpendSearch();
+			createExpentManifest.setCreateTime(new Date());
+			createExpentManifest.setDocNo(expendDocNo);
+			createExpentManifest.setLotteryTypeId(fillOpen
+					.getLotteryTypeId());
+			createExpentManifest.setUserId(payUser.getUserId());
+			createExpentManifest.setLotteryId(user.getLotteryFillUserId());
+			mManifestExpendService.createExpendManifest(createExpentManifest);
 
 			result.setCode(Code.SUCCESS);
 
@@ -107,7 +107,7 @@ public class ClientFillUserPayController {
 			s.setDocNo(createExpentManifest.getDocNo());
 			result.setData(s);
 		} catch (Exception e) {
-			logger.error("pay", e);
+			logger.error("createManifest", e);
 			ResultHintUtils.setSystemError(result, e);
 
 		}
@@ -212,29 +212,25 @@ public class ClientFillUserPayController {
 	@ResponseBody
 	public Result selectManifest(FillUserPaySearch params) {
 		Result result = new Result();
-		try{
+		try {
 			checkManfiestDetailsParams(params);
 			String token = params.getToken();
-			
+
 			Integer userId = TokenUtils.getUserId(token);
 			String expendDocNo = params.getExpendDocNo();
-			
-			//查询订单号
-			ManifestExpendSearch expendDoc = mManifestExpendService.selectByDocNo(expendDocNo);
-			if(expendDoc == null ){
-				throw new ManifestNoHaveException("订单不存在"); 
+
+			// 查询订单号
+			ManifestExpendSearch expendDoc = mManifestExpendService
+					.selectByDocNoAndUserId(expendDocNo, userId);
+			if (expendDoc == null) {
+				throw new ManifestNoHaveException("订单不存在");
 			}
-			
-			if(!userId.equals(expendDoc.getUserId())){
-				throw new LotteryException("订单与用户不匹配");
-			}
-			
-			
+
 			result.setCode(Code.SUCCESS);
 			result.setData(expendDoc);
-		}catch(Exception e){
-			logger.error("selectManifest",e);
-			ResultHintUtils.setSystemError(result,e);
+		} catch (Exception e) {
+			logger.error("selectManifest", e);
+			ResultHintUtils.setSystemError(result, e);
 		}
 		return result;
 	}
@@ -242,10 +238,10 @@ public class ClientFillUserPayController {
 	private void checkManfiestDetailsParams(FillUserPaySearch params) {
 		String expendDocNo = params.getExpendDocNo();
 		String token = params.getToken();
-		if(StringUtils.isEmpty(token)){
+		if (StringUtils.isEmpty(token)) {
 			throw new LotteryException("没有登录");
 		}
-		if(StringUtils.isEmpty(expendDocNo)){
+		if (StringUtils.isEmpty(expendDocNo)) {
 			throw new ParamsErrorException("参数不正确");
 		}
 	}

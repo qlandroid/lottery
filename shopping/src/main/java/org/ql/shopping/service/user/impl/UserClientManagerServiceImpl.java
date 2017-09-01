@@ -65,7 +65,7 @@ public class UserClientManagerServiceImpl implements IUserClientManagerService {
 		return list.get(0);
 	}
 
-	public void updateLBi(Double lbi, Long id) {
+	public void updateLBi(Double lbi, Integer id) {
 		UserClient user = new UserClient();
 		user.setUserId(id);
 		user.setlBi(lbi);
