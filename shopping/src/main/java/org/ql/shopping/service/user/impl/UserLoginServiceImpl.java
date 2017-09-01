@@ -10,7 +10,7 @@ import org.ql.shopping.pojo.user.UserLogin;
 import org.ql.shopping.service.user.IUserLoginService;
 import org.springframework.stereotype.Service;
 
-@Service("userService")
+@Service("userLoginService")
 public class UserLoginServiceImpl implements IUserLoginService {
 
 	@Resource

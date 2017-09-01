@@ -23,9 +23,9 @@ import client.utils.TokenUtils;
 
 @Controller
 @RequestMapping("/user/manager")
-public class UserManagerController {
+public class ClientUserManagerController {
 
-	private Logger logger = LoggerFactory.getLogger(UserManagerController.class);
+	private Logger logger = LoggerFactory.getLogger(ClientUserManagerController.class);
 	
 	
 	@Resource
