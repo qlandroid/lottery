@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.manifest.ManifestExpendMapper">
+	<resultMap id="SearchResultMap" type="client.pojo.manifest.ManifestExpendSearch"
+		extends="BaseMap">
+		<result column="fillOpenId" property="fillOpenId" jdbcType="INTEGER" />
+		<result column="fillCreateDate" property="fillCreateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="fill_l_bi" property="fillLBi" jdbcType="INTEGER" />
+		<result column="award_l_bi" property="awardLBi" jdbcType="INTEGER" />
+		<result column="fillName" property="fillName" jdbcType="VARCHAR" />
+		<result column="lottery_stage" property="lotteryStage"
+			jdbcType="VARCHAR" />
+		<result column="unit" property="unit"
+			jdbcType="INTEGER" />
+		<result column="payMoney" property="payMoney"
+			jdbcType="INTEGER" />
+
+	</resultMap>
+
+	<select id="selectByParams" resultMap="SearchResultMap"
+		parameterType="client.pojo.manifest.ManifestExpendSearch">
+		SELECT
+		mexpend.expend_id,
+		mexpend.create_time , mexpend.expend_qty , mexpend.status
+		,mexpend.user_id ,
+		mexpend.end_time , mexpend.after_qty ,
+		mexpend.before_qty ,
+		mexpend.lottery_type_id ,
+		mexpend.doc_no,
+		fillOpen.lottery_fill_open_id ,
+		fillOpen.open_number ,
+		fillOpen.lottery_fill_creater_date ,
+		fillOpen.lottery_fill_end_date ,
+		fillOpen.create_user_id ,
+		fillOpen.fill_l_bi , fillOpen.award_l_bi ,
+		fillOpen.send_status ,
+		fillOpen.lottery_fill_unit_price ,
+		fillOpen.lottery_type_id ,
+		fillOpen.lottery_fill_name ,
+		fillOpen.lottery_stage FROM
+		manifest_expend AS mexpend JOIN
+		lottery_fill_open AS fillOpen ON
+		mexpend.lottery_type_id=fillOpen.lottery_type_id
+
+		<where>
+			<include refid="SearchWhereAnd"></include>
+		</where>
+		ORDER BY mexpend.create_time ASC
+
+	</select>
+
+	<select id="selectManifestByDocNoAndUserId" resultMap="SearchResultMap"
+		parameterType="client.pojo.manifest.ManifestExpendSearch">
+		SELECT
+		fopen.lottery_fill_open_id AS fillOpenId,
+		fopen.lottery_fill_creater_date AS fillCreateDate,
+		fopen.fill_l_bi,
+		fopen.award_l_bi,
+		fopen.lottery_fill_name AS fillName,
+		fopen.lottery_stage,
+		fdoc.doc_no,
+		fdoc.create_time,
+		fuser.lottery_fill_buy_qty AS buyQty,
+		fopen.lottery_fill_unit_price AS
+		unit,
+		fuser.lottery_fill_buy_qty * fopen.lottery_fill_unit_price AS
+		payMoney
+		FROM
+		manifest_expend AS fdoc
+		INNER JOIN lottery_fill_open AS
+		fopen ON
+		fdoc.lottery_type_id =
+		fopen.lottery_type_id
+		INNER JOIN
+		lottery_fill_user AS fuser ON fdoc.user_id = fuser.user_id AND
+		fdoc.lottery_id = fuser.lottery_fill_user_id
+
+		<where>
+			fdoc.doc_no = #{docNo,jdbcType=VARCHAR}
+			AND fdoc.user_id =
+			#{userId,jdbcType=INTEGER}
+		</where>
+	</select>
+
+	<sql id="SearchWhereAnd">
+		<trim prefixOverrides="AND">
+			<if test="expendId != null">
+				AND
+				mexpend.expend_id =#{expendId,jdbcType=INTEGER}
+			</if>
+			<if test="docNo !=null">
+				AND
+				mexpend.doc_no = #{docNo,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime !=null">
+				AND
+				mexpend.create_time = #{createTime
+				,jdbcType=TIMESTAMP}
+			</if>
+			<if test="status !=null">
+				AND
+				mexpend.`status` =#{status , jdbcType=VARCHAR}
+			</if>
+			<if test="userId !=null">
+				AND
+				mexpend.user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="lotteryTypeId !=null">
+				AND
+				mexpend.lottery_type_id =
+				#{lotteryTypeId,jdbcType=INTEGER}
+			</if>
+		</trim>
+	</sql>
+</mapper>

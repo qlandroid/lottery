@@ -55,7 +55,7 @@
 		<property name="basePackage"
 			value="org.ql.shopping.dao,
         org.ql.shopping.dao.user,org.ql.shopping.dao.manifest
-        ,client.dao">
+        ,client.dao,client.dao.lottery.fill,client.dao">
 		</property>
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>

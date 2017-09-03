@@ -1,48 +1,48 @@
 package client.service.user.impl;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
-import org.ql.shopping.dao.user.IUserDao;
+import org.ql.shopping.dao.user.UserClientMapper;
 import org.springframework.stereotype.Service;
 
-import client.pojo.user.UserLoginSearch;
+import client.pojo.user.UserClientSearch;
 import client.service.user.IUserManagerService;
 
 @Service("userManagerService")
 public class UserManagerService implements IUserManagerService {
 
-	@Resource
-	private IUserDao mUserLoginDao;
+	@Resource 
+	private UserClientMapper mUserClientMapper;
 
-	public int insert(UserLoginSearch params) {
-		return mUserLoginDao.inserte(params);
+
+	public UserClientSearch selectPayPwByUserId(Integer userId) {
+		return mUserClientMapper.selectPayPwByUserId(userId);
 	}
 
-	public int updatePw(UserLoginSearch params) {
-		return mUserLoginDao.updateUserPassword(params);
+	public UserClientSearch selectDetailsByUserId(Integer userId) {
+		
+		return mUserClientMapper.selectDetailsByUserId(userId);
 	}
 
-	public UserLoginSearch selectByAccount(String account) {
-		UserLoginSearch params =new UserLoginSearch();
-		params.setAccount(account);
-		List<UserLoginSearch> selectUserByParams = mUserLoginDao.selectUserByParams(params);
-		if(selectUserByParams == null || selectUserByParams.size() <= 0){
-			return null;
-		}
-		return selectUserByParams.get(0);
+	public void insert(UserClientSearch params) {
+		//注册用户
+		mUserClientMapper.insertLogin(params);
+		mUserClientMapper.insertSelective(params);
 	}
 
-	public UserLoginSearch selectyByAccountAndPw(String account, String pw) {
-		UserLoginSearch params =new UserLoginSearch();
+	public int updatePwByUserId(UserClientSearch params) {
+		return mUserClientMapper.updatePwByUserId(params);
+	}
+
+	public UserClientSearch selectByAccount(String account) {
+		return mUserClientMapper.selectDetailsByAccount(account);
+	}
+
+	public UserClientSearch selectyByAccountAndPw(String account, String pw) {
+		UserClientSearch params = new UserClientSearch();
 		params.setAccount(account);
 		params.setPw(pw);
-		List<UserLoginSearch> selectUserByParams = mUserLoginDao.selectUserByParams(params);
-		if(selectUserByParams == null || selectUserByParams.size() <= 0){
-			return null;
-		}
-		return selectUserByParams.get(0);
+		return mUserClientMapper.selectDetailsByAccountAndPw(params);
 	}
 
 }

@@ -17,9 +17,34 @@
 		type="client.pojo.fill.FillOpenSearch">
 		<result column="overBuyQty" property="overBuyQty" jdbcType="DECIMAL" />
 		<result column="totalQty" property="totalQty" jdbcType="DECIMAL" />
+		<result column="userBuyQty" property="userBuyQty" jdbcType="DECIMAL"/>
 	</resultMap>
 
-	
+	<select id="selectBuyDetails" resultMap="ClientSearch"
+		parameterType="client.pojo.fill.FillOpenSearch">
+		SELECT
+		openf.lottery_fill_open_id,
+		openf.lottery_fill_creater_date,
+		openf.lottery_fill_end_date,
+		openf.fill_l_bi as totalQty,
+		openf.award_l_bi,
+		openf.send_status,
+		openf.lottery_fill_unit_price,
+		openf.lottery_stage,
+		openf.lottery_fill_name,
+		openf.lottery_type_id,
+		openf.create_user_id,
+		openf.open_number,
+		SUM(userf.lottery_fill_buy_qty) AS overBuyQty
+		FROM
+		lottery_fill_open openf
+		JOIN
+		lottery_fill_user userf ON
+		userf.lottery_fill_open_id = openf.lottery_fill_open_id
+		AND userf.lottery_fill_status = '1'
+		WHERE
+		openf.lottery_fill_open_id = #{fOpenId}
+	</select>
 
 	<select id="selectClientListByClazzAndTypePage" resultMap="ClientResultMap"
 		parameterType="client.pojo.lottery.ClientLotteryFillOpenSearch">
@@ -50,6 +75,8 @@
 
 
 		<where>
+			fuser.lottery_fill_status = '1'
+			AND
 			fopen.open_number IS NULL
 			AND
 			type.lottery_type_id
@@ -86,5 +113,26 @@
 			#{lotteryTypeId,jdbcType=INTEGER}
 		</where>
 
+	</select>
+
+	<select id="selectFillOpenByDocNo" parameterType="java.lang.String" resultMap="ClientSearch">
+		SELECT fopen.lottery_fill_open_id,
+		fopen.open_number,
+		fopen.lottery_fill_creater_date,
+		fopen.lottery_fill_end_date,
+		fopen.create_user_id,
+		fopen.fill_l_bi,
+		fopen.award_l_bi,
+		fopen.send_status,
+		fopen.lottery_fill_unit_price,
+		fopen.lottery_type_id,
+		fopen.lottery_fill_name,
+		fopen.lottery_stage,
+		fuser.lottery_fill_buy_qty AS userBuyQty
+		FROM manifest_expend mexpend INNER JOIN lottery_fill_user fuser ON
+		mexpend.lottery_id = fuser.lottery_fill_user_id
+		INNER JOIN lottery_fill_open fopen ON fuser.lottery_fill_open_id =
+		fopen.lottery_fill_open_id
+		WHERE mexpend.doc_no = #{docNo,jdbcType=VARCHAR}
 	</select>
 </mapper>

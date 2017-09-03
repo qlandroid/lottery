@@ -14,6 +14,7 @@
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
+	<input class="layui-hide" id="params" see-user="${seeUserList }">
 	<div class="content-tab-body">
 		<table class="layui-table" lay-filter="lotteryList"
 			lay-data="{height:800, url:'${fillOpenList }', page:true, id:'lotteryList'}">

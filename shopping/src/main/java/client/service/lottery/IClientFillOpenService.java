@@ -20,4 +20,7 @@ public interface IClientFillOpenService {
 	 */
 	long getFillOpenList(ClientLotteryFillOpenSearch params);
 
+
+	FillOpenSearch selectByDocNo(String docNo);
+
 }

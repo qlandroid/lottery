@@ -1,5 +1,6 @@
 package org.ql.shopping.service.manifest.impl;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -7,12 +8,11 @@ import javax.annotation.Resource;
 
 import org.ql.shopping.code.C;
 import org.ql.shopping.dao.manifest.IIncomeManifestManagerDao;
-import org.ql.shopping.dao.manifest.ILBiChangeManagerDao;
 import org.ql.shopping.dao.manifest.ManifestIncomeMapper;
 import org.ql.shopping.dao.user.IUserClientManagerDao;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
-import org.ql.shopping.pojo.manifest.LBiChangeManager;
 import org.ql.shopping.pojo.manifest.ManifestIncomeSearch;
+import org.ql.shopping.pojo.manifest.ManifestLBiChange;
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.user.UserClient;
 import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
@@ -24,8 +24,6 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 
 	@Resource
 	private IIncomeManifestManagerDao mIncomeManifestManagerDao;
-	@Resource
-	private ILBiChangeManagerDao mLBiChangeManagerDao;
 	@Resource
 	private IUserClientManagerDao mUserClientMnagerDao;
 	@Resource
@@ -134,7 +132,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		UserClient client = clientList.get(0);
 
 		// 获得用户的当前积分
-		Double beforeQty = client.getlBi();
+		Double beforeQty = client.getlBi().doubleValue();
 		// 获得充值的积分数量；
 		Double inQty = incomeDoc.getInQty();
 		// 充值后的金额
@@ -143,7 +141,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		// 更新用户 积分
 		UserClient afterClient = new UserClient();
 		afterClient.setId(client.getId());
-		afterClient.setlBi(afterQty);
+		afterClient.setlBi(new BigDecimal(afterQty));
 		mUserClientMnagerDao.updateLBi(afterClient);
 
 		// 更新当前充值表
@@ -155,16 +153,16 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		mIncomeManifestManagerDao.updateById(incomeDoc);
 
 		// 插入积分变换表
-		LBiChangeManager insertChangeManifest = new LBiChangeManager();
+		ManifestLBiChange insertChangeManifest = new ManifestLBiChange();
 		insertChangeManifest.setRemark(remark);
-		insertChangeManifest.setDocIncomeId(incomeDoc.getIncomeId());
+		insertChangeManifest.setDocIncomeId(new Integer(incomeDoc.getIncomeId().toString()));
 		insertChangeManifest.setOperateDate(new Timestamp(System.currentTimeMillis()));
 		insertChangeManifest.setType(C.CHANGE_TYPE_INCOME);
 		insertChangeManifest.setType(C.CHANGE_OPERATE_TYPE_INCOME);
-		insertChangeManifest.setUserId(incomeDoc.getUserId());
+		insertChangeManifest.setUserId(new Integer(incomeDoc.getUserId().toString()));
 		insertChangeManifest.setOperateType(operateType);
 		insertChangeManifest.setType(C.CHANGE_TYPE_INCOME);
-		mLBiChangeManagerDao.insert(insertChangeManifest);
+		//mLBiChangeManagerDao.insert(insertChangeManifest);
 	}
 
 	public Double getTotalPayMoney(IncomeManifest params) {

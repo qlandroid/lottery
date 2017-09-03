@@ -7,17 +7,17 @@ import org.ql.shopping.pojo.manifest.ManifestExpend;
 import client.pojo.manifest.ManifestExpendSearch;
 
 public interface ManifestExpendMapper {
-    int deleteByPrimaryKey(Integer expendId);
+    int deleteByPrimaryKeya(Integer expendId);
 
-    int insert(ManifestExpend record);
+    int inserta(ManifestExpend record);
 
-    int insertSelective(ManifestExpend record);
+    int insertSelectivea(ManifestExpend record);
 
-    ManifestExpend selectByPrimaryKey(Integer expendId);
+    ManifestExpend selectByPrimaryKeya(Integer expendId);
 
-    int updateByPrimaryKeySelective(ManifestExpend record);
+    int updateByPrimaryKeySelectivea(ManifestExpend record);
 
-    int updateByPrimaryKey(ManifestExpend record);
+    int updateByPrimaryKeya(ManifestExpend record);
 
 	List<ManifestExpendSearch> selectByParams(ManifestExpendSearch params);
 	

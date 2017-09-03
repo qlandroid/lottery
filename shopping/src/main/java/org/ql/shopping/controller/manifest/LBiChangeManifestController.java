@@ -8,8 +8,7 @@ import javax.annotation.Resource;
 
 import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
-import org.ql.shopping.pojo.manifest.LBiChangeManager;
-import org.ql.shopping.pojo.result.Result;
+import org.ql.shopping.pojo.manifest.ManifestLBiChange;
 import org.ql.shopping.pojo.result.TabelResult;
 import org.ql.shopping.service.manifest.ILBiManifestManagerService;
 import org.ql.shopping.util.HttpUrl;
@@ -33,13 +32,13 @@ public class LBiChangeManifestController {
 	}
 
 	@RequestMapping("/view/list")
-	public String showList(Model model, LBiChangeManager params) {
+	public String showList(Model model, ManifestLBiChange params) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		Long page = params.getPage();
+		Integer page = params.getPage();
 		Integer pageSize = params.getPageSize();
 		if (page == null) {
-			params.setPage(1l);
+			params.setPage(1);
 		}
 		if (pageSize == null) {
 			params.setPageSize(10);
@@ -64,7 +63,7 @@ public class LBiChangeManifestController {
 	 */
 	@RequestMapping("/operate/list")
 	@ResponseBody
-	public TabelResult getList(LBiChangeManager params) {
+	public TabelResult getList(ManifestLBiChange params) {
 		TabelResult result = new TabelResult();
 
 		Integer limit = params.getLimit();
@@ -76,13 +75,13 @@ public class LBiChangeManifestController {
 			pageSize = C.PAGE_SIZE;
 		}
 		if (params.getPage() == null) {
-			params.setPage(1l);
+			params.setPage(1);
 		}
 
 		params.setPageSize(pageSize);
 		try {
 			checkListParams(params);
-			List<LBiChangeManager> data = mLBiManifestMangerService.findAnd(params);
+			List<ManifestLBiChange> data = mLBiManifestMangerService.findAnd(params);
 
 			Long count = mLBiManifestMangerService.getTotalCountAnd(params);
 
@@ -98,7 +97,7 @@ public class LBiChangeManifestController {
 		return result;
 	}
 
-	private void checkListParams(LBiChangeManager params) {
+	private void checkListParams(ManifestLBiChange params) {
 		// TODO Auto-generated method stub
 
 	}

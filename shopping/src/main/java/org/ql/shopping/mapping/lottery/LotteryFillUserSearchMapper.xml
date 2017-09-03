@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.ql.shopping.dao.lottery.LotteryFillUserMapper">
+	<resultMap type="org.ql.shopping.pojo.lottery.FillUserDetails"
+		id="FillUSerDetailsMap" extends="BaseResultMap">
+		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="client_id" property="clientId" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="l_bi" property="lBi" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="doc_no" property="docNo" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="after_qty" property="afterQty" jdbcType="VARCHAR" />
+		<result column="after_qty" property="beforeQty" jdbcType="VARCHAR" />
+		<result column="after_qty" property="expendQty" jdbcType="VARCHAR" />
+	</resultMap>
+
 	<select id="selectByParams" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.lottery.LotteryFillUser">
 		SELECT lottery_fill_user.lottery_fill_user_id,
@@ -14,6 +30,51 @@
 		<include refid="WHERE_AND"></include>
 		LIMIT #{firstIndex} ,#{pageSize}
 
+	</select>
+
+	<!-- 通过开奖id 查询已经购买的用户 -->
+	<select id="selectBuyUserListByOpenId" resultMap="FillUSerDetailsMap"
+		parameterType="java.lang.Integer">
+		SELECT clientp.zhifubao,
+		clientp.`name`,
+		clientp.client_id,
+		clientp.phone,
+		clientp.user_id,
+		clientp.l_bi,
+		userp.account,
+		fuser.lottery_fill_status,
+		fuser.lottery_fill_buy_qty,
+		fuser.number,
+		fuser.lottery_fill_open_id,
+		fuser.user_id,
+		fuser.lottery_type_id,
+		expend.end_time,
+		expend.create_time,
+		expend.doc_no,
+		expend.expend_qty,
+		expend.after_qty,
+		expend.before_qty
+		FROM lottery_fill_open fopen
+
+		INNER JOIN
+		lottery_fill_user fuser ON
+		fopen.lottery_fill_open_id =
+		fuser.lottery_fill_open_id
+		AND
+		fuser.lottery_fill_status = '1'
+		INNER
+		JOIN
+		user_client clientp ON
+		fuser.user_id = clientp.user_id
+		INNER JOIN
+		user_login userp ON
+		fuser.user_id = userp.id
+		INNER JOIN
+		manifest_expend expend ON expend.lottery_id =
+		fuser.lottery_fill_user_id AND fopen.lottery_type_id =
+		expend.lottery_type_id
+		WHERE
+		fopen.lottery_fill_open_id = #{openId}
 	</select>
 
 	<select id="selectCountByParams" resultType="java.lang.Integer"

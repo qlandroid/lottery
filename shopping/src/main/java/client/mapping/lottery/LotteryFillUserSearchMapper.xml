@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.lottery.LotteryFillUserMapper">
+
+	<resultMap type="client.pojo.fill.FillUserPaySearch" id="ClientPayUserSearch"
+		extends="BaseResultMap">
+		<result column="buyTotalQty" property="buyTotalQty" jdbcType="INTEGER" />
+	</resultMap>
+	<!-- 通过开奖彩票查询 ，已经支付完成的数量 -->
+	<select id="selectOverBuyByOpenId" resultType="double"
+		parameterType="int">
+		SELECT SUM(fuser.lottery_fill_buy_qty) AS buyTotalQty
+		FROM lottery_fill_user fuser
+		RIGHT OUTER JOIN lottery_fill_open fopen
+		ON fuser.lottery_fill_open_id =
+		fopen.lottery_fill_open_id
+		WHERE
+		fopen.lottery_fill_open_id = ${openId}
+		AND fuser.lottery_fill_status =
+		'1'
+	</select>
+
+
+	<select id="selectByDocNo" parameterType="java.lang.String"
+		resultMap="ClientPayUserSearch">
+		SELECT fuser.lottery_fill_user_id,
+		fuser.lottery_type_id,
+		fuser.user_id,
+		fuser.lottery_fill_open_id,
+		fuser.number,
+		fuser.lottery_fill_buy_qty,
+		fuser.lottery_fill_status,
+		mexpend.doc_no
+		FROM manifest_expend mexpend INNER JOIN lottery_fill_user fuser ON
+		mexpend.lottery_id = fuser.lottery_fill_user_id
+		WHERE mexpend.doc_no = #{docNo}
+		
+	</select>
+</mapper>

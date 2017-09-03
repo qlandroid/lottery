@@ -39,5 +39,10 @@ public class ClientFillOpenService implements IClientFillOpenService {
 	}
 
 
+	public FillOpenSearch selectByDocNo(String docNo) {
+		return mLotteryFillOpenMapper.selectFillOpenByDocNo(docNo);
+	}
+
+
 
 }

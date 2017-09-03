@@ -9,7 +9,7 @@ public class FillUserPaySearch extends LotteryFillUser{
 	private String expendDocNo;//支出任务单号
 	private String payPw;//支付密码
 	
-	
+	private Double buyTotalQty;//支付金额
 	
 	
 	public String getPayPw() {

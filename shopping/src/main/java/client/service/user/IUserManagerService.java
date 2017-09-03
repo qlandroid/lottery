@@ -1,14 +1,19 @@
 package client.service.user;
 
+import client.pojo.user.UserClientSearch;
 import client.pojo.user.UserLoginSearch;
 
 public interface IUserManagerService {
 
-	int insert(UserLoginSearch params);
+	void  insert(UserClientSearch params);
 
-	int updatePw(UserLoginSearch params);
+	int updatePwByUserId(UserClientSearch params);
 
-	UserLoginSearch selectByAccount(String account);
+	UserClientSearch selectByAccount(String account);
 
-	UserLoginSearch selectyByAccountAndPw(String account, String pw);
+	UserClientSearch selectyByAccountAndPw(String account, String pw);
+
+	UserClientSearch selectPayPwByUserId(Integer userId);
+	
+	UserClientSearch selectDetailsByUserId(Integer userId);
 }

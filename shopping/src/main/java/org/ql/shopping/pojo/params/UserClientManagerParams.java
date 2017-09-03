@@ -1,6 +1,8 @@
 package org.ql.shopping.pojo.params;
 
-public class UserClientManagerParams {
+import org.ql.shopping.pojo.Model;
+
+public class UserClientManagerParams extends Model{
 
 	private Long id;
 	private String account;
@@ -11,35 +13,8 @@ public class UserClientManagerParams {
 	private String phone;
 	private String detailsId;// 用户详情id
 
-	private Long firstIndex;
-	private Long page;
-	private Integer pageSize;
-
 	private Double rechagerLBi;// 充值积分
 
-	public Long getPage() {
-		return page;
-	}
-
-	public void setPage(Long page) {
-		this.page = page;
-	}
-
-	public Long getFirstIndex() {
-		return firstIndex;
-	}
-
-	public void setFirstIndex(Long firstIndex) {
-		this.firstIndex = firstIndex;
-	}
-
-	public Integer getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
 
 	public Long getId() {
 		return id;

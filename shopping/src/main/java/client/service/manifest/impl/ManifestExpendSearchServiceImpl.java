@@ -18,11 +18,11 @@ public class ManifestExpendSearchServiceImpl implements IManifestExpendService {
 	
 	
 	public int createExpendManifest(ManifestExpendSearch params) {
-		return mManifestExpendMapper.insertSelective(params);
+		return mManifestExpendMapper.insertSelectivea(params);
 	}
 
 	public int updateExpendManfiest(ManifestExpendSearch params) {
-		return mManifestExpendMapper.updateByPrimaryKeySelective(params);
+		return mManifestExpendMapper.updateByPrimaryKeySelectivea(params);
 	}
 
 	public List<ManifestExpendSearch> selectByStatus(String status) {

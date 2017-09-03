@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.user.UserClientMapper">
+	<resultMap id="SearchClientResultMap" type="client.pojo.user.UserClientSearch"
+		extends="BaseResultMap">
+	</resultMap>
+
+
+	<insert id="insertLogin" parameterType="client.pojo.user.UserClientSearch"
+		useGeneratedKeys="true" keyProperty="userId">
+		INSERTE INTO
+		user_login(account,pw)
+		values(#{account,jdbcType=VARCHAR},#{pw,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新登陆密码 -->
+	<update id="updatePwByUserId" parameterType="client.pojo.user.UserClientSearch">
+		UPDATE FROM
+		user_login SET pw = #{pw ,jdbcType=VARCHAR}
+		WHERE id =
+		#{userId,jdbcType=INTEGER}
+	</update>
+
+	<!-- 通过 账号查询用户详情 -->
+	<select id="selectDetailsByAccountAndPw" resultMap="SearchClientResultMap"
+		parameterType="client.pojo.user.UserClientSearch">
+		SELECT login.account,
+		login.pw,
+		client.zhifubao,
+		client.`name`,
+		client.phone,
+		client.client_id,
+		client.l_bi,
+		client.user_id
+		FROM user_login login INNER JOIN user_client client ON
+		login.id =
+		client.user_id
+		WHERE
+		login.account =#{account,jdbcType=VARCHAR} AND login.pw = #{pw,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 通过 账号查询用户详情 -->
+	<select id="selectDetailsByAccount" resultMap="SearchClientResultMap"
+		parameterType="java.lang.String">
+		SELECT login.account,
+		login.pw,
+		client.zhifubao,
+		client.`name`,
+		client.phone,
+		client.client_id,
+		client.l_bi,
+		client.user_id
+		FROM user_login login INNER JOIN user_client client ON
+		login.id =
+		client.user_id
+		WHERE
+		login.account =#{account}
+	</select>
+
+	<!-- 更新支付密码 -->
+	<update id="updatePayPwByUserId" parameterType="client.pojo.user.UserClientSearch">
+		UPDATE FROM
+		user_client SET pay_pw = #{payPw,jdbcType=VARCHAR}
+		WHERE user_id =
+		#{userId,jdbcType=INTEGER}
+	</update>
+
+	<!-- 通过用户登陆的ID 查询当前用户的支付密码 -->
+	<select id="selectPayPwByUserId" resultMap="SearchClientResultMap"
+		parameterType="java.lang.Integer">
+		SELECT user_client.pay_pw
+		FROM user_client
+		WHERE
+		user_client.user_id = #{userId};
+	</select>
+
+
+	<!-- 通过用户的userId查询用户详情 -->
+	<select id="selectDetailsByUserId" resultMap="SearchClientResultMap"
+		parameterType="java.lang.Integer">
+		SELECT user_login.account,
+		user_login.pw,
+		user_client.zhifubao,
+		user_client.`name`,
+		user_client.client_id,
+		user_client.phone,
+		user_client.l_bi,
+		user_client.user_id
+		FROM user_login
+		INNER JOIN user_client ON user_login.id =
+		user_client.user_id
+		WHERE
+		user_client.user_id = #{userId}
+	</select>
+
+
+</mapper>

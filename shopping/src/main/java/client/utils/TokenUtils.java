@@ -2,6 +2,7 @@ package client.utils;
 
 public class TokenUtils {
 
+	public final static int ERROR_USER_ID = -1;
 	public final static String TAG_ACCOUNT = "8975643158";
 
 	public final static String TAG_ID = "ff55997ddaad23fg";
@@ -11,18 +12,18 @@ public class TokenUtils {
 			
 			String[] split = token.split(TAG_ID);
 			if(split.length < 2){
-				return -1;
+				return ERROR_USER_ID;
 			}
 			
 			String split2 = split[1];
 			String[] split3 = split2.split(TAG_ACCOUNT);
 			if(split3.length <2){
-				return -1;
+				return ERROR_USER_ID;
 			}
 			
 			return Integer.parseInt(split3[0]);
 		} catch (Exception e) {
-			return -1;
+			return ERROR_USER_ID;
 		}
 	}
 

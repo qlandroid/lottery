@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
 import org.ql.shopping.exception.ParamsErrorException;
+import org.ql.shopping.pojo.lottery.FillUserDetails;
 import org.ql.shopping.pojo.lottery.LotteryFillOpen;
 import org.ql.shopping.pojo.lottery.LotteryFillOpenSearch;
 import org.ql.shopping.pojo.result.Result;
@@ -54,7 +55,15 @@ public class LotteryFillOpenController {
 	@RequestMapping("/view/list")
 	public String showListView(Model model){
 		model.addAttribute("fillOpenList",url("/operate/list"));
+		model.addAttribute("seeUserList",url("/view/userList"));
 		return "page/lottery/fill/lottery_open.jsp";
+	}
+	
+	@RequestMapping("/view/userList")
+	public String showUserListView(FillUserDetails params,Model model){
+		model.addAttribute("fillOpenId", params.getLotteryFillOpenId());
+		model.addAttribute("fillUserList",HttpUrl.replaceUrl("/user/fill/operate/list"));
+		return "page/lottery/fill/fill_user_list.jsp";
 	}
 
 	@RequestMapping("/view/add")

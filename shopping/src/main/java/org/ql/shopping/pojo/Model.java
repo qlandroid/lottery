@@ -8,8 +8,19 @@ public class Model {
 	private Integer firstIndex;
 	private Long count;
 	
+	private Integer limit;
 	
 	
+	
+	
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
 
 	public String getToken() {
 		return token;

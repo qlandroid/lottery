@@ -7,9 +7,11 @@
 		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
 		<result column="client_id" property="clientId" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
 		<result column="l_bi" property="lBi" jdbcType="INTEGER" />
 		<result column="pw" property="pw" jdbcType="VARCHAR" />
 		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="expendQty" property="expendQty" jdbcType="INTEGER" />
 		<result column="account" property="account" jdbcType="VARCHAR" />
 	</resultMap>
 
@@ -39,13 +41,19 @@
 
 	<select id="findUser" resultMap="BaseResultMap"
 		parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">
-		SELECT
-		a.account,a.pw,b.zhifubao,b.name,b.client_id,b.phone,b.l_bi
-		,b.user_id
-		FROM
-		user_login a
-		JOIN user_client b
-		ON a.id = b.user_id
+		SELECT sum(expend.expend_qty) AS expendQty,
+		a.account,
+		a.pw,
+		b.id,
+		b.zhifubao,
+		b.`name`,
+		b.client_id,
+		b.phone,
+		b.user_id,
+		b.l_bi,
+		b.pay_pw
+		FROM user_login a INNER JOIN user_client b ON a.id = b.user_id
+		LEFT JOIN manifest_expend expend ON b.user_id = expend.user_id
 		<include refid="whereSearch"></include>
 		<if test="firstIndex != null and firstIndex !=''">
 			LIMIT #{firstIndex
@@ -106,7 +114,7 @@
 		<set>
 			l_bi = #{lBi ,jdbcType=INTEGER}
 		</set>
-		WHERE user_id = #{id,jdbcType=INTEGER}
+		WHERE user_id = #{userId,jdbcType=INTEGER}
 	</update>
 
 	<delete id="deleteUser" parameterType="org.ql.shopping.pojo.params.UserClientManagerParams">

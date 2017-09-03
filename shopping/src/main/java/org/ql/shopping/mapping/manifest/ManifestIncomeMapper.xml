@@ -14,13 +14,13 @@
     <result column="income_after_qty" property="incomeAfterQty" jdbcType="DECIMAL" />
     <result column="income_end_date" property="incomeEndDate" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="BaseColumnList" >
     income_id, income_create_date, zhifubao_doc, pay_money, income_in_qty, income_doc_no, 
     status, user_id, income_before_qty, income_after_qty, income_end_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
+    <include refid="BaseColumnList" />
     from manifest_income
     where income_id = #{incomeId,jdbcType=INTEGER}
   </select>

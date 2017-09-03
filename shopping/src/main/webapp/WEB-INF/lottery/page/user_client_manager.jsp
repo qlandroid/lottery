@@ -61,12 +61,12 @@
 						<td>${user.name }</td>
 						<td>${user.phone }</td>
 						<td>${user.lBi }</td>
-						<td>${user.expendLBi }</td>
+						<td>${user.expendQty }</td>
 						<td>
 							<button class="layui-btn layui-btn-mini btn-look-list" 
 								data-id="${user.id }">消费记录</button>
 							<button class="layui-btn layui-btn-mini btn-rechager"
-								 data-url="${incomeViewUrl }" data-id="${user.id }">充值</button>
+								 data-url="${incomeViewUrl }" data-id="${user.userId }">充值</button>
 							<button class="layui-btn layui-btn-mini btn-change-pw"
 								data-url="${changeViewUrl }" 
 								data-id="${user.id }"><i class="layui-icon">&#xe614;</i></button>

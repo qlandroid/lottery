@@ -2,24 +2,24 @@ package org.ql.shopping.service.manifest;
 
 import java.util.List;
 
-import org.ql.shopping.pojo.manifest.LBiChangeManager;
+import org.ql.shopping.pojo.manifest.ManifestLBiChange;
 
 public interface ILBiManifestManagerService {
 
-	public void addManifest(LBiChangeManager manager);
+	public void addManifest(ManifestLBiChange manager);
 
-	public void updateById(LBiChangeManager manager);
+	public void updateById(ManifestLBiChange manager);
 
-	public void deleteById(LBiChangeManager manager);
+	public void deleteById(ManifestLBiChange manager);
 
-	public List<LBiChangeManager> findAnd(LBiChangeManager manager);
+	public List<ManifestLBiChange> findAnd(ManifestLBiChange manager);
 
-	public List<LBiChangeManager> findOr(LBiChangeManager manager);
+	public List<ManifestLBiChange> findOr(ManifestLBiChange manager);
 
-	public Long getTotalCount(LBiChangeManager manager);
+	public Long getTotalCount(ManifestLBiChange manager);
 
-	public Long getTotalCountOr(LBiChangeManager manager);
+	public Long getTotalCountOr(ManifestLBiChange manager);
 
-	public Long getTotalCountAnd(LBiChangeManager manager);
+	public Long getTotalCountAnd(ManifestLBiChange manager);
 
 }

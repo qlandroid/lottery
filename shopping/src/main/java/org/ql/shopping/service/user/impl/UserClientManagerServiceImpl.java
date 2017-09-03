@@ -1,5 +1,6 @@
 package org.ql.shopping.service.user.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,6 +9,8 @@ import org.ql.shopping.dao.user.IUserClientManagerDao;
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.user.UserClient;
 import org.ql.shopping.service.user.IUserClientManagerService;
+import org.ql.shopping.util.ModelUtils;
+import org.ql.shopping.util.NumberUtils;
 import org.ql.shopping.util.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +32,8 @@ public class UserClientManagerServiceImpl implements IUserClientManagerService {
 	}
 
 	public List<UserClient> findUser(UserClientManagerParams params) {
-		Long firstIndex = (long) ((params.getPage() - 1) * params.getPageSize());
-		params.setFirstIndex(firstIndex);
+		
+		ModelUtils.initPageParams(params);
 		return mUserClientManagerDao.findUser(params);
 	}
 
@@ -68,7 +71,7 @@ public class UserClientManagerServiceImpl implements IUserClientManagerService {
 	public void updateLBi(Double lbi, Integer id) {
 		UserClient user = new UserClient();
 		user.setUserId(id);
-		user.setlBi(lbi);
+		user.setlBi(new BigDecimal(lbi));
 		mUserClientManagerDao.updateLBi(user);
 	}
 

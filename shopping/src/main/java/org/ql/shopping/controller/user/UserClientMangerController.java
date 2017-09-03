@@ -94,7 +94,7 @@ public class UserClientMangerController {
 	public String showRechargeView(Model model, UserClient params) {
 
 		try {
-			UserClient userClient = mUserClientManagerService.findUserById(params.getId());
+			UserClient userClient = mUserClientManagerService.findUserById(new Long(params.getId()));
 			model.addAttribute("user", userClient);
 			model.addAttribute("submitUrl", url("/operate/rechager"));
 
@@ -115,17 +115,6 @@ public class UserClientMangerController {
 	public ModelAndView getUserList(UserClientManagerParams params) {
 		ModelAndView mav = new ModelAndView();
 		try {
-			Long page = params.getPage();
-			if (page == null || page <= 0) {
-				page = 1L;
-				params.setPage(page);
-			}
-			Integer pageSize = params.getPageSize();
-			if (pageSize == null || pageSize <= 0) {
-				pageSize = 10;
-				params.setPageSize(pageSize);
-			}
-
 			List<UserClient> list = mUserClientManagerService.findUser(params);
 			Long total = mUserClientManagerService.getTotalCount(params);
 			Long pageTotal = total / params.getPageSize() + 1;

@@ -2,57 +2,42 @@ package org.ql.shopping.service.manifest.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import org.ql.shopping.dao.manifest.ILBiChangeManagerDao;
-import org.ql.shopping.pojo.manifest.LBiChangeManager;
+import org.ql.shopping.pojo.manifest.ManifestLBiChange;
+import org.ql.shopping.pojo.manifest.ManifestLBiChange;
 import org.ql.shopping.service.manifest.ILBiManifestManagerService;
 import org.springframework.stereotype.Service;
 
 @Service("lBiManifestManagerService")
 public class LBiManifestManagerServiceImpl implements ILBiManifestManagerService {
 
-	@Resource
-	private ILBiChangeManagerDao mLBiChangeManagerDao;
 
-	public void addManifest(LBiChangeManager manager) {
-		mLBiChangeManagerDao.insert(manager);
+	public void addManifest(ManifestLBiChange manager) {
 	}
 
-	public void updateById(LBiChangeManager manager) {
-		mLBiChangeManagerDao.updateById(manager);
+	public void updateById(ManifestLBiChange manager) {
 	}
 
-	public void deleteById(LBiChangeManager manager) {
-		mLBiChangeManagerDao.deleteById(manager.getChangeId());
+	public void deleteById(ManifestLBiChange manager) {
 	}
 
-	public List<LBiChangeManager> findAnd(LBiChangeManager manager) {
-		Long page = manager.getPage();
-		Integer pageSize = manager.getPageSize();
-		Long firstIndex = (page - 1) * pageSize;
-		manager.setFirstIndex(firstIndex);
-		return mLBiChangeManagerDao.findAnd(manager);
+	public List<ManifestLBiChange> findAnd(ManifestLBiChange manager) {
+		return null;
 	}
 
-	public List<LBiChangeManager> findOr(LBiChangeManager manager) {
-		Long page = manager.getPage();
-		Integer pageSize = manager.getPageSize();
-		Long firstIndex = (page - 1) * pageSize;
-		manager.setFirstIndex(firstIndex);
-		return mLBiChangeManagerDao.findOr(manager);
+	public List<ManifestLBiChange> findOr(ManifestLBiChange manager) {
+		return null;
 	}
 
-	public Long getTotalCount(LBiChangeManager manager) {
-		return mLBiChangeManagerDao.getTotalCount(manager);
+	public Long getTotalCount(ManifestLBiChange manager) {
+		return null;
 	}
 
-	public Long getTotalCountOr(LBiChangeManager manager) {
-		return mLBiChangeManagerDao.getTotalCountOr(manager);
+	public Long getTotalCountOr(ManifestLBiChange manager) {
+		return null;
 	}
 
-	public Long getTotalCountAnd(LBiChangeManager manager) {
-		return mLBiChangeManagerDao.getTotalCountAnd(manager);
+	public Long getTotalCountAnd(ManifestLBiChange manager) {
+		return null;
 	}
 
 }

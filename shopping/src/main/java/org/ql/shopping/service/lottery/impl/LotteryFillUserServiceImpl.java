@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.ql.shopping.dao.lottery.LotteryFillUserMapper;
 import org.ql.shopping.pojo.Model;
+import org.ql.shopping.pojo.lottery.FillUserDetails;
 import org.ql.shopping.pojo.lottery.LotteryFillUser;
 import org.ql.shopping.service.lottery.ILotteryFillUserService;
 import org.ql.shopping.util.ModelUtils;
@@ -62,6 +63,10 @@ public class LotteryFillUserServiceImpl implements ILotteryFillUserService {
 
 	public int getBuyLBiByOpenId(Integer openId) {
 		return mLotteryFillUserMapper.getByLBiByOpenId(openId);
+	}
+
+	public List<FillUserDetails> selectUserDetailsByOpenId(Integer openId) {
+		return mLotteryFillUserMapper.selectBuyUserListByOpenId(openId);
 	}
 
 }

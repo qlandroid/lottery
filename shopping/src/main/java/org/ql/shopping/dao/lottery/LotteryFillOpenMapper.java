@@ -40,4 +40,11 @@ public interface LotteryFillOpenMapper {
 	List<ClientLotteryFillOpenSearch> selectClientListByClazzAndTypePage(ClientLotteryFillOpenSearch params);
 
 	long getClientOpenFillCount(ClientLotteryFillOpenSearch params);
+	
+	/**
+	 * 通过任务单号查询开奖信息
+	 * @param docNo
+	 * @return
+	 */
+	FillOpenSearch selectFillOpenByDocNo(@Param("docNo") String docNo );
 }
