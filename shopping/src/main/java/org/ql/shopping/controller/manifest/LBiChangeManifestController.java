@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
 import org.ql.shopping.pojo.manifest.ManifestLBiChange;
+import org.ql.shopping.pojo.manifest.ManifestLBiChangeSearch;
 import org.ql.shopping.pojo.result.TabelResult;
 import org.ql.shopping.service.manifest.ILBiManifestManagerService;
 import org.ql.shopping.util.HttpUrl;
@@ -35,16 +36,8 @@ public class LBiChangeManifestController {
 	public String showList(Model model, ManifestLBiChange params) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		Integer page = params.getPage();
-		Integer pageSize = params.getPageSize();
-		if (page == null) {
-			params.setPage(1);
-		}
-		if (pageSize == null) {
-			params.setPageSize(10);
-		}
 		try {
-			map.put("listUrl", url("/operate/list"));
+			map.put("changeListUrl", url("/operate/list"));
 			map.put("params", params);
 		} catch (Exception e) {
 			logger.error("showList", e);
@@ -54,40 +47,20 @@ public class LBiChangeManifestController {
 		return "page/manifest/l_bi_change_manifest.jsp";
 	}
 
-	/**
-	 * 数据显示信息 { code: 0, //状态码，0代表成功，其它失败 msg: "", //状态信息，一般可为空 count: 1000,
-	 * //数据总量 data: [] //数据，字段是任意的。如：[{"id":1,"username":"贤心"},
-	 * {"id":2,"username":"佟丽娅"}] }
-	 * 
-	 * @type {{url: string, where: {}, method: string, cols: [*]}}
-	 */
 	@RequestMapping("/operate/list")
 	@ResponseBody
-	public TabelResult getList(ManifestLBiChange params) {
+	public TabelResult getList(ManifestLBiChangeSearch params) {
 		TabelResult result = new TabelResult();
 
-		Integer limit = params.getLimit();
-		Integer pageSize = params.getPageSize();
-		if (limit != null) {
-			pageSize = limit;
-		}
-		if (pageSize == null) {
-			pageSize = C.PAGE_SIZE;
-		}
-		if (params.getPage() == null) {
-			params.setPage(1);
-		}
-
-		params.setPageSize(pageSize);
 		try {
 			checkListParams(params);
-			List<ManifestLBiChange> data = mLBiManifestMangerService.findAnd(params);
+			List<ManifestLBiChangeSearch> data = mLBiManifestMangerService.selectListPageByParams(params);
 
-			Long count = mLBiManifestMangerService.getTotalCountAnd(params);
+			Integer count = mLBiManifestMangerService.getListCountByParams(params);
 
-			result.setCount(count);
+			result.setCount(new Long(count));
 			result.setData(data);
-			result.setCode(Code.SUCCESS);
+			result.setCode(0);
 		} catch (Exception e) {
 			logger.error("getList", e);
 			result.setMsg("就不告诉你错哪了");

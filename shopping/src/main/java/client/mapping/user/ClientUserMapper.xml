@@ -68,7 +68,7 @@
 	<!-- 通过用户登陆的ID 查询当前用户的支付密码 -->
 	<select id="selectPayPwByUserId" resultMap="SearchClientResultMap"
 		parameterType="java.lang.Integer">
-		SELECT user_client.pay_pw
+		SELECT user_client.pay_pw,user_client.user_id
 		FROM user_client
 		WHERE
 		user_client.user_id = #{userId};

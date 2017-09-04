@@ -71,7 +71,7 @@ public class MainNavFactroy {
 		MainLeftNav expend = new MainLeftNav();
 		expend.setTitle("消费积分账单");
 		expend.setIcon("&#xe61b;");// &#xe612;
-		expend.setHref("#");
+		expend.setHref("manifest/expend/view/list");
 		manager.add(expend);
 
 		MainLeftNav change = new MainLeftNav();

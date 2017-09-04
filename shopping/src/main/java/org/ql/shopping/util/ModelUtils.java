@@ -8,7 +8,7 @@ public class ModelUtils {
 		Integer pageSize = t.getPageSize();
 		Integer page = t.getPage();
 		if(NumberUtils.isZero(pageSize)){
-			t.setPageSize(1);
+			t.setPageSize(20);
 		}
 		
 		if(NumberUtils.isZero(page)){

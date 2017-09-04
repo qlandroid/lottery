@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.manifest.ManifestExpendMapper">
+	<resultMap id="ExpendDetailsMap"
+		type="org.ql.shopping.pojo.manifest.ManifestExpendSs" extends="BaseMap">
+		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="client_id" property="clientId" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="l_bi" property="lBi" jdbcType="INTEGER" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getListCountByParams" resultType="java.lang.Integer"
+		parameterType="org.ql.shopping.pojo.manifest.ManifestExpendSs">
+		SELECT
+		count(*)
+		FROM
+		manifest_expend AS expend
+		INNER JOIN user_client
+		ON
+		user_client.user_id = expend.user_id
+		INNER JOIN user_login ON
+		user_login.id = expend.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<if test="expendId != null">
+					AND expend.expend_id = #{expendId,jdbcType=INTEGER}
+				</if>
+				<if test="docNo != null">
+					AND expend.doc_no = #{docNo,jdbcType=VARCHAR}
+				</if>
+				<if test="status != null">
+					AND expend.status = #{status,jdbcType=VARCHAR}
+				</if>
+				<if test="userId != null">
+					AND expend.user_id = #{userId,jdbcType=INTEGER}
+				</if>
+				<if test="lotteryTypeId != null">
+					AND expend.lottery_type_id =
+					#{lotteryTypeId,jdbcType=INTEGER}
+				</if>
+				<if test="zhifubao != null">
+					AND expend.zhifubao = #{zhifubao,jdbcType=VARCHAR}
+				</if>
+				<if test="name != null">
+					AND expend.name = #{name,jdbcType=VARCHAR}
+				</if>
+				<if test="account != null">
+					AND expend.account = #{account,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
+	</select>
+	<!-- 通过条件进行查询，分页查询 -->
+	<select id="selectDetailsListPageByParams" resultMap="ExpendDetailsMap"
+		parameterType="org.ql.shopping.pojo.manifest.ManifestExpendSs">
+		SELECT
+		expend.expend_id,
+		expend.doc_no,
+		expend.create_time,
+		expend.expend_qty,
+		expend.`status`,
+		expend.user_id,
+		expend.end_time,
+		expend.after_qty,
+		expend.before_qty,
+		expend.lottery_type_id,
+		expend.lottery_id,
+		user_client.zhifubao,
+		user_client.`name`,
+		user_client.client_id,
+		user_client.phone,
+		user_client.l_bi,
+		user_login.account
+		FROM
+		manifest_expend AS expend
+		INNER JOIN user_client
+		ON user_client.user_id = expend.user_id
+		INNER JOIN user_login ON
+		user_login.id = expend.user_id
+		<where>
+			<trim prefixOverrides="AND">
+				<if test="expendId != null">
+					AND expend.expend_id = #{expendId,jdbcType=INTEGER}
+				</if>
+				<if test="docNo != null">
+					AND expend.doc_no = #{docNo,jdbcType=VARCHAR}
+				</if>
+				<if test="status != null">
+					AND expend.status = #{status,jdbcType=VARCHAR}
+				</if>
+				<if test="userId != null">
+					AND expend.user_id = #{userId,jdbcType=INTEGER}
+				</if>
+				<if test="lotteryTypeId != null">
+					AND expend.lottery_type_id =
+					#{lotteryTypeId,jdbcType=INTEGER}
+				</if>
+				<if test="zhifubao != null">
+					AND expend.zhifubao = #{zhifubao,jdbcType=VARCHAR}
+				</if>
+				<if test="name != null">
+					AND expend.name = #{name,jdbcType=VARCHAR}
+				</if>
+				<if test="account != null">
+					AND expend.account = #{account,jdbcType=VARCHAR}
+				</if>
+			</trim>
+		</where>
+		GROUP BY
+		expend.create_time
+		<if test="pageSize != null and firstIndex != null">
+			LIMIT ${firstIndex} ,${pageSize}
+		</if>
+
+
+	</select>
+</mapper>

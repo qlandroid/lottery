@@ -4,81 +4,84 @@ import java.util.Date;
 
 import org.ql.shopping.pojo.Model;
 
-public class ManifestLBiChange extends Model{
-    private Integer changeDocId;
-    private String type;
+public class ManifestLBiChange extends Model {
+	private Integer changeDocId;
+	// 积分变化表 operateType字段 ，0-收入任务单创建，1-支出任务单创建，2-其他操作，
+	private String type;
 
-    private Integer docExpendId;
+	private Integer docExpendId;
 
-    private Integer docIncomeId;
-    private Date operateDate;
+	private Integer docIncomeId;
 
-    private Integer userId;
+	private Date operateDate;
 
-    private String operateType;
+	private Integer userId;
 
-    private String remark;
+	private String operateType;// 积分变化表 type字段 0-支出 ，1-收入
 
-    public Integer getChangeDocId() {
-        return changeDocId;
-    }
+	private String remark;
 
-    public void setChangeDocId(Integer changeDocId) {
-        this.changeDocId = changeDocId;
-    }
+	public Integer getChangeDocId() {
+		return changeDocId;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setChangeDocId(Integer changeDocId) {
+		this.changeDocId = changeDocId;
+	}
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
-    }
+	public String getType() {
+		return type;
+	}
 
-    public Integer getDocExpendId() {
-        return docExpendId;
-    }
+	public void setType(String type) {
+		this.type = type == null ? null : type.trim();
+	}
 
-    public void setDocExpendId(Integer docExpendId) {
-        this.docExpendId = docExpendId;
-    }
+	public Integer getDocExpendId() {
+		return docExpendId;
+	}
 
-    public Integer getDocIncomeId() {
-        return docIncomeId;
-    }
+	public void setDocExpendId(Integer docExpendId) {
+		this.docExpendId = docExpendId;
+	}
 
-    public void setDocIncomeId(Integer docIncomeId) {
-        this.docIncomeId = docIncomeId;
-    }
+	public Integer getDocIncomeId() {
+		return docIncomeId;
+	}
 
-    public Date getOperateDate() {
-        return operateDate;
-    }
+	public void setDocIncomeId(Integer docIncomeId) {
+		this.docIncomeId = docIncomeId;
+	}
 
-    public void setOperateDate(Date operateDate) {
-        this.operateDate = operateDate;
-    }
+	public Date getOperateDate() {
+		return operateDate;
+	}
 
-    public Integer getUserId() {
-        return userId;
-    }
+	public void setOperateDate(Date operateDate) {
+		this.operateDate = operateDate;
+	}
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-    public String getOperateType() {
-        return operateType;
-    }
+	public Integer getUserId() {
+		return userId;
+	}
 
-    public void setOperateType(String operateType) {
-        this.operateType = operateType == null ? null : operateType.trim();
-    }
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
-    public String getRemark() {
-        return remark;
-    }
+	public String getOperateType() {
+		return operateType;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
+	public void setOperateType(String operateType) {
+		this.operateType = operateType == null ? null : operateType.trim();
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark == null ? null : remark.trim();
+	}
 }

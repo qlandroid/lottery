@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.manifest.ManifestLBiChangeMapper">
+	<resultMap id="SearchResultMap"
+		type="org.ql.shopping.pojo.manifest.ManifestLBiChangeSearch" extends="BaseResultMap">
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="client_id" property="clientId" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="zhifubao" property="zhifubao" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="docNo" property="docNo" jdbcType="VARCHAR" />
+		<result column="expendDocNo" property="expendDocNo" jdbcType="VARCHAR" />
+		<result column="incomeDocNo" property="incomeDocNo" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getListCountByParams" resultType="java.lang.Integer"
+		parameterType="org.ql.shopping.pojo.manifest.ManifestLBiChangeSearch">
+		SELECT
+		count(*)
+		FROM
+		manifest_l_bi_change AS lbichange
+		LEFT JOIN
+		user_client AS client
+		ON client.user_id = lbichange.user_id
+		LEFT JOIN
+		user_login AS userp ON
+		userp.id = lbichange.user_id
+		LEFT JOIN
+		manifest_income AS income ON
+		lbichange.doc_income_id =
+		income.income_id
+		LEFT JOIN manifest_expend AS
+		expend ON lbichange.doc_expend_id =
+		expend.expend_id
+
+		<where>
+			<include refid="WHERE_AND"></include>
+		</where>
+	</select>
+	<select id="selectListPageByParams" resultMap="SearchResultMap"
+		parameterType="org.ql.shopping.pojo.manifest.ManifestLBiChangeSearch">
+		SELECT
+		lbichange.change_doc_id,
+		lbichange.type,
+		lbichange.operate_date,
+		lbichange.user_id,
+		lbichange.remark,
+		lbichange.operate_type,
+		client.phone,
+		client.client_id,
+		client.`name`,
+		client.zhifubao,
+		userp.account,
+		expend.doc_no AS expendDocNo,
+		income.income_doc_no AS incomeDocNo
+		FROM
+		manifest_l_bi_change AS lbichange
+		LEFT JOIN user_client AS client
+		ON client.user_id = lbichange.user_id
+		LEFT JOIN user_login AS userp ON
+		userp.id = lbichange.user_id
+		LEFT JOIN manifest_income AS income ON
+		lbichange.doc_income_id =
+		income.income_id
+		LEFT JOIN manifest_expend AS
+		expend ON lbichange.doc_expend_id =
+		expend.expend_id
+
+		<where>
+			<include refid="WHERE_AND"></include>
+		</where>
+
+
+		GROUP BY
+		lbichange.operate_date
+		<if test="pageSize != null and firstIndex != null">
+			limit #{firstIndex},#{pageSize}
+		</if>
+
+	</select>
+
+	<sql id="WHERE_AND">
+		<trim prefixOverrides="AND">
+			<if test="changeDocId != null">
+				AND change_doc_id = #{changeDocId,jdbcType=INTEGER}
+			</if>
+			<if test=" type != null">
+				AND type = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test=" operateDate != null">
+				AND operate_date = #{operateDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test=" userId != null">
+				AND user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="operateType != null">
+				AND operate_type = #{operateType,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null">
+				AND phone = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="clientId != null">
+				AND client_id = #{clientId,jdbcType=INTEGER}
+			</if>
+			<if test="name != null">
+				AND name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="zhifubao != null">
+				AND zhifubao = #{zhifubao,jdbcType=VARCHAR}
+			</if>
+			<if test="expendDocNo != null">
+				AND expend.doc_no = #{expendDocNo,jdbcType=VARCHAR}
+			</if>
+			<if test="incomeDocNo != null">
+				AND income.income_doc_no =
+				#{incomeDocNo,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</sql>
+</mapper>
