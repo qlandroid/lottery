@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.user.UserClientMapper">
+
+	<resultMap id="SearchServiceResultMap" type="org.ql.shopping.pojo.user.UserClientSSearch"
+		extends="BaseResultMap">
+	</resultMap>
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		DELETE FROM
+		user_client
+		WHERE user_id = ${userId}
+	</delete>
+
+	<update id="updateLBi" parameterType="org.ql.shopping.pojo.user.UserClientSSearch">
+		UPDATE user_client SET l_bi
+		= #{lBi,jdbcType=INTEGER}
+		WHERE user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	
+
+	<!-- 通过条件查询，分页 -->
+	<select id="selectListPageByParams" resultMap="SearchServiceResultMap"
+		parameterType="org.ql.shopping.pojo.user.UserClientSSearch">
+		SELECT user_login.account,
+		user_login.pw,
+		user_client.l_bi,
+		user_client.user_id,
+		user_client.phone,
+		user_client.client_id,
+		user_client.`name`,
+		user_client.zhifubao
+		FROM user_login INNER JOIN
+		user_client ON user_login.id =
+		user_client.user_id
+		<where>
+			<include refid="WHERE_AND"></include>
+		</where>
+		<if test="pageSize != null and firstIndex != null">
+			LIMIT
+			#{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<!-- 获得数量 -->
+	<select id="getListCountByParams" resultType="java.lang.Integer"
+		parameterType="org.ql.shopping.pojo.user.UserClientSSearch">
+		SELECT count(*)
+		FROM user_login INNER JOIN
+		user_client ON user_login.id
+		=
+		user_client.user_id
+		<where>
+			<include refid="WHERE_AND"></include>
+		</where>
+	</select>
+	<sql id="WHERE_AND">
+		<trim prefixOverrides="AND">
+			<if test="account != null">
+				AND user_login.account = #{account,jdbcType=VARCHAR}
+			</if>
+			<if test="pw != null">
+				AND user_login.pw = #{pw,jdbcType=VARCHAR}
+			</if>
+			<if test="lBi != null">
+				AND user_client.l_bi = #{lBi,jdbcType=INTEGER}
+			</if>
+			<if test="phone != null">
+				AND user_client.phone = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="clientId != null">
+				AND user_client.client_id = #{clientId,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				AND user_client.`name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="zhifubao != null">
+				AND user_client.zhifubao = #{zhifubao,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</sql>
+</mapper>

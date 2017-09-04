@@ -1,13 +1,14 @@
 package org.ql.shopping.pojo.manifest;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
-public class IncomeManifest {
+import org.ql.shopping.pojo.Model;
 
-	private Long incomeId;// 任务单Id;
+public class IncomeManifest extends Model{
 
-	private Long userId;// 所属用户id
+	private Integer incomeId;// 任务单Id;
+
+	private Integer userId;// 所属用户id
 	private String name;
 	private String account;
 	private Timestamp createDate;// 充值日期
@@ -20,11 +21,6 @@ public class IncomeManifest {
 	private String status;// 订单状态；当前交易状态0-未支付，1-支付完成，2-订单超时，3-取消订单
 
 	private String zhifubaoDoc;// 支付宝的订单
-	private Long page; // 查询的当前页数
-	private Integer pageSize;// 查询当前页数的数量
-	private Long total;// 总数量
-	private Long pageTotal;// 一共有多少页
-	private Long firstIndex;// 从第几条数据开始查询
 
 	private String incomeDocNo;// 当前任务单的单据号
 
@@ -71,19 +67,19 @@ public class IncomeManifest {
 		this.totalSelectPayMoney = totalSelectPayMoney;
 	}
 
-	public Long getIncomeId() {
+	public Integer getIncomeId() {
 		return incomeId;
 	}
 
-	public void setIncomeId(Long incomeId) {
+	public void setIncomeId(Integer incomeId) {
 		this.incomeId = incomeId;
 	}
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -159,45 +155,6 @@ public class IncomeManifest {
 		this.zhifubaoDoc = zhifubaoDoc;
 	}
 
-	public Long getPage() {
-		return page;
-	}
-
-	public void setPage(Long page) {
-		this.page = page;
-	}
-
-	public Integer getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	public Long getTotal() {
-		return total;
-	}
-
-	public void setTotal(Long total) {
-		this.total = total;
-	}
-
-	public Long getPageTotal() {
-		return pageTotal;
-	}
-
-	public void setPageTotal(Long pageTotal) {
-		this.pageTotal = pageTotal;
-	}
-
-	public Long getFirstIndex() {
-		return firstIndex;
-	}
-
-	public void setFirstIndex(Long firstIndex) {
-		this.firstIndex = firstIndex;
-	}
 
 	public String getIncomeDocNo() {
 		return incomeDocNo;

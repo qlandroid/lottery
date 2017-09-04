@@ -6,23 +6,17 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.logging.log4j.Log4jImpl;
 import org.ql.shopping.code.Code;
 import org.ql.shopping.exception.AccountNotFindException;
 import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.exception.PasswordErrorException;
-import org.ql.shopping.pojo.params.ListParams;
-import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.result.Result;
-import org.ql.shopping.pojo.result.Rows;
-import org.ql.shopping.pojo.user.UserClient;
+import org.ql.shopping.pojo.user.UserClientSSearch;
 import org.ql.shopping.pojo.user.UserLogin;
 import org.ql.shopping.service.user.IUserClientManagerService;
 import org.ql.shopping.service.user.IUserLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -117,7 +111,7 @@ public class UserLoginController {
 			// 添加用户
 			mUserService.inserteUser(regUser);
 			// 创建当前用户个人详情，并设置当前账号的唯一账号ID；
-			UserClientManagerParams createClient = new UserClientManagerParams();
+			UserClientSSearch createClient = new UserClientSSearch();
 			createClient.setId(regUser.getId());
 			mUserClientService.inserte(createClient);
 

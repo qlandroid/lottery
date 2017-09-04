@@ -54,8 +54,6 @@ public class IncomeManfestController {
 			Double selectInQty = mIncomeManifestManagerService.getTotalPayMoney(params);
 			params.setTotalSelectInQty(selectInQty);
 
-			params.setTotal(totalCount);
-			params.setPageTotal(pageTotal);
 			model.addAttribute("listUrl", url("/operate/list"));
 			model.addAttribute("serachViewUrl", url("/view/search"));
 			model.addAttribute("params", params);

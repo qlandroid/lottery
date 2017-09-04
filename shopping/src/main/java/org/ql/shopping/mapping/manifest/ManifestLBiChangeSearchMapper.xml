@@ -11,6 +11,8 @@
 		<result column="docNo" property="docNo" jdbcType="VARCHAR" />
 		<result column="expendDocNo" property="expendDocNo" jdbcType="VARCHAR" />
 		<result column="incomeDocNo" property="incomeDocNo" jdbcType="VARCHAR" />
+		<result column="incomeQty" property="incomeQty" jdbcType="INTEGER" />
+		<result column="expendQty" property="expendQty" jdbcType="INTEGER" />
 	</resultMap>
 
 	<select id="getListCountByParams" resultType="java.lang.Integer"
@@ -51,6 +53,8 @@
 		client.`name`,
 		client.zhifubao,
 		userp.account,
+		income.income_in_qty AS incomeQty,
+		expend.expend_qty AS expendQty,
 		expend.doc_no AS expendDocNo,
 		income.income_doc_no AS incomeDocNo
 		FROM

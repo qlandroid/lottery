@@ -1,5 +1,7 @@
 package org.ql.shopping.pojo.manifest;
 
+import java.math.BigDecimal;
+
 public class ManifestLBiChangeSearch extends ManifestLBiChange {
 	private String phone;
 	private Integer clientId;
@@ -11,6 +13,23 @@ public class ManifestLBiChangeSearch extends ManifestLBiChange {
 	private String expendDocNo;
 	private String incomeDocNo;
 	
+	private BigDecimal incomeQty;//收入金额
+	private BigDecimal expendQty;//支出金额
+	
+	
+	
+	public BigDecimal getIncomeQty() {
+		return incomeQty;
+	}
+	public void setIncomeQty(BigDecimal incomeQty) {
+		this.incomeQty = incomeQty;
+	}
+	public BigDecimal getExpendQty() {
+		return expendQty;
+	}
+	public void setExpendQty(BigDecimal expendQty) {
+		this.expendQty = expendQty;
+	}
 	public String getPhone() {
 		return phone;
 	}

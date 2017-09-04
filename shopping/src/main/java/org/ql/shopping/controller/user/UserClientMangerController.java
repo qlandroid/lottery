@@ -1,5 +1,6 @@
 package org.ql.shopping.controller.user;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,11 +14,14 @@ import org.ql.shopping.exception.AccountErrorException;
 import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.exception.ParamsErrorException;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
+import org.ql.shopping.pojo.manifest.ManifestLBiChange;
 import org.ql.shopping.pojo.params.RechagerHanderLBiParams;
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.result.Result;
 import org.ql.shopping.pojo.result.UrlResult;
 import org.ql.shopping.pojo.user.UserClient;
+import org.ql.shopping.pojo.user.UserClientSSearch;
+import org.ql.shopping.service.manifest.ILBiManifestManagerService;
 import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
 import org.ql.shopping.service.user.IUserClientManagerService;
 import org.ql.shopping.util.HttpUrl;
@@ -42,6 +46,8 @@ public class UserClientMangerController {
 	private IUserClientManagerService mUserClientManagerService;
 	@Resource
 	private IManifestIncomeManagerService mIncomeManifestManagerService;
+	@Resource
+	private ILBiManifestManagerService mLBiManifestMangaerService;
 
 	private String url(String url) {
 		return HttpUrl.replaceUrl("/userClient" + url);
@@ -66,8 +72,8 @@ public class UserClientMangerController {
 	}
 
 	@RequestMapping("/view/change")
-	public String showChangeView(UserClientManagerParams params, Model model) {
-		UserClient queryUser = mUserClientManagerService.findUserById(params.getId());
+	public String showChangeView(UserClientSSearch params, Model model) {
+		UserClient queryUser = mUserClientManagerService.findUserByUserId(params.getId());
 		model.addAttribute("user", queryUser);
 		model.addAttribute("changeUrl", url("/operate/change"));
 		return "/page/user_client_change.jsp";
@@ -91,10 +97,10 @@ public class UserClientMangerController {
 	 * @return
 	 */
 	@RequestMapping("/view/recharge")
-	public String showRechargeView(Model model, UserClient params) {
+	public String showRechargeView(Model model, UserClientSSearch params) {
 
 		try {
-			UserClient userClient = mUserClientManagerService.findUserById(new Long(params.getId()));
+			UserClient userClient = mUserClientManagerService.findUserByUserId(params.getId());
 			model.addAttribute("user", userClient);
 			model.addAttribute("submitUrl", url("/operate/rechager"));
 
@@ -112,12 +118,12 @@ public class UserClientMangerController {
 	 * @return
 	 */
 	@RequestMapping("/list")
-	public ModelAndView getUserList(UserClientManagerParams params) {
+	public ModelAndView getUserList(UserClientSSearch params) {
 		ModelAndView mav = new ModelAndView();
 		try {
-			List<UserClient> list = mUserClientManagerService.findUser(params);
-			Long total = mUserClientManagerService.getTotalCount(params);
-			Long pageTotal = total / params.getPageSize() + 1;
+			List<UserClientSSearch> list = mUserClientManagerService.findUser(params);
+			Integer total = mUserClientManagerService.getListCountByParams(params);
+			Integer pageTotal = total / params.getPageSize() + 1;
 			mav.addObject("pageTotal", pageTotal);
 			mav.addObject("total", total);
 
@@ -173,7 +179,7 @@ public class UserClientMangerController {
 
 	@RequestMapping(value = "/operate/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Result addUser(HttpServletRequest request, UserClientManagerParams params) {
+	public Result addUser(HttpServletRequest request, UserClientSSearch params) {
 		Result result = new Result();
 		try {
 			String account = params.getAccount();
@@ -184,7 +190,6 @@ public class UserClientMangerController {
 			if (StringUtils.isEmpty(pw)) {
 				throw new AccountErrorException("密码不能为空");
 			}
-			account = new String(account.getBytes(), "gbk");
 			UserClient u = mUserClientManagerService.findUserByAccount(params.getAccount());
 			if (u != null) {
 				throw new LotteryException("账号已存在，请重新填写");
@@ -205,10 +210,10 @@ public class UserClientMangerController {
 
 	@RequestMapping(value = "/operate/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public Result deleteUser(HttpServletRequest request, UserClientManagerParams params) {
+	public Result deleteUser(HttpServletRequest request, UserClientSSearch params) {
 		Result result = new Result();
 		try {
-			Long id = params.getId();
+			Integer id = params.getUserId();
 			if (id == null) {
 				throw new LotteryException("参数不正确");
 			}
@@ -225,10 +230,10 @@ public class UserClientMangerController {
 
 	@RequestMapping(value = "/operate/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Result updateUser(HttpServletRequest request, UserClientManagerParams params) {
+	public Result updateUser(HttpServletRequest request, UserClientSSearch params) {
 		Result result = new Result();
 		try {
-			Long id = params.getId();
+			Integer id = params.getUserId();
 			if (id == null) {
 				throw new LotteryException("参数不正确");
 			}
@@ -249,6 +254,11 @@ public class UserClientMangerController {
 		Result result = new Result();
 		try {
 			checkRechagerParams(params);
+			
+			UserClientSSearch findUserById = mUserClientManagerService.findUserByUserId(params.getUserId());
+			if(findUserById == null){
+				throw new LotteryException("充值用户不存在，请检查");
+			}
 			// 先生成订单
 			IncomeManifest createManifest = new IncomeManifest();
 			createManifest.setUserId(params.getUserId());
@@ -259,6 +269,7 @@ public class UserClientMangerController {
 			// 完成订单
 			mIncomeManifestManagerService.incomeSuccessById(createManifest.getIncomeId(), params.getRemark(),
 					C.CHANGE_OPERATE_TYPE_OTHER);
+			
 			result.setCode(Code.SUCCESS);
 
 		} catch (Exception e) {
@@ -270,7 +281,7 @@ public class UserClientMangerController {
 	}
 
 	private void checkRechagerParams(RechagerHanderLBiParams params) {
-		Long id = params.getUserId();
+		Integer id = params.getUserId();
 		Double payMoney = params.getPayMoney();
 		Double inQty = params.getInQty();
 		String mark = params.getRemark();

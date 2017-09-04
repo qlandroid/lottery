@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.user.UserClient;
+import org.ql.shopping.pojo.user.UserClientSSearch;
 
 public interface IUserClientManagerService {
 
@@ -12,14 +13,14 @@ public interface IUserClientManagerService {
 	 * 
 	 * @param params
 	 */
-	public void inserte(UserClientManagerParams params);
+	public void inserte(UserClientSSearch params);
 
 	/**
 	 * 通过用户的参数进行删除用户
 	 * 
 	 * @param params
 	 */
-	public void deleteUser(UserClientManagerParams params);
+	public void deleteUser(UserClientSSearch params);
 
 	/**
 	 * 分页查询
@@ -27,15 +28,15 @@ public interface IUserClientManagerService {
 	 * @param params
 	 * @return
 	 */
-	public List<UserClient> findUser(UserClientManagerParams params);
+	public List<UserClientSSearch> findUser(UserClientSSearch params);
 
-	public UserClient findUserById(Long id);
+	public UserClientSSearch findUserByUserId(Integer id);
 
-	public void updateUser(UserClientManagerParams params);
+	public void updateUser(UserClientSSearch params);
 
-	public Long getTotalCount(UserClientManagerParams params);
+	public Integer getListCountByParams(UserClientSSearch params);
 
-	public UserClient findUserByAccount(String account);
+	public UserClientSSearch findUserByAccount(String account);
 	
 	public void updateLBi(Double lbi,Integer id);
 

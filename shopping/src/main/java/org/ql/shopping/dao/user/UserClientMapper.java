@@ -1,7 +1,10 @@
 package org.ql.shopping.dao.user;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.ql.shopping.pojo.user.UserClient;
+import org.ql.shopping.pojo.user.UserClientSSearch;
 
 import client.pojo.user.UserClientSearch;
 
@@ -31,4 +34,19 @@ public interface UserClientMapper {
 	UserClientSearch selectDetailsByAccount(@Param("account") String account);
 
 	UserClientSearch selectDetailsByAccountAndPw(UserClientSearch params);
+
+	void deleteByUserId(@Param("userId") Integer userId);
+
+	List<UserClientSSearch> selectListPageByParams(UserClientSSearch params);
+
+	Integer getListCountByParams(UserClientSSearch params);
+
+
+	/**
+	 * 更新积分
+	 * 
+	 * @param user
+	 */
+	void updateLBi(UserClientSSearch user);
+
 }

@@ -19,41 +19,41 @@ public interface IManifestIncomeManagerService {
 	 * 
 	 * @param id
 	 */
-	public void cancelIncomeManifestById(Long id);
+	public void cancelIncomeManifestById(int id);
 
 	/**
 	 * 充值成功
 	 * 
 	 * @param id
 	 */
-	public void incomeSuccessById(Long id);
+	public void incomeSuccessById(int id);
 
 	/**
 	 * 充值成功 并添加备注 默认操作类型为 任务单创建
 	 * 
 	 * @param id
 	 */
-	public void incomeSuccessById(Long id, String remark);
+	public void incomeSuccessById(int id, String remark);
 
 	/**
 	 * 充值成功 并添加备注 操作类型
 	 * 
 	 * @param id
 	 */
-	public void incomeSuccessById(Long id, String remark, String operatetype);
+	public void incomeSuccessById(int id, String remark, String operatetype);
 
 	/**
 	 * 交易超时，取消订单
 	 * 
 	 * @param id
 	 */
-	public void timeOutCancelManifest(Long id);
+	public void timeOutCancelManifest(int id);
 
 	public void deleteBytId(IncomeManifest params);
 
 	public void updateById(IncomeManifest params);
 
-	public IncomeManifest findIncomeManifestById(Long id);
+	public IncomeManifest findIncomeManifestById(int id);
 
 	public List<IncomeManifest> findPageAnd(IncomeManifest params);
 

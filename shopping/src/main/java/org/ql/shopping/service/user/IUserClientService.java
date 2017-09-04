@@ -1,17 +1,15 @@
 package org.ql.shopping.service.user;
 
-import java.util.List;
-
 import org.ql.shopping.pojo.user.UserClient;
 
 public interface IUserClientService {
 
 	public int addUserClient(UserClient user);
 
-	public List<UserClient> findUserClient(UserClient userClient);
+	public UserClient findUserClientByUserId(Integer id);
 
 	public int updateUserClient(UserClient userClient);
 
-	public long deleteUser(long id);
+	public Integer deleteUser(Integer id);
 
 }

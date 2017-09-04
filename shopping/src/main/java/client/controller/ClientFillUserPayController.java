@@ -74,7 +74,7 @@ public class ClientFillUserPayController {
 		try {
 			checkCreateManifestParams(params);
 			Integer userId = TokenUtils.getUserId(params.getToken());
-			UserClient payUser = mUserClientManagerService.findUserById(new Long(userId));
+			UserClient payUser = mUserClientManagerService.findUserByUserId(userId);
 			if (payUser == null) {
 				throw new LotteryException("账号不存在");
 			}
@@ -183,7 +183,7 @@ public class ClientFillUserPayController {
 			if (NumberUtils.isZero(userId)) {
 				throw new LotteryException("未登录");
 			}
-			UserClient payUser = mUserClientManagerService.findUserById(new Long(userId));
+			UserClient payUser = mUserClientManagerService.findUserByUserId(userId);
 			if (payUser == null) {
 				throw new LotteryException("未登录");
 			}
@@ -251,6 +251,7 @@ public class ClientFillUserPayController {
 			manifestChangeP.setDocExpendId(expendManiefstStatus.getExpendId());
 			manifestChangeP.setType(C.CHANGE_TYPE_EXPEND);
 			manifestChangeP.setOperateDate(new Date());
+			manifestChangeP.setUserId(userId);
 			manifestChangeP.setOperateType(C.CHANGE_OPERATE_TYPE_EXPEND);
 			mClientLBichangeManifestService.insert(manifestChangeP);
 			//设置返回值

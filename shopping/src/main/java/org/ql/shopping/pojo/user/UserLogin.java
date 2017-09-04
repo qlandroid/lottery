@@ -3,15 +3,15 @@ package org.ql.shopping.pojo.user;
 import org.ql.shopping.pojo.Model;
 
 public class UserLogin extends Model{
-	private long id;
+	private Integer id;
 	private String account;
 	private String pw;
 
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

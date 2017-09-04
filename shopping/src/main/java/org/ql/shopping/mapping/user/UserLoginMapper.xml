@@ -10,7 +10,7 @@
 		id, account, pw
 	</sql>
 
-	<insert id="inserte" parameterType="org.ql.shopping.pojo.user.UserLogin">
+	<insert id="inserte" useGeneratedKeys="true" keyProperty="id" parameterType="org.ql.shopping.pojo.user.UserLogin">
 		insert into user_login
 		(account,pw) values( #{account,jdbcType=VARCHAR},#{pw,jdbcType=VARCHAR});
 	</insert>

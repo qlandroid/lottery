@@ -35,7 +35,7 @@
 						<th lay-data="{field:'account', width: 90}">所属用户</th>
 						<th
 							lay-data="{field:'operateType', width:120, sort: true ,templet:'#operateTypeStr'}">创建类型</th>
-						<th lay-data="{field:'afterQty', width:120, sort: true}">消费前积分</th>
+						<th lay-data="{field:'afterQty', width:120, sort: true,templet:'#changeQty'}">消费前积分</th>
 						<th
 							lay-data="{field:'remark', width:120,style:'background-color: #990033; color: #fff;' ,sort: true}">备注</th>
 					</tr>
@@ -52,6 +52,13 @@
 			{{ d.incomeDocNo}}
 		{{# }else if(d.type == 0 ){ }}
 			{{ d.expendDocNo}}
+		{{# }}}
+</script>
+<script type="text/html" id="changQty">
+  		{{# if(d.type == 1){ }}
+			{{ d.incomeQty}}
+		{{# }else if(d.type == 0 ){ }}
+			{{ d.expendQty}}
 		{{# }}}
 </script>
 <script type="text/html" id="typeStr">

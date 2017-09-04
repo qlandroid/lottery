@@ -13,11 +13,15 @@ import org.ql.shopping.dao.user.IUserClientManagerDao;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
 import org.ql.shopping.pojo.manifest.ManifestIncomeSearch;
 import org.ql.shopping.pojo.manifest.ManifestLBiChange;
-import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.user.UserClient;
+import org.ql.shopping.service.manifest.ILBiManifestManagerService;
 import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
+import org.ql.shopping.service.user.IUserClientManagerService;
+import org.ql.shopping.service.user.IUserClientService;
 import org.ql.shopping.util.MakeManifest;
+import org.ql.shopping.util.ModelUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("manifestIncomeManagerService")
 public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerService {
@@ -25,9 +29,11 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	@Resource
 	private IIncomeManifestManagerDao mIncomeManifestManagerDao;
 	@Resource
-	private IUserClientManagerDao mUserClientMnagerDao;
+	private IUserClientManagerService mUserClientService;
 	@Resource
 	private ManifestIncomeMapper mManifestIncomeMapper;
+	@Resource
+	private ILBiManifestManagerService mLBiManifestManagerService;
 
 	public void createIncomeManifest(IncomeManifest params) {
 		params.setStatus(C.ManifestStatus.INCOME_STATUS_WAITING);
@@ -46,7 +52,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		mIncomeManifestManagerDao.updateById(params);
 	}
 
-	public IncomeManifest findIncomeManifestById(Long id) {
+	public IncomeManifest findIncomeManifestById(int id) {
 		IncomeManifest params = new IncomeManifest();
 		params.setIncomeId(id);
 		List<IncomeManifest> list = mIncomeManifestManagerDao.findAnd(params);
@@ -57,27 +63,15 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	}
 
 	public List<IncomeManifest> findPageAnd(IncomeManifest params) {
-		setPageAndSise(params);
+		ModelUtils.initPageParams(params);
 		return mIncomeManifestManagerDao.findAnd(params);
 	}
 
 	public List<IncomeManifest> findPageOr(IncomeManifest params) {
-		setPageAndSise(params);
+		ModelUtils.initPageParams(params);
 		return mIncomeManifestManagerDao.findOr(params);
 	}
 
-	private void setPageAndSise(IncomeManifest params) {
-		Long page = params.getPage();
-		Integer pageSize = params.getPageSize();
-
-		if (page == null || page <= 0) {
-			params.setPage(1L);
-		}
-		if (pageSize == null || pageSize <= 0) {
-			params.setPageSize(C.PAGE_SIZE);
-		}
-		params.setFirstIndex((params.getPage() - 1) * params.getPageSize());
-	}
 
 	public Long getToatalCount(IncomeManifest params) {
 		return mIncomeManifestManagerDao.getTotalCount();
@@ -91,7 +85,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		return mIncomeManifestManagerDao.getParamsTotalCountOr(params);
 	}
 
-	public void cancelIncomeManifestById(Long id) {
+	public void cancelIncomeManifestById(int id) {
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
 		i.setEndDate(new Timestamp(System.currentTimeMillis()));
@@ -99,7 +93,7 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		mIncomeManifestManagerDao.updateById(i);
 	}
 
-	public void timeOutCancelManifest(Long id) {
+	public void timeOutCancelManifest(int id) {
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
 		i.setEndDate(new Timestamp(System.currentTimeMillis()));
@@ -110,15 +104,16 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	/**
 	 * 充值成功 修改订单状态， 获得当前用户的积分值， 为用户充值，改变用户详情 充值后的金额保存到任务单 插入 积分变更表中
 	 */
-	public void incomeSuccessById(Long id) {
+	public void incomeSuccessById(int id) {
 		incomeSuccessById(id, "");
 	}
 
-	public void incomeSuccessById(Long id, String remark) {
+	public void incomeSuccessById(int id, String remark) {
 		incomeSuccessById(id, remark, C.CHANGE_OPERATE_TYPE_INCOME);
 	}
 
-	public void incomeSuccessById(Long id, String remark, String operateType) {
+	@Transactional
+	public void incomeSuccessById(int id, String remark, String operateType) {
 		// 通过id,查询到当前交易成功的 详情
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
@@ -126,27 +121,25 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		IncomeManifest incomeDoc = list.get(0);
 
 		// 通过用户Id查询当前用户详情
-		UserClientManagerParams params = new UserClientManagerParams();
-		params.setId(incomeDoc.getUserId());
-		List<UserClient> clientList = mUserClientMnagerDao.findUser(params);
-		UserClient client = clientList.get(0);
+		UserClient client = mUserClientService.findUserByUserId(incomeDoc.getUserId());
+		Double beforeQty = 0d;
+		if (client.getlBi() != null) {
+			// 获得用户的当前积分
+			beforeQty = client.getlBi().doubleValue();
+		}
 
-		// 获得用户的当前积分
-		Double beforeQty = client.getlBi().doubleValue();
 		// 获得充值的积分数量；
 		Double inQty = incomeDoc.getInQty();
 		// 充值后的金额
 		Double afterQty = beforeQty + inQty;
 
 		// 更新用户 积分
-		UserClient afterClient = new UserClient();
-		afterClient.setId(client.getId());
-		afterClient.setlBi(new BigDecimal(afterQty));
-		mUserClientMnagerDao.updateLBi(afterClient);
+		mUserClientService.updateLBi(afterQty, client.getUserId());
 
 		// 更新当前充值表
 		incomeDoc.setAfterQty(afterQty);
 		incomeDoc.setBeforeQty(beforeQty);
+		incomeDoc.setUserId(client.getUserId());
 		incomeDoc.setStatus(C.ManifestStatus.INCOME_STATUS_SUCCESS);
 		Timestamp nowDate = new Timestamp(System.currentTimeMillis());
 		incomeDoc.setEndDate(nowDate);
@@ -158,11 +151,10 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		insertChangeManifest.setDocIncomeId(new Integer(incomeDoc.getIncomeId().toString()));
 		insertChangeManifest.setOperateDate(new Timestamp(System.currentTimeMillis()));
 		insertChangeManifest.setType(C.CHANGE_TYPE_INCOME);
-		insertChangeManifest.setType(C.CHANGE_OPERATE_TYPE_INCOME);
 		insertChangeManifest.setUserId(new Integer(incomeDoc.getUserId().toString()));
 		insertChangeManifest.setOperateType(operateType);
 		insertChangeManifest.setType(C.CHANGE_TYPE_INCOME);
-		//mLBiChangeManagerDao.insert(insertChangeManifest);
+		 mLBiManifestManagerService.addManifest(insertChangeManifest);
 	}
 
 	public Double getTotalPayMoney(IncomeManifest params) {
@@ -181,5 +173,8 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	public long getSearchPageCount(ManifestIncomeSearch params) {
 		return mManifestIncomeMapper.getSearchPageCount(params);
 	}
+
+
+
 
 }

@@ -73,7 +73,7 @@
 		</div>
 		<div class="btn-center">
 			<button class="layui-btn layui-btn-warm btn-yes fl"
-				data-url="${submitUrl }" data-id="${user.id }">确定充值</button>
+				data-url="${submitUrl }" data-id="${user.userId }">确定充值</button>
 			<button class="layui-btn fl btn—cancel">取消</button>
 		</div>
 

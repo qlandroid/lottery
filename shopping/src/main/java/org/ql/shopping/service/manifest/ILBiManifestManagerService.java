@@ -13,12 +13,7 @@ public interface ILBiManifestManagerService {
 
 	public void deleteById(ManifestLBiChange manager);
 
-	public Long getTotalCount(ManifestLBiChange manager);
-
-	public Long getTotalCountOr(ManifestLBiChange manager);
-
-	public Long getTotalCountAnd(ManifestLBiChange manager);
-	
 	public List<ManifestLBiChangeSearch> selectListPageByParams(ManifestLBiChangeSearch params);
+
 	public Integer getListCountByParams(ManifestLBiChangeSearch params);
 }

@@ -8,17 +8,17 @@ package org.ql.shopping.pojo.params;
  */
 public class RechagerHanderLBiParams {
 
-	private Long userId;// 用户唯一id
+	private Integer userId;// 用户唯一id
 	private Double payMoney;// 支付的金额
 	private Double inQty;// 充值的积分
 	private String zhifubaoDoc;// 支付宝订单
 	private String remark;// 补充说明
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
