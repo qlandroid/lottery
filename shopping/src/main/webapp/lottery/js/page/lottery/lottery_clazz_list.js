@@ -14,8 +14,8 @@ $(document).ready(layui.use([ 'laypage','tree', 'layer' ], function() {
 			  ,nodes: data.list
 			  ,click:function(nodes){
 				  console.log(nodes);
-				  if(nodes.type== 2){
-					  $("#clazzFrame").attr("src",nodes.url+"?id="+nodes.id);
+				  if(nodes.type== 1){
+					  $("#clazzFrame").attr("src",nodes.url+"?lotteryTypeId="+nodes.id);
 				  }
 			  }
 			});

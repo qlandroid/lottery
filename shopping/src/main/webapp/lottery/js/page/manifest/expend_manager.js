@@ -5,8 +5,6 @@ $(document).ready(layui.use([ 'laypage', 'layer','table' ], function() {
 	laypage = layui.laypage;
 	layer = layui.layer;
 
-	var d = getParams();
-	http(d);
 
 	$("#btn-search").on("click", function() {
 		var url = $(this).data('url');

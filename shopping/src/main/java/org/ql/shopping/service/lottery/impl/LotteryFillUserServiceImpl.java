@@ -26,7 +26,7 @@ public class LotteryFillUserServiceImpl implements ILotteryFillUserService {
 		return mLotteryFillUserMapper.updateByPrimaryKeySelective(params);
 	}
 
-	public List<LotteryFillUser> selectByParams(LotteryFillUser params) {
+	public List<LotteryFillUser> selectPageByParams(LotteryFillUser params) {
 		ModelUtils.initPageParams(params);
 		return mLotteryFillUserMapper.selectByParams(params);
 	}
@@ -40,7 +40,7 @@ public class LotteryFillUserServiceImpl implements ILotteryFillUserService {
 	}
 
 
-	public List<LotteryFillUser> selectAllByOpenId(LotteryFillUser params) {
+	public List<LotteryFillUser> selectPageByOpenId(LotteryFillUser params) {
 		ModelUtils.initPageParams(params);
 		return mLotteryFillUserMapper.selectByParams(params);
 	}
@@ -66,6 +66,10 @@ public class LotteryFillUserServiceImpl implements ILotteryFillUserService {
 	}
 
 	public List<FillUserDetails> selectUserDetailsByOpenId(Integer openId) {
+		return mLotteryFillUserMapper.selectBuyUserListByOpenId(openId);
+	}
+
+	public List<FillUserDetails> selectAllUserByOpenId(Integer openId) {
 		return mLotteryFillUserMapper.selectBuyUserListByOpenId(openId);
 	}
 

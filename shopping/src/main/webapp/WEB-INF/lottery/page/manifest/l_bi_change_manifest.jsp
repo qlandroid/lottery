@@ -28,16 +28,18 @@
 						<th lay-data="{field:'id', width:80, sort: true}">ID</th>
 						<th
 							lay-data="{field:'docNo', width:260, sort: true,templet:'#fdocNo'}">订单号</th>
-						<th lay-data="{field:'type', width:135, sort: true,templet:'#typeStr'}">类型</th>
+						<th
+							lay-data="{field:'type', width:70, sort: true,templet:'#typeStr'}">类型</th>
+						<th
+							lay-data="{field:'afterQty', width:120,style:'background:#eff', sort: true,templet:'#changeQty'}">消费积分</th>
+
 						<th
 							lay-data="{field:'createTime', width:180,templet:'#fCreateDate'}">操作时间</th>
 
 						<th lay-data="{field:'account', width: 90}">所属用户</th>
 						<th
 							lay-data="{field:'operateType', width:120, sort: true ,templet:'#operateTypeStr'}">创建类型</th>
-						<th lay-data="{field:'afterQty', width:120, sort: true,templet:'#changeQty'}">消费前积分</th>
-						<th
-							lay-data="{field:'remark', width:120,style:'background-color: #990033; color: #fff;' ,sort: true}">备注</th>
+						<th lay-data="{field:'remark', width:120,sort: true}">备注</th>
 					</tr>
 				</thead>
 			</table>
@@ -49,16 +51,16 @@
 </script>
 <script type="text/html" id="fdocNo">
   		{{# if(d.type == 1){ }}
-			{{ d.incomeDocNo}}
+			 {{ d.incomeDocNo}}
 		{{# }else if(d.type == 0 ){ }}
-			{{ d.expendDocNo}}
+			 {{ d.expendDocNo}}
 		{{# }}}
 </script>
-<script type="text/html" id="changQty">
+<script type="text/html" id="changeQty">
   		{{# if(d.type == 1){ }}
-			{{ d.incomeQty}}
+			+{{ d.incomeQty}}
 		{{# }else if(d.type == 0 ){ }}
-			{{ d.expendQty}}
+			-{{ d.expendQty}}
 		{{# }}}
 </script>
 <script type="text/html" id="typeStr">

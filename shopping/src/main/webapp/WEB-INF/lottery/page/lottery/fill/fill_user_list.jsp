@@ -20,22 +20,25 @@
 <input class="layui-hide" data-id="${fillOpenId}">
 	<div class="content-tab-body">
 		<table class="layui-table" lay-filter="lotteryList"
-			lay-data="{height:800, url:'${fillUserList }?lotteryFillOpenId=${fillOpenId }', page:true, id:'lotteryList'}">
+			lay-data="{ url:'${fillUserList }?lotteryFillOpenId=${fillOpenId }', page:true, id:'lotteryList'}">
 			<thead>
 				<tr>
 					<th lay-data="{field:'id', width:80, sort: true}">ID</th>
 					<th
 						lay-data="{field:'account', width:170, sort: true}">账号</th>
 					<th lay-data="{field:'lotteryFillBuyQty', width:135, sort: true}">购买数量</th>
-					<th lay-data="{field:'createTime', width:120,templet:'#fNumber'}">购买时间</th>
+					<th lay-data="{field:'createTime', width:180,templet:'#fCreateDate'}">购买时间</th>
 
-					<th lay-data="{field:'docNo', width: 90}">订单号</th>
-					<th
-						lay-data="{fixed: 'right', width:260, align:'center', toolbar: '#barDemo'}"></th>
+					<th lay-data="{field:'docNo', width: 240}">订单号</th>
 				</tr>
 			</thead>
 		</table>
 	</div>
+	
+	<script type="text/html" id="fCreateDate">
+  		{{# var date = formatDateTime(d.createTime) ; }}
+		{{ date}}
+</script>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/js/jquery.js"></script>
 	<script type="text/javascript"

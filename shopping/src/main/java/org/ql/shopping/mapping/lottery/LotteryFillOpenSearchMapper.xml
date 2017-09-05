@@ -4,7 +4,7 @@
 	<resultMap type="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch"
 		id="SearchResultMap" extends="BaseResultMap">
 		<result column="account" property="createUserName" jdbcType="VARCHAR" />
-		<result column="bugQty" property="overBuyQty" jdbcType="VARCHAR" />
+		<result column="buyQty" property="overBuyQty" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<select id="selectByParams" resultMap="BaseResultMap"
@@ -30,87 +30,124 @@
 
 	<select id="selectSearchByParams" resultMap="SearchResultMap"
 		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch">
-		SELECT fopen.lottery_fill_open_id,
-		fopen.open_number,
-		fopen.lottery_fill_creater_date,
-		fopen.lottery_fill_end_date,
-		fopen.create_user_id,
-		fopen.fill_l_bi,
-		fopen.award_l_bi,
-		fopen.send_status,
-		fopen.lottery_fill_unit_price,
-		fopen.lottery_type_id,
-		fopen.lottery_fill_name,
-		fopen.lottery_stage,
-		SUM(fuser.lottery_fill_buy_qty) AS bugQty,
-		user_manager.account
+		SELECT
+		a.lottery_fill_open_id,
+		a.open_number,
+		a.lottery_fill_creater_date,
+		a.lottery_fill_end_date,
+		a.create_user_id,
+		a.fill_l_bi,
+		a.award_l_bi,
+		a.send_status,
+		a.lottery_fill_unit_price,
+		a.lottery_type_id,
+		a.lottery_fill_name,
+		a.lottery_stage,
+		IFNULL(b.qty,0)
+		AS buyQty,
+		muser.account,
+		muser.power,
+		muser.`name`,
+		muser.phone,
+		muser.address
 		FROM
-		lottery_fill_open fopen LEFT JOIN user_manager ON
-		fopen.create_user_id
-		= user_manager.id
-		LEFT JOIN lottery_fill_user fuser
-		ON
-		fopen.lottery_fill_open_id = fuser.lottery_fill_open_id
-		AND
-		fuser.lottery_fill_status = '1'
+		lottery_fill_open AS a
+		LEFT JOIN (select
+		lottery_fill_open_id, sum(lottery_fill_buy_qty) qty
+		from
+		lottery_fill_user 
+		WHERE lottery_fill_user.lottery_fill_status = '1'
+		group by lottery_fill_open_id ) AS b ON
+		a.lottery_fill_open_id =
+		b.lottery_fill_open_id ,
+		user_manager AS muser
+
 
 		<where>
-			<trim prefixOverrides="AND">
-				<if test="openNumber != null">
-					AND fopen.open_number =
-					#{openNumber,jdbcType=VARCHAR}
-				</if>
-				<if test="createUserId != null">
-					AND fopen.create_user_id =
-					#{createUserId,jdbcType=INTEGER}
-				</if>
-				<if test="sendStatus != null">
-					AND fopen.send_status =
-					#{sendStatus,jdbcType=VARCHAR}
-				</if>
-				<if test="lotteryFillName != null">
-					AND fopen.lottery_fill_name =
-					#{lotteryFillName,jdbcType=VARCHAR}
-				</if>
-				<if test="lotteryStage != null">
-					AND fopen.lottery_stage =
-					#{lotteryStage,jdbcType=VARCHAR}
-				</if>
-				<if test="openNumber != null">
-					AND fopen.open_number =
-					#{openNumber,jdbcType=VARCHAR}
-				</if>
-				<if test="createUserName != null">
-					AND user_manager.account =
-					#{createUserName,jdbcType=VARCHAR}
-				</if>
-			</trim>
+			<include refid="WHERE_SEARCH_PARAMS"></include>
 		</where>
 		ORDER BY
-		fopen.lottery_fill_creater_date
-		LIMIT #{firstIndex},#{pageSize}
+		a.lottery_fill_creater_date DESC
+		LIMIT
+		#{firstIndex},#{pageSize}
 	</select>
 
 	<select id="getSearchCountParams" resultType="java.lang.Integer"
 		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch">
-		SELECT count(*)
-		FROM lottery_fill_open
-		fill
-		JOIN user_manager userM ON
-		fill.create_user_id =
-		userM.id
-		<where>
-			<include refid="WHERE_FILL_AND"></include>
-			<trim prefixOverrides="AND">
-				<if test="createUserName != null">
-					AND userM.account =
-					#{createUserName,jdbcType=VARCHAR}
-				</if>
+		SELECT
+		count(*)
+		FROM
+		lottery_fill_open AS a
+		LEFT JOIN (select
+		lottery_fill_open_id, sum(lottery_fill_buy_qty) qty
+		from
+		lottery_fill_user
+		WHERE lottery_fill_user.lottery_fill_status = '1'
+		group by lottery_fill_open_id) AS b ON
+		a.lottery_fill_open_id =
+		b.lottery_fill_open_id ,
+		user_manager AS muser
 
-			</trim>
+
+		<where>
+			<include refid="WHERE_SEARCH_PARAMS"></include>
 		</where>
 	</select>
+	<sql id="WHERE_SEARCH_PARAMS">
+		<trim prefixOverrides="AND">
+			<if test="lotteryTypeId">
+				AND a.lottery_type_id = #{lotteryTypeId,jdbcType=INTEGER}
+			</if>
+			<if test="createUserId != null">
+				AND muser.id = #{createUserId,jdbcType=INTEGER}
+			</if>
+			<if test="createAccount != null">
+				AND muser.account =
+				#{createAccount,jdbcType=VARCHAR}
+			</if>
+			<if test="createUserName != null">
+				AND muser.name =
+				#{createUserName,jdbcType=VARCHAR}
+			</if>
+			<if test="lotteryFillOpenId != null">
+				AND a.lottery_fill_open_id =
+				#{lotteryFillOpenId,jdbcType=INTEGER}
+			</if>
+			<if test="openNumber != null">
+				AND a.open_number =
+				#{openNumber,jdbcType=VARCHAR}
+			</if>
+			<if test="createUserId != null">
+				AND a.create_user_id =
+				#{createUserId,jdbcType=INTEGER}
+			</if>
+			<if test="sendStatus != null">
+				AND a.send_status =
+				#{sendStatus,jdbcType=VARCHAR}
+			</if>
+			<if test="lotteryFillName != null">
+				AND a.lottery_fill_name =
+				#{lotteryFillName,jdbcType=VARCHAR}
+			</if>
+			<if test="lotteryStage != null">
+				AND a.lottery_stage =
+				#{lotteryStage,jdbcType=VARCHAR}
+			</if>
+			<if test="openNumber != null">
+				AND a.open_number =
+				#{openNumber,jdbcType=VARCHAR}
+			</if>
 
+			<if test="canSendAward != null">
+				<if test="canSendAward == 1">
+					AND  IFNULL(b.qty,0) = a.fill_l_bi
+				</if>
+				<if test="canSendAward == 0">
+					AND  IFNULL(b.qty,0) &lt; a.fill_l_bi
+				</if>
+			</if>
+		</trim>
+	</sql>
 	<sql id="WHERE_FILL_AND">
 		<trim prefixOverrides="AND">
 			<if test="lotteryFillOpenId != null ">

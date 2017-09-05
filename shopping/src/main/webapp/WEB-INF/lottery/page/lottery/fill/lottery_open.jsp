@@ -14,10 +14,18 @@
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
-	<input class="layui-hide" id="params" see-user="${seeUserList }">
+	<input class="layui-hide" id="params" see-user="${seeUserList }" url='${fillOpenList }'>
+	
+	<div class="">
+		<div class="">
+			<button class="layui-btn btn-reload" data-type="all">查看全部</button>
+			<button class="layui-btn btn-reload" data-type="notAward">未开奖</button>
+			<button class="layui-btn btn-reload" data-type="canAward">可开奖</button>
+		</div>
+	</div>
 	<div class="content-tab-body">
-		<table class="layui-table" lay-filter="lotteryList"
-			lay-data="{height:800, url:'${fillOpenList }', page:true, id:'lotteryList'}">
+		<table id="lotteryList" class="layui-table" lay-filter="lotteryList"
+			lay-data="{ even: true  ,page:true, id:'lotteryList'}">
 			<thead>
 				<tr>
 					<th lay-data="{field:'id', width:80, sort: true}">ID</th>
@@ -40,7 +48,7 @@
 						lay-data="{field:'lotteryFillCreaterDate', width:180, sort: true,templet:'#fCreateDate'}">创建时间</th>
 					<th lay-data="{field:'lotteryFillEndDate', width:180}">结束时间</th>
 					<th
-						lay-data="{fixed: 'right', width:260, align:'center', toolbar: '#barDemo'}"></th>
+						lay-data="{fixed: 'right', width:260, align:'center', toolbar: '#barDemo'}">操作</th>
 				</tr>
 			</thead>
 		</table>

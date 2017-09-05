@@ -19,6 +19,10 @@ public class C {
 		public final static String INCOME_STATUS_TIME_OUT = "2";
 		public final static String INCOME_STATUS_CANCEL = "3";
 	}
+	
+	public static class UserManagerPower{
+		public static final String POWER_ALL = "0";
+	}
 
 	public static class LotteryClazz {
 		/**

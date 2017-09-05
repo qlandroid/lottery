@@ -192,7 +192,7 @@ public class LotteryClazzController {
 			tree.setName(typeItem.getLotteryName());
 			tree.setType(ResultClazzTree.TYPE_TYPE);
 			tree.setId(typeItem.getLotteryTypeId());
-			
+			tree.setUrl(HttpUrl.replaceUrl("/lottery/fill/view/list"));
 			LotteryFillOpen params = new LotteryFillOpen();
 			params.setLotteryTypeId(typeItem.getLotteryTypeId());
 			List<LotteryFillOpen> openList = mLotteryFillOpenService.selectByParams(params);

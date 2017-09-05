@@ -17,7 +17,7 @@ public interface ILotteryFillUserService {
 	 * @param params
 	 * @return
 	 */
-	List<LotteryFillUser> selectByParams(LotteryFillUser params);
+	List<LotteryFillUser> selectPageByParams(LotteryFillUser params);
 
 	/**
 	 * 通过用户id查询所有购买过的彩票 ，
@@ -33,7 +33,7 @@ public interface ILotteryFillUserService {
 	 * @param openId
 	 * @return
 	 */
-	List<LotteryFillUser> selectAllByOpenId(LotteryFillUser openId);
+	List<LotteryFillUser> selectPageByOpenId(LotteryFillUser openId);
 
 	/**
 	 * 通过开奖 ID 获取 用户购买的数量;
@@ -66,5 +66,6 @@ public interface ILotteryFillUserService {
 	 * @return
 	 */
 	List<FillUserDetails> selectUserDetailsByOpenId(Integer openId);
+	
 
 }

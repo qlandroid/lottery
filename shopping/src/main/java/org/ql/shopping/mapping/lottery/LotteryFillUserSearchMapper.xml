@@ -28,7 +28,9 @@
 		lottery_fill_user.lottery_fill_status
 		FROM lottery_fill_user
 		<include refid="WHERE_AND"></include>
-		LIMIT #{firstIndex} ,#{pageSize}
+		<if test="firstIndex != null and pageSize != null">
+			LIMIT #{firstIndex} ,#{pageSize}
+		</if>
 
 	</select>
 
@@ -70,8 +72,10 @@
 		user_login userp ON
 		fuser.user_id = userp.id
 		INNER JOIN
-		manifest_expend expend ON expend.lottery_id =
-		fuser.lottery_fill_user_id AND fopen.lottery_type_id =
+		manifest_expend expend ON
+		expend.lottery_id =
+		fuser.lottery_fill_user_id AND
+		fopen.lottery_type_id =
 		expend.lottery_type_id
 		WHERE
 		fopen.lottery_fill_open_id = #{openId}

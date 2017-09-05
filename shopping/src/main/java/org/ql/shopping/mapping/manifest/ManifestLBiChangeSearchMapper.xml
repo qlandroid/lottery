@@ -34,7 +34,6 @@
 		LEFT JOIN manifest_expend AS
 		expend ON lbichange.doc_expend_id =
 		expend.expend_id
-
 		<where>
 			<include refid="WHERE_AND"></include>
 		</where>
@@ -75,7 +74,7 @@
 		</where>
 
 
-		GROUP BY
+		ORDER BY
 		lbichange.operate_date
 		<if test="pageSize != null and firstIndex != null">
 			limit #{firstIndex},#{pageSize}
