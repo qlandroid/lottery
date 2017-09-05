@@ -2,7 +2,10 @@ package org.ql.shopping.controller.lottery;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +18,7 @@ import org.ql.shopping.exception.ParamsErrorException;
 import org.ql.shopping.pojo.lottery.FillUserDetails;
 import org.ql.shopping.pojo.lottery.LotteryFillOpen;
 import org.ql.shopping.pojo.lottery.LotteryFillOpenSearch;
+import org.ql.shopping.pojo.lottery.LotteryFillUser;
 import org.ql.shopping.pojo.result.Result;
 import org.ql.shopping.pojo.result.Rows;
 import org.ql.shopping.pojo.result.TabelResult;
@@ -202,7 +206,38 @@ public class LotteryFillOpenController {
 			
 			//查询所有购买过的该彩票的用户，
 			List<FillUserDetails> buyUserList = mLotteryFillUserService.selectUserDetailsByOpenId(openF.getLotteryFillOpenId());
-			//todo 
+			//用于存放 购买用户的编号
+			Map<Integer,FillUserDetails> map = new HashMap<Integer, FillUserDetails>();
+			int count = 0;
+			for (int i = 0; i < buyUserList.size(); i++) {
+				FillUserDetails itemUser = buyUserList.get(i);
+				for (int j = 0; j < itemUser.getLotteryFillBuyQty(); j++) {
+					count ++;
+					map.put(j, itemUser);
+				}
+			}
+			//生成随机数，获得中奖用户
+			Random random = new Random();
+			int awardIndex = random.nextInt(count+1);
+			
+			FillUserDetails fillUserDetails = map.get(awardIndex);
+			
+			//更新开奖表，中奖用户ID，中奖号码，
+			LotteryFillOpenSearch updateFillOpen = new LotteryFillOpenSearch();
+			updateFillOpen.setAwardUserId(fillUserDetails.getLotteryFillUserId());
+			updateFillOpen.setOpenNumber(String.valueOf(awardIndex));
+			updateFillOpen.setLotteryFillOpenId(fillUserDetails.getLotteryFillOpenId());
+			updateFillOpen.setStatus(C.LotteryOpen.STATUS_OPEN);
+			mLotteryFillOpenService.updateFillOpenById(params);
+			
+			//更新中奖用户 中的中奖号码			
+			LotteryFillUser updateFillUser = new LotteryFillUser();
+			updateFillUser.setLotteryFillUserId(fillUserDetails.getLotteryFillUserId());
+			updateFillUser.setNumber(String.valueOf(awardIndex));
+			mLotteryFillUserService.updateFillLotteryByKey(updateFillUser);
+			
+			result.setCode(Code.SUCCESS);
+			result.setData(fillUserDetails);
 
 		} catch (Exception e) {
 			logger.error("openLottery", e);

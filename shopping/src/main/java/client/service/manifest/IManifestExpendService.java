@@ -51,5 +51,5 @@ public interface IManifestExpendService {
 	ManifestExpendSearch selectByDocNo(String docNo);
 	
 	ManifestExpendSearch selectByDocNoAndUserId(String docNo,Integer userId);
-
+	
 }

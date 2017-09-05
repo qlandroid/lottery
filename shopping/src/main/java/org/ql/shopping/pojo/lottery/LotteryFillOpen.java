@@ -28,6 +28,28 @@ public class LotteryFillOpen extends Model {
 	private Integer lotteryTypeId;// 所属typeid
 
 	private String lotteryFillName;// 彩票名称
+	
+	private String status;//开奖状态
+	
+	private Integer awardUserId;//中奖用户id
+	
+	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Integer getAwardUserId() {
+		return awardUserId;
+	}
+
+	public void setAwardUserId(Integer awardUserId) {
+		this.awardUserId = awardUserId;
+	}
 
 	public String getLotteryStage() {
 		return lotteryStage;

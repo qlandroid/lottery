@@ -35,6 +35,8 @@
 		openf.lottery_type_id,
 		openf.create_user_id,
 		openf.open_number,
+		openf.status,
+		openf.award_user_id
 		SUM(userf.lottery_fill_buy_qty) AS overBuyQty
 		FROM
 		lottery_fill_open openf
@@ -54,6 +56,8 @@
 		fopen.lottery_fill_creater_date,
 		fopen.fill_l_bi,
 		fopen.award_l_bi,
+		fopen.award_user_id,
+		fopen.status,
 		type.lottery_remark,
 		type.lottery_clazz_id,
 		type.lottery_name,
@@ -128,6 +132,8 @@
 		fopen.lottery_type_id,
 		fopen.lottery_fill_name,
 		fopen.lottery_stage,
+		fopen.status,
+		fopen.award_user_id,
 		fuser.lottery_fill_buy_qty AS userBuyQty
 		FROM manifest_expend mexpend INNER JOIN lottery_fill_user fuser ON
 		mexpend.lottery_id = fuser.lottery_fill_user_id

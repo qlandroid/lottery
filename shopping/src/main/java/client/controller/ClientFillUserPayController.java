@@ -36,6 +36,7 @@ import client.pojo.user.UserClientSearch;
 import client.service.lottery.IClientFillOpenService;
 import client.service.lottery.IClientFillUserService;
 import client.service.manifest.IClientLBiChangeManifestService;
+import client.service.manifest.IClientManifestBuyService;
 import client.service.manifest.IManifestExpendService;
 import client.service.user.IUserManagerService;
 import client.utils.TokenUtils;
@@ -94,6 +95,7 @@ public class ClientFillUserPayController {
 			}
 
 			checkCanBuy(fillOpen, userPayQty);
+			
 			// 生成彩票
 			LotteryFillUser user = new LotteryFillUser();
 			user.setLotteryFillStatus(C.ManifestStatus.INCOME_STATUS_WAITING);

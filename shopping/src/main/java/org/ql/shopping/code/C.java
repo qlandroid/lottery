@@ -30,6 +30,11 @@ public class C {
 		 */
 		public final static Integer MAIN = 0;
 	}
+	public static class LotteryOpen{
+		//是否开奖
+		public final static String STATUS_OPEN = "1";//已经开奖
+		public final static String STATUS_NOT_OPEN = "0";//未开奖
+	}
 
 	public static class LotteryType {
 		public final static String SEND_STATUS_OVER = "1";// 支付状态 已经支付完成
