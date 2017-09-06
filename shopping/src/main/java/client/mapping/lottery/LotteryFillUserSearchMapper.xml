@@ -9,7 +9,7 @@
 	<!-- 通过开奖彩票查询 ，已经支付完成的数量 -->
 	<select id="selectOverBuyByOpenId" resultType="double"
 		parameterType="int">
-		SELECT SUM(fuser.lottery_fill_buy_qty) AS buyTotalQty
+		SELECT IFNULL(SUM(fuser.lottery_fill_buy_qty),0) AS buyTotalQty
 		FROM lottery_fill_user fuser
 		RIGHT OUTER JOIN lottery_fill_open fopen
 		ON fuser.lottery_fill_open_id =

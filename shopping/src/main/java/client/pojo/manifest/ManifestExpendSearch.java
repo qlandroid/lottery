@@ -15,6 +15,16 @@ public class ManifestExpendSearch extends ManifestExpend{
 	private Double unit;//支付的基数
 	private Double payMoney;//支付的总金额
 	
+	private Double overBuyQty;//已经购买该彩票的数量
+	
+	
+	
+	public Double getOverBuyQty() {
+		return overBuyQty;
+	}
+	public void setOverBuyQty(Double overBuyQty) {
+		this.overBuyQty = overBuyQty;
+	}
 	public Integer getFillOpenId() {
 		return fillOpenId;
 	}

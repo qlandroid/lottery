@@ -11,18 +11,17 @@
 		<result column="fillName" property="fillName" jdbcType="VARCHAR" />
 		<result column="lottery_stage" property="lotteryStage"
 			jdbcType="VARCHAR" />
-		<result column="unit" property="unit"
-			jdbcType="INTEGER" />
-		<result column="payMoney" property="payMoney"
-			jdbcType="INTEGER" />
-
+		<result column="unit" property="unit" jdbcType="INTEGER" />
+		<result column="payMoney" property="payMoney" jdbcType="INTEGER" />
+		<result column="overBuyQty" property="overBuyQty" jdbcType="INTEGER" />
 	</resultMap>
 
 	<select id="selectByParams" resultMap="SearchResultMap"
 		parameterType="client.pojo.manifest.ManifestExpendSearch">
 		SELECT
 		mexpend.expend_id,
-		mexpend.create_time , mexpend.expend_qty , mexpend.status
+		mexpend.create_time , mexpend.expend_qty ,
+		mexpend.status
 		,mexpend.user_id ,
 		mexpend.end_time , mexpend.after_qty ,
 		mexpend.before_qty ,
@@ -61,21 +60,22 @@
 		fopen.lottery_stage,
 		fdoc.doc_no,
 		fdoc.create_time,
-		fuser.lottery_fill_buy_qty AS buyQty,
-		fopen.lottery_fill_unit_price AS
-		unit,
-		fuser.lottery_fill_buy_qty * fopen.lottery_fill_unit_price AS
-		payMoney
+		fdoc.lottery_fill_buy_qty AS buyQty,
+		fopen.lottery_fill_unit_price AS unit,
+		IFNULL(
+		fdoc.lottery_fill_buy_qty * fopen.lottery_fill_unit_price,
+		0
+		) AS payMoney
+		FROM
+		lottery_fill_open fopen
+		INNER JOIN (
+		SELECT
+		fdoc.doc_no,fdoc.user_id,fdoc.lottery_type_id,fdoc.create_time,fuser.lottery_fill_buy_qty,fuser.lottery_fill_open_id
 		FROM
 		manifest_expend AS fdoc
-		INNER JOIN lottery_fill_open AS
-		fopen ON
-		fdoc.lottery_type_id =
-		fopen.lottery_type_id
-		INNER JOIN
-		lottery_fill_user AS fuser ON fdoc.user_id = fuser.user_id AND
-		fdoc.lottery_id = fuser.lottery_fill_user_id
-
+		INNER JOIN lottery_fill_user fuser ON fdoc.lottery_id =
+		fuser.lottery_fill_user_id
+		) AS fdoc ON fdoc.lottery_fill_open_id = fopen.lottery_fill_open_id
 		<where>
 			fdoc.doc_no = #{docNo,jdbcType=VARCHAR}
 			AND fdoc.user_id =

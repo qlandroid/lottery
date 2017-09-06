@@ -22,7 +22,8 @@
 		fill.lottery_fill_name,
 		fill.lottery_stage,
 		fill.status,
-		fill.award_user_id
+		fill.award_user_id,
+		fill.award_manifest_id
 		FROM lottery_fill_open fill
 		<where>
 			<include refid="WHERE_FILL_AND"></include>

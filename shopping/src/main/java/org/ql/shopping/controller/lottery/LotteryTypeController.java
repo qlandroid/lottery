@@ -1,12 +1,10 @@
 package org.ql.shopping.controller.lottery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.ql.shopping.code.Code;
-import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.exception.ParamsErrorException;
 import org.ql.shopping.pojo.lottery.LotteryTypeSearch;
 import org.ql.shopping.pojo.lottery.StaticLotteryType;

@@ -17,7 +17,7 @@
 		type="client.pojo.fill.FillOpenSearch">
 		<result column="overBuyQty" property="overBuyQty" jdbcType="DECIMAL" />
 		<result column="totalQty" property="totalQty" jdbcType="DECIMAL" />
-		<result column="userBuyQty" property="userBuyQty" jdbcType="DECIMAL"/>
+		<result column="userBuyQty" property="userBuyQty" jdbcType="DECIMAL" />
 	</resultMap>
 
 	<select id="selectBuyDetails" resultMap="ClientSearch"
@@ -36,13 +36,15 @@
 		openf.create_user_id,
 		openf.open_number,
 		openf.status,
-		openf.award_user_id
-		SUM(userf.lottery_fill_buy_qty) AS overBuyQty
+		openf.award_user_id,
+		IFNULL(SUM(userf.lottery_fill_buy_qty),0) AS overBuyQty
 		FROM
-		lottery_fill_open openf
+		lottery_fill_open
+		openf
 		JOIN
 		lottery_fill_user userf ON
-		userf.lottery_fill_open_id = openf.lottery_fill_open_id
+		userf.lottery_fill_open_id =
+		openf.lottery_fill_open_id
 		AND userf.lottery_fill_status = '1'
 		WHERE
 		openf.lottery_fill_open_id = #{fOpenId}
@@ -54,38 +56,58 @@
 		fopen.lottery_fill_open_id,
 		fopen.open_number,
 		fopen.lottery_fill_creater_date,
+		fopen.lottery_fill_end_date,
+		fopen.create_user_id,
 		fopen.fill_l_bi,
 		fopen.award_l_bi,
+		fopen.send_status,
+		fopen.lottery_fill_unit_price,
+		fopen.lottery_type_id,
+		fopen.lottery_fill_name,
+		fopen.lottery_stage,
+		fopen.`status`,
 		fopen.award_user_id,
-		fopen.status,
-		type.lottery_remark,
-		type.lottery_clazz_id,
-		type.lottery_name,
-		type.lottery_rule,
-		type.lottery_type,
-		Sum(fuser.lottery_fill_buy_qty) AS
-		buyQty
+		IFNULL(buyQty, 0) AS buyQty,
+		lottery_type.lottery_rule,
+		lottery_type.lottery_type,
+		lottery_type.lottery_name,
+		lottery_type.lottery_remark,
+		lottery_type.lottery_clazz_id,
+		lottery_clazz.lottery_clazz_remark,
+		lottery_clazz.lottery_clazz_name,
+		lottery_clazz.lottery_clazz_parent_id,
+		lottery_clazz.lottery_clazz_level
 		FROM
 		lottery_fill_open AS fopen
-		INNER JOIN lottery_type AS type ON
-		fopen.lottery_type_id =
-		type.lottery_type_id
-		INNER JOIN
-		lottery_fill_user AS fuser ON fopen.lottery_fill_open_id =
+		LEFT
+		JOIN (
+		SELECT
+		fuser.lottery_fill_open_id,
+		SUM(fuser.lottery_fill_buy_qty) AS buyQty
+		FROM
+		lottery_fill_user fuser
+		WHERE
+		fuser.lottery_fill_status = '1'
+		GROUP BY
 		fuser.lottery_fill_open_id
-		LEFT JOIN lottery_clazz AS clazz ON
-		clazz.lottery_clazz_id =
-		type.lottery_clazz_id
+		) AS fuser ON fopen.lottery_fill_open_id =
+		fuser.lottery_fill_open_id
+		INNER JOIN lottery_type ON
+		fopen.lottery_type_id =
+		lottery_type.lottery_type_id
+		INNER JOIN
+		lottery_clazz ON lottery_clazz.lottery_clazz_id =
+		lottery_type.lottery_clazz_id
 
 
 		<where>
-			fuser.lottery_fill_status = '1'
-			AND
-			fopen.open_number IS NULL
-			AND
-			type.lottery_type_id
+
+			lottery_type.lottery_type_id
 			=
 			${lotteryTypeId}
+			<if test="status != null">
+				AND fopen.status = #{status,jdbcType=VARCHAR}
+			</if>
 		</where>
 
 		ORDER BY
@@ -100,26 +122,38 @@
 		count(*)
 		FROM
 		lottery_fill_open AS fopen
-		INNER JOIN lottery_type AS
-		type ON fopen.lottery_type_id =
-		type.lottery_type_id
-		INNER JOIN
-		lottery_fill_user AS fuser ON fopen.lottery_fill_open_id =
+		LEFT JOIN (
+		SELECT
+		fuser.lottery_fill_open_id,
+		SUM(fuser.lottery_fill_buy_qty) AS buyQty
+		FROM
+		lottery_fill_user fuser
+		WHERE
+		fuser.lottery_fill_status = '1'
+		GROUP
+		BY
 		fuser.lottery_fill_open_id
-		LEFT JOIN lottery_clazz AS clazz ON
-		clazz.lottery_clazz_id =
-		type.lottery_clazz_id
+		) AS fuser ON fopen.lottery_fill_open_id =
+		fuser.lottery_fill_open_id
+		INNER JOIN lottery_type ON
+		fopen.lottery_type_id =
+		lottery_type.lottery_type_id
+		INNER JOIN
+		lottery_clazz ON lottery_clazz.lottery_clazz_id =
+		lottery_type.lottery_clazz_id
 
 		<where>
-			fopen.open_number IS NULL
-			AND
-			type.lottery_type_id =
+			lottery_type.lottery_type_id =
 			#{lotteryTypeId,jdbcType=INTEGER}
+			<if test="status != null">
+				AND fopen.status = #{status,jdbcType=VARCHAR}
+			</if>
 		</where>
 
 	</select>
 
-	<select id="selectFillOpenByDocNo" parameterType="java.lang.String" resultMap="ClientSearch">
+	<select id="selectFillOpenByDocNo" parameterType="java.lang.String"
+		resultMap="ClientSearch">
 		SELECT fopen.lottery_fill_open_id,
 		fopen.open_number,
 		fopen.lottery_fill_creater_date,
@@ -134,11 +168,15 @@
 		fopen.lottery_stage,
 		fopen.status,
 		fopen.award_user_id,
-		fuser.lottery_fill_buy_qty AS userBuyQty
-		FROM manifest_expend mexpend INNER JOIN lottery_fill_user fuser ON
+		fuser.lottery_fill_buy_qty AS
+		userBuyQty
+		FROM manifest_expend mexpend INNER JOIN lottery_fill_user
+		fuser ON
 		mexpend.lottery_id = fuser.lottery_fill_user_id
-		INNER JOIN lottery_fill_open fopen ON fuser.lottery_fill_open_id =
+		INNER JOIN
+		lottery_fill_open fopen ON fuser.lottery_fill_open_id =
 		fopen.lottery_fill_open_id
-		WHERE mexpend.doc_no = #{docNo,jdbcType=VARCHAR}
+		WHERE mexpend.doc_no =
+		#{docNo,jdbcType=VARCHAR}
 	</select>
 </mapper>

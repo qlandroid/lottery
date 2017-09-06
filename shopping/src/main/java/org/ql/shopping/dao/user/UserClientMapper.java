@@ -49,4 +49,6 @@ public interface UserClientMapper {
 	 */
 	void updateLBi(UserClientSSearch user);
 
+	void updateByUserId(UserClientSSearch params);
+
 }

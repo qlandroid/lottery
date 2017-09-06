@@ -15,7 +15,7 @@
 			<label class="layui-form-label">账号</label>
 			<div class="layui-input-block">
 				<span type="text" id="account" name="title" required lay-verify="required"
-					class="layui-input" data-id="${user.id }"> ${user.account }</span>
+					class="layui-input" data-id="${user.userId }"> ${user.account }</span>
 			</div>
 		</div>
 		<div class="layui-form-item">

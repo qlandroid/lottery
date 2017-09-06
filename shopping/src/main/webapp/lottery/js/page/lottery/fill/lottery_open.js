@@ -39,18 +39,18 @@ $(document).ready(
 					}, {
 						field : 'awardLBi',
 						title : '奖金',
-						width : 80,
+						width : 120,
 						sort : true
 					}, {
 						field : 'overBuyQty',
 						title : '购买数量',
-						width : 80,
+						width : 120,
 						style : 'background-color: #990033; color: #fff;',
 						sort : true
 					}, {
 						field : 'sendStatus',
 						title : '发放奖金',
-						width : 80,
+						width : 120,
 						style : 'background-color: #5FB878; color: #fff;',
 						templet : '#fSendStatus'
 					}, {
@@ -67,7 +67,9 @@ $(document).ready(
 					}, {
 						field : 'lotteryFillEndDate',
 						title : '结束时间',
-						width : 180
+						width : 180,
+						sort : true,
+						templet : '#fEndDate'
 					}, {
 						fixed : 'right',
 						title : '操作',
@@ -112,12 +114,12 @@ $(document).ready(
 					 * params.lotteryStage params.createUserName
 					 */
 					console.log(params);
-					if(params){
+					if (params) {
 						tableD.where = params;
-					}else{
+					} else {
 						tableD.where = {};
 					}
-					
+
 					table.render(tableD);
 
 				}
@@ -127,13 +129,16 @@ $(document).ready(
 					var data = obj.data;
 					console.log(obj);
 					if (obj.event == "openAward") {
-						if (data.number) {
-							if (d.overBuyQty != d.fillLBi) {
-								return false;
-							} else {
-								layer.msg("可以开奖了");
-							}
-						}
+						layer.open({
+							type : 2,
+							title : '购买彩票用户列表',
+							shadeClose : true,
+							shade : 0.8,
+							area : [ '100%', '100%' ],
+							content : $("#params").attr("open-award")
+									+ "?lotteryFillOpenId="
+									+ obj.data.lotteryFillOpenId // iframe的url
+						});
 					} else if (obj.event == "sendAward") {
 						// 发放奖金
 						if (data.sendStatus == 1) {
@@ -141,13 +146,21 @@ $(document).ready(
 						}
 						layer.msg("可以发放奖金");
 					} else if (obj.event == "seeAwardUser") {
-
-						// 查看中奖用户
-						if (!data.number) {
-							return false;
+						if (obj.data.sendStatus != 1) {
+							layer.open({
+								type : 2,
+								title : '购买彩票用户列表',
+								shadeClose : true,
+								shade : 0.8,
+								area : [ '100%', '100%' ],
+								content : $("#params").attr("see-award")
+										+ "?lotteryFillOpenId="
+										+ obj.data.lotteryFillOpenId // iframe的url
+							});
+						}else{
+							layer.msg("奖励积分已经发放",function(){});
 						}
 
-						layer.msg("可以查看中奖用户")
 					} else if (obj.event == "seeBugUser") {
 						layer.open({
 							type : 2,

@@ -1,6 +1,5 @@
 package org.ql.shopping.service.manifest.impl;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import javax.annotation.Resource;
 import org.ql.shopping.code.C;
 import org.ql.shopping.dao.manifest.IIncomeManifestManagerDao;
 import org.ql.shopping.dao.manifest.ManifestIncomeMapper;
-import org.ql.shopping.dao.user.IUserClientManagerDao;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
 import org.ql.shopping.pojo.manifest.ManifestIncomeSearch;
 import org.ql.shopping.pojo.manifest.ManifestLBiChange;
@@ -17,14 +15,14 @@ import org.ql.shopping.pojo.user.UserClient;
 import org.ql.shopping.service.manifest.ILBiManifestManagerService;
 import org.ql.shopping.service.manifest.IManifestIncomeManagerService;
 import org.ql.shopping.service.user.IUserClientManagerService;
-import org.ql.shopping.service.user.IUserClientService;
 import org.ql.shopping.util.MakeManifest;
 import org.ql.shopping.util.ModelUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("manifestIncomeManagerService")
-public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerService {
+public class ManifestIncomeManagerServiceImpl implements
+		IManifestIncomeManagerService {
 
 	@Resource
 	private IIncomeManifestManagerDao mIncomeManifestManagerDao;
@@ -41,6 +39,10 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		// 生成订单号
 		String manifestNo = MakeManifest.makeIncomeManifestNo();
 		params.setIncomeDocNo(manifestNo);
+		mIncomeManifestManagerDao.insert(params);
+	}
+
+	public void createIncomeTypeManifest(IncomeManifest params) {
 		mIncomeManifestManagerDao.insert(params);
 	}
 
@@ -71,7 +73,6 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		ModelUtils.initPageParams(params);
 		return mIncomeManifestManagerDao.findOr(params);
 	}
-
 
 	public Long getToatalCount(IncomeManifest params) {
 		return mIncomeManifestManagerDao.getTotalCount();
@@ -113,7 +114,8 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	}
 
 	@Transactional
-	public void incomeSuccessById(int id, String remark, String operateType) {
+	public void incomeSuccessById(int id, String remark,
+			String changeOperateType) {
 		// 通过id,查询到当前交易成功的 详情
 		IncomeManifest i = new IncomeManifest();
 		i.setIncomeId(id);
@@ -121,7 +123,8 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		IncomeManifest incomeDoc = list.get(0);
 
 		// 通过用户Id查询当前用户详情
-		UserClient client = mUserClientService.findUserByUserId(incomeDoc.getUserId());
+		UserClient client = mUserClientService.findUserByUserId(incomeDoc
+				.getUserId());
 		Double beforeQty = 0d;
 		if (client.getlBi() != null) {
 			// 获得用户的当前积分
@@ -148,13 +151,16 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		// 插入积分变换表
 		ManifestLBiChange insertChangeManifest = new ManifestLBiChange();
 		insertChangeManifest.setRemark(remark);
-		insertChangeManifest.setDocIncomeId(new Integer(incomeDoc.getIncomeId().toString()));
-		insertChangeManifest.setOperateDate(new Timestamp(System.currentTimeMillis()));
+		insertChangeManifest.setDocIncomeId(new Integer(incomeDoc.getIncomeId()
+				.toString()));
+		insertChangeManifest.setOperateDate(new Timestamp(System
+				.currentTimeMillis()));
 		insertChangeManifest.setType(C.CHANGE_TYPE_INCOME);
-		insertChangeManifest.setUserId(new Integer(incomeDoc.getUserId().toString()));
-		insertChangeManifest.setOperateType(operateType);
+		insertChangeManifest.setUserId(new Integer(incomeDoc.getUserId()
+				.toString()));
+		insertChangeManifest.setOperateType(changeOperateType);
 		insertChangeManifest.setType(C.CHANGE_TYPE_INCOME);
-		 mLBiManifestManagerService.addManifest(insertChangeManifest);
+		mLBiManifestManagerService.addManifest(insertChangeManifest);
 	}
 
 	public Double getTotalPayMoney(IncomeManifest params) {
@@ -165,7 +171,8 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 		return mIncomeManifestManagerDao.sumIncomeInQty(params);
 	}
 
-	public List<ManifestIncomeSearch> searchPageOrderByCreateDate(ManifestIncomeSearch params) {
+	public List<ManifestIncomeSearch> searchPageOrderByCreateDate(
+			ManifestIncomeSearch params) {
 
 		return mManifestIncomeMapper.searchPageOrderByCreateDate(params);
 	}
@@ -173,8 +180,5 @@ public class ManifestIncomeManagerServiceImpl implements IManifestIncomeManagerS
 	public long getSearchPageCount(ManifestIncomeSearch params) {
 		return mManifestIncomeMapper.getSearchPageCount(params);
 	}
-
-
-
 
 }

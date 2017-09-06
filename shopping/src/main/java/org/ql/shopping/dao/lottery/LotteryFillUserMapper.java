@@ -43,4 +43,6 @@ public interface LotteryFillUserMapper {
 	FillUserPaySearch selectByDocNo(@Param("docNo")String docNo);
 	
 	List<FillUserDetails> selectBuyUserListByOpenId(@Param("openId") Integer openId);
+
+	FillUserDetails selectAwardUserByOpenId(@Param("openId")Integer openId);
 }

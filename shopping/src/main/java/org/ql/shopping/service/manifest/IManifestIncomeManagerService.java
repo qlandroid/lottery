@@ -14,6 +14,7 @@ public interface IManifestIncomeManagerService {
 	 */
 	public void createIncomeManifest(IncomeManifest params);
 
+	public void createIncomeTypeManifest(IncomeManifest params);
 	/**
 	 * 手动取消订单
 	 * 

@@ -28,12 +28,24 @@ public class LotteryFillOpen extends Model {
 	private Integer lotteryTypeId;// 所属typeid
 
 	private String lotteryFillName;// 彩票名称
+
+	private String status;// 开奖状态
+
+	private Integer awardUserId;// 中奖用户id
+
+	// award_manifest_id
+	private Integer awardManifestId;// 中奖后充值订单 id;
 	
-	private String status;//开奖状态
-	
-	private Integer awardUserId;//中奖用户id
 	
 	
+
+	public Integer getAwardManifestId() {
+		return awardManifestId;
+	}
+
+	public void setAwardManifestId(Integer awardManifestId) {
+		this.awardManifestId = awardManifestId;
+	}
 
 	public String getStatus() {
 		return status;

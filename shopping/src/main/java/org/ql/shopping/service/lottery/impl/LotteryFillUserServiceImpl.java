@@ -69,8 +69,8 @@ public class LotteryFillUserServiceImpl implements ILotteryFillUserService {
 		return mLotteryFillUserMapper.selectBuyUserListByOpenId(openId);
 	}
 
-	public List<FillUserDetails> selectAllUserByOpenId(Integer openId) {
-		return mLotteryFillUserMapper.selectBuyUserListByOpenId(openId);
+	public FillUserDetails selectAwardUserByOpenId(Integer openId) {
+		return mLotteryFillUserMapper.selectAwardUserByOpenId(openId);
 	}
 
 }

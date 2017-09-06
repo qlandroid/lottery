@@ -241,9 +241,9 @@ public class ClientFillUserPayController {
 			//跟新订单状态
 			ManifestExpendSearch expendManiefstStatus = new ManifestExpendSearch();
 			expendManiefstStatus.setExpendId(expendManifest.getExpendId());
-			expendManiefstStatus.setAfterQty(new BigDecimal(haveQty));
+			expendManiefstStatus.setAfterQty(new BigDecimal(lastQty));
 			expendManiefstStatus.setExpendQty(new BigDecimal(payQty));
-			expendManiefstStatus.setBeforeQty(new BigDecimal(lastQty));
+			expendManiefstStatus.setBeforeQty(new BigDecimal(haveQty));
 			expendManiefstStatus.setStatus(C.ManifestStatus.INCOME_STATUS_SUCCESS);
 			expendManiefstStatus.setEndTime(new Date());
 			mManifestExpendService.updateExpendManfiest(expendManiefstStatus);

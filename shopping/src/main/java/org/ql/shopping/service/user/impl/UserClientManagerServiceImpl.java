@@ -60,7 +60,8 @@ public class UserClientManagerServiceImpl implements IUserClientManagerService {
 	}
 
 	public void updateUser(UserClientSSearch params) {
-		mUserClientMapper.updateByPrimaryKeySelective(params);
+		
+		mUserClientMapper.updateByUserId(params);
 	}
 
 	public UserClientSSearch findUserByAccount(String account) {

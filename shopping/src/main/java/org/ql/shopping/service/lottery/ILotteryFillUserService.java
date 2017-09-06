@@ -66,6 +66,13 @@ public interface ILotteryFillUserService {
 	 * @return
 	 */
 	List<FillUserDetails> selectUserDetailsByOpenId(Integer openId);
-	
+
+	/**
+	 * 通过开奖彩票的id 查询中奖用户
+	 * 
+	 * @param openId
+	 * @return
+	 */
+	FillUserDetails selectAwardUserByOpenId(Integer openId);
 
 }

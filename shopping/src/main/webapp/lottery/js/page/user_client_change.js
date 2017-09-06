@@ -9,6 +9,8 @@ $(document).ready(function() {
 		var url = $(this).data("url");
 		layui.use('layer', function() {
 			var layer = layui.layer;
+			
+		console.log(params());
 		$.ajax({
 			url : url,
 			data : params(),
@@ -43,11 +45,29 @@ $(document).ready(function() {
 })
  function params(){
 	var id = $("#account").data("id");
+	var p = {};
+	if(id){
+		p.userId = id;
+	}
 	var pw = $("#pw").val();
+	if(pw){
+		p.pw = pw;
+	}
 	var name = $("#name").val();
+	if(name){
+		p.name = name;
+	}
 	var phone = $("#phone").val();
+	if(phone){
+		p.phone = phone;
+	}
 	var zhifubao = $("#zhifubao").val();
+	if(zhifubao){
+		p.zhifubao = zhifubao;
+	}
 	var clientId = $("#clientId").val(); 
-	
-	return {id:id,pw:pw,name:name,phone:phone,zhifubao:zhifubao,clientId:clientId};
+	if(clientId){
+		p.clientId = clientId;
+	}
+	return p;
  }

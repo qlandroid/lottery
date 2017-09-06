@@ -17,42 +17,36 @@
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
-	<input class="layui-hide" id="params" data-id="${fillOpenId}" data-url="${userListUrl }" >
-
 	<div>
 		<div>
-			开奖号码:<span>${fOpen.openNumber }</span>
+			<h1>彩票信息</h1>
+			<div>开奖号码:${fillOpen.openNumber }</div>
+			
+			<div>期数:${fillOpen.lotteryStage }</div>
+			<div>奖金积分:${fillOpen.awardLBi }</div>
 		</div>
+		<br>
+		<br>
+		<br>
 		<div>
-			满:<span>${fOpen.fillLBi }</span>
-		</div>
-		<div>
-			彩票名称:<span>${fOpen.lotteryFillName }</span>
-		</div>
-		<div>
-			中奖奖金金额:<span>${fOpen.awardLBi }</span>
-		</div>
-		<div>
-			创建日期:<span>${fOpen.lotteryFillCreaterDate }</span>
-		</div>
-		<div>
-			创建日期:<span>${fOpen.lotteryFillCreaterDate }</span>
-		</div>
-		<div>
-			<button class="layui-btn" data-url="${openAwardUrl }" data-id="${fillOpenId }"id="btnOpenAward">开奖</button>
+			<h1>中奖人信息</h1>
+			<div>账号:${awardUser.account }</div>
+			<div>姓名:${awardUser.name }</div>
+			<div>当前积分数量:${awardUser.lBi }</div>
 		</div>
 	</div>
-	<div class="content-tab-body">
-		<table class="layui-table" lay-filter="userList" id="userList"
-			>
-		</table>
+	
+	<div>
+		支付密码:<input class="layui-input" type="password" id="inputPw">
 	</div>
-
+	<div>
+		<button id="sendLBi" class="layui-btn" data-id="${fillOpen.lotteryFillOpenId }" data-url="${sendLBi }">开奖</button>
+	</div>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/js/jquery.js"></script>
 	<script type="text/javascript"
 		src="${contextPath }/lottery/layui/layui.js"></script>
 	<script type="text/javascript"
-		src="${contextPath }/lottery/js/page/lottery/fill/open_award.js"></script>
+		src="${contextPath }/lottery/js/page/lottery/fill/send_award_user.js"></script>
 </body>
 </html>

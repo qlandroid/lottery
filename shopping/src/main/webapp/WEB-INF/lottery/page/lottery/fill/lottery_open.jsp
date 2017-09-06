@@ -14,8 +14,9 @@
 <script src="${contextPath}/lottery/js/base.js"></script>
 </head>
 <body>
-	<input class="layui-hide" id="params" see-user="${seeUserList }" url='${fillOpenList }'>
-	
+	<input class="layui-hide" id="params" open-award="${openAwardUrl }"
+		see-user="${seeUserList }" url='${fillOpenList }' see-award="${seeAwardUserUrl }">
+
 	<div class="">
 		<div class="">
 			<button class="layui-btn btn-reload" data-type="all">查看全部</button>
@@ -24,33 +25,7 @@
 		</div>
 	</div>
 	<div class="content-tab-body">
-		<table id="lotteryList" class="layui-table" lay-filter="lotteryList"
-			lay-data="{ even: true  ,page:true, id:'lotteryList'}">
-			<thead>
-				<tr>
-					<th lay-data="{field:'id', width:80, sort: true}">ID</th>
-					<th
-						lay-data="{field:'lotteryStage', width:170, sort: true,templet: '#fLotteryStage'}">期号</th>
-					<th lay-data="{field:'lotteryFillName', width:135, sort: true}">彩票名称</th>
-					<th lay-data="{field:'number', width:120,templet:'#fNumber'}">开奖号码</th>
-
-					<th lay-data="{field:'createUserName', width: 90}">创建人</th>
-					<th
-						lay-data="{field:'fillLBi', width:80, sort: true, style:'background-color: #e2e2e2;'}">满</th>
-					<th lay-data="{field:'awardLBi', width:80, sort: true}">奖金</th>
-					<th
-						lay-data="{field:'overBuyQty', width:80,style:'background-color: #990033; color: #fff;' ,sort: true}">购买数量</th>
-					<th
-						lay-data="{field:'sendStatus', width:80, style:'background-color: #5FB878; color: #fff;', templet:'#fSendStatus'}">是否发放奖金</th>
-					<th
-						lay-data="{field:'lotteryFillUnitPrice', width:135, sort: true}">倍数</th>
-					<th
-						lay-data="{field:'lotteryFillCreaterDate', width:180, sort: true,templet:'#fCreateDate'}">创建时间</th>
-					<th lay-data="{field:'lotteryFillEndDate', width:180}">结束时间</th>
-					<th
-						lay-data="{fixed: 'right', width:260, align:'center', toolbar: '#barDemo'}">操作</th>
-				</tr>
-			</thead>
+		<table id="lotteryList" class="layui-table" lay-filter="lotteryList">
 		</table>
 	</div>
 	<div id="navIndex"></div>
@@ -65,17 +40,19 @@
   		{{# var date = formatDateTime(d.lotteryFillCreaterDate) ; }}
 		{{ date}}
 </script>
+	<script type="text/html" id="fEndDate">
+  		{{# var date = formatDateTime(d.lotteryFillEndDate) ; }}
+		{{ date}}
+</script>
 	<script type="text/html" id="fNumber">
-  		{{# if(!d.number) { }}
-		<a class="layui-btn layui-btn-mini btn-start-award 
-			{{# if(d.overBuyQty != d.fillLBi){ }}
-			layui-btn-disabled
-			{{# } }}
+  		{{# if(!d.openNumber) { }}
+			<a class="layui-btn layui-btn-mini btn-start-award 
+				{{# if(d.overBuyQty != d.fillLBi){ }}
+					layui-btn-disabled
+				{{# } }}
 			" data-id="{{ d.lotteryFillOpenId}}" lay-event="openAward">开奖</a>
-		
-
-{{# }else { }}
-			<button class="btn-award-user" >{{d.number}}</button>
+		{{# }else { }}
+			<button class="btn-award-user" >{{d.openNumber}}</button>
 		{{# } }}
 </script>
 	<script type="text/html" id="fSendStatus">
@@ -87,7 +64,6 @@
 		{{# } }}
 </script>
 	<script type="text/html" id="barDemo">
-			<button class="layui-btn layui-btn-mini" data-id="{{ d.lotteryFillOpenId}}" lay-event="sendAward">发放奖金</button>
 			<button class="layui-btn layui-btn-mini" data-id="{{ d.lotteryFillOpenId}}" lay-event="seeAwardUser">查看中奖用户</button>
 			<button class="layui-btn layui-btn-mini" data-id="{{ d.lotteryFillOpenId}}" lay-event="seeBugUser">查看购买用户</button>
 

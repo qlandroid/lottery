@@ -75,7 +75,7 @@ public class UserClientMangerController {
 	public String showChangeView(UserClientSSearch params, Model model) {
 		UserClient queryUser = mUserClientManagerService.findUserByUserId(params.getId());
 		model.addAttribute("user", queryUser);
-		model.addAttribute("changeUrl", url("/operate/change"));
+		model.addAttribute("changeUrl", url("/operate/update"));
 		return "/page/user_client_change.jsp";
 	}
 
