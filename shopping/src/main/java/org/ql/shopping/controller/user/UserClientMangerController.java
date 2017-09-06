@@ -1,11 +1,9 @@
 package org.ql.shopping.controller.user;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.registry.infomodel.User;
 
 import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
@@ -14,7 +12,6 @@ import org.ql.shopping.exception.AccountErrorException;
 import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.exception.ParamsErrorException;
 import org.ql.shopping.pojo.manifest.IncomeManifest;
-import org.ql.shopping.pojo.manifest.ManifestLBiChange;
 import org.ql.shopping.pojo.params.RechagerHanderLBiParams;
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.result.Result;
@@ -31,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -230,7 +226,7 @@ public class UserClientMangerController {
 
 	@RequestMapping(value = "/operate/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Result updateUser(HttpServletRequest request, UserClientSSearch params) {
+	public Result updateUser(HttpServletRequest request, UserClient params) {
 		Result result = new Result();
 		try {
 			Integer id = params.getUserId();

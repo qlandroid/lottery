@@ -2,6 +2,8 @@ package org.ql.shopping.service.user;
 
 import java.util.List;
 
+import javax.xml.registry.infomodel.User;
+
 import org.ql.shopping.pojo.params.UserClientManagerParams;
 import org.ql.shopping.pojo.user.UserClient;
 import org.ql.shopping.pojo.user.UserClientSSearch;
@@ -32,7 +34,7 @@ public interface IUserClientManagerService {
 
 	public UserClientSSearch findUserByUserId(Integer id);
 
-	public void updateUser(UserClientSSearch params);
+	public void updateUser(UserClient params);
 
 	public Integer getListCountByParams(UserClientSSearch params);
 

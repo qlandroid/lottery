@@ -59,7 +59,7 @@ public class UserClientManagerServiceImpl implements IUserClientManagerService {
 		return list.get(0);
 	}
 
-	public void updateUser(UserClientSSearch params) {
+	public void updateUser(UserClient params) {
 		
 		mUserClientMapper.updateByUserId(params);
 	}
