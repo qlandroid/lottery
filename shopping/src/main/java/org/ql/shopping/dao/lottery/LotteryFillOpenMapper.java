@@ -30,21 +30,33 @@ public interface LotteryFillOpenMapper {
 	int getSearchCountParams(LotteryFillOpenSearch params);
 
 	FillOpenSearch selectBuyDetails(@Param("fOpenId") Integer fOpenId);
-	
+
 	/**
-	 * 分页查询，必须传参数 pageSize ,page,clazz,type;
-	 * 通过 大类 和彩票类型进行查询
+	 * 分页查询，必须传参数 pageSize ,page,clazz,type; 通过 大类 和彩票类型进行查询
+	 * 
 	 * @param params
 	 * @return
 	 */
-	List<ClientLotteryFillOpenSearch> selectClientListByClazzAndTypePage(ClientLotteryFillOpenSearch params);
+	List<ClientLotteryFillOpenSearch> selectClientListByClazzAndTypePage(
+			ClientLotteryFillOpenSearch params);
 
 	long getClientOpenFillCount(ClientLotteryFillOpenSearch params);
-	
+
 	/**
 	 * 通过任务单号查询开奖信息
+	 * 
 	 * @param docNo
 	 * @return
 	 */
-	FillOpenSearch selectFillOpenByDocNo(@Param("docNo") String docNo );
+	FillOpenSearch selectFillOpenByDocNo(@Param("docNo") String docNo);
+
+	/**
+	 * 通过彩票类型查询彩票，
+	 * 
+	 * @param lotteryTypeId
+	 * @return
+	 */
+	List<LotteryFillOpenSearch> selectByTypeId(
+			@Param("lotteryTypeId") Integer lotteryTypeId);
+
 }

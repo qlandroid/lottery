@@ -15,17 +15,20 @@
 </head>
 <body>
 	<input class="layui-hide" id="params" open-award="${openAwardUrl }"
-		see-user="${seeUserList }" url='${fillOpenList }' see-award="${seeAwardUserUrl }">
+		see-user="${seeUserList }" url='${fillOpenList }' add-lottery="${addLotteryUrl }" see-award="${seeAwardUserUrl }">
 
 	<div class="">
 		<div class="">
 			<button class="layui-btn btn-reload" data-type="all">查看全部</button>
+			
 			<button class="layui-btn btn-reload" data-type="notAward">未开奖</button>
 			<button class="layui-btn btn-reload" data-type="canAward">可开奖</button>
+			
+			<button class="layui-btn btn-reload" data-type="addLottery" type-id="${typeId }">添加彩票</button>
 		</div>
 	</div>
 	<div class="content-tab-body">
-		<table id="lotteryList" class="layui-table" lay-filter="lotteryList">
+		<table id="lotteryList" lay-data="{page:true}"class="layui-table" lay-filter="lotteryList">
 		</table>
 	</div>
 	<div id="navIndex"></div>

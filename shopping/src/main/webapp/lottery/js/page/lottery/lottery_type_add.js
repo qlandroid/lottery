@@ -84,6 +84,7 @@ layui.use(['form','tree','layer', 'layedit', 'laydate'], function(){
 				  if(data.code == 200){
 					  layer.msg("提交成功");
 					  parent.layer.msg("添加成功");
+					  parant.reloadTree();
 					  parent.layer.close(index);
 					  
 				  }else{

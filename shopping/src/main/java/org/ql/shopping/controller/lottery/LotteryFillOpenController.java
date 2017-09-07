@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.Resource;
+import javax.security.auth.kerberos.ServicePermission;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.xml.rpc.ServiceException;
@@ -17,6 +18,7 @@ import org.ql.shopping.code.C;
 import org.ql.shopping.code.Code;
 import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.exception.ParamsErrorException;
+import org.ql.shopping.exception.PowerException;
 import org.ql.shopping.pojo.lottery.FillUserDetails;
 import org.ql.shopping.pojo.lottery.LotteryFillOpen;
 import org.ql.shopping.pojo.lottery.LotteryFillOpenSearch;
@@ -84,10 +86,20 @@ public class LotteryFillOpenController {
 	public String showListView(Model model, LotteryFillOpenSearch params) {
 		model.addAttribute("fillOpenList", url("/operate/list?lotteryTypeId="
 				+ params.getLotteryTypeId()));
+		model.addAttribute("typeId", params.getLotteryTypeId());
 		model.addAttribute("openAwardUrl", url("/view/open"));
 		model.addAttribute("seeUserList", url("/view/userList"));
 		model.addAttribute("seeAwardUserUrl", url("/view/seeAwardUser"));// 用于查看中奖用户
+		model.addAttribute("addLotteryUrl", url("/view/addLottery"));
 		return "page/lottery/fill/lottery_open.jsp";
+	}
+
+	@RequestMapping("/view/addLottery")
+	public String showAddLotteryView(Model model, LotteryFillOpenSearch params) {
+		model.addAttribute("createUrl", url("/operate/createFillOpen"));
+		model.addAttribute("modelUrl", url("/operate/getModel"));
+		model.addAttribute("typeId", params.getLotteryTypeId());
+		return "page/lottery/fill/create_fill_open.jsp";
 	}
 
 	/**
@@ -136,7 +148,7 @@ public class LotteryFillOpenController {
 	 */
 	@RequestMapping("/view/add")
 	public String showAddView(Model model) {
-		model.addAttribute("addFillUrl", url("operate/add"));
+		model.addAttribute("addFillUrl", url("/operate/add"));
 		model.addAttribute("treeAllUrl",
 				HttpUrl.replaceUrl("/lottery/clazz/operate/all"));
 		return "page/lottery/fill/lottery_fill_add.jsp";
@@ -209,7 +221,7 @@ public class LotteryFillOpenController {
 			throw new ParamsErrorException("参数数值不正确");
 		}
 		if (NumberUtils.isZero(createUserId)) {
-			throw new ParamsErrorException("参数数值不正确");
+			throw new ParamsErrorException("请登录");
 		}
 		if (NumberUtils.isZero(fillLBi)) {
 			throw new ParamsErrorException("参数数值不正确");
@@ -225,6 +237,9 @@ public class LotteryFillOpenController {
 				.findUserById(createUserId);
 		if (createUser == null) {
 			throw new ParamsErrorException("参数不正确");
+		}
+		if(!ServiceUserPowerUtils.isCanCreateFillOpen(createUser.getPower())){
+			throw new PowerException("权限不足");
 		}
 	}
 
@@ -321,7 +336,8 @@ public class LotteryFillOpenController {
 			createIncome.setPayMoney(0d);
 			createIncome.setInQty(awardLBi.doubleValue());
 			createIncome.setUserId(userId);
-			mManifestIncomeManagerService.createIncomeTypeManifest(createIncome);
+			mManifestIncomeManagerService
+					.createIncomeTypeManifest(createIncome);
 			// 添加积分kkkkk变化表//更新用户表
 			mManifestIncomeManagerService.incomeSuccessById(
 					createIncome.getIncomeId(), "奖励积分",
@@ -437,4 +453,79 @@ public class LotteryFillOpenController {
 		return result;
 	}
 
+	/**
+	 * 通过typeId 创建与当前type类型相同的彩票。
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/operate/createFillOpen")
+	@ResponseBody
+	public Result createSameFillOpenLotteryByTypeId(HttpServletRequest request,
+			LotteryFillOpenSearch params) {
+		Result result = new Result();
+		try {
+			checkCreateFillOpenParams(request, params);
+			Integer createUserId = SessionUtils.getId(request.getSession());
+			LotteryFillOpenSearch createFillOpen = mLotteryFillOpenService
+					.createFillOpenByTypeId(createUserId, params);
+			result.setData(createFillOpen);
+			result.setCode(Code.SUCCESS);
+		} catch (Exception e) {
+			logger.error("createSameFillOpenLotteryByTypeId", e);
+			ResultHintUtils.setSystemError(result, e);
+		}
+		return result;
+	}
+
+	/**
+	 * 通过typeId 创建一个model对象，并返回给页面展示
+	 * 
+	 * @param params
+	 * @return
+	 */
+	@RequestMapping("/operate/getModel")
+	@ResponseBody
+	public Result getFillOpenLotteryModelByTypeId(HttpServletRequest requset,
+			LotteryFillOpenSearch params) {
+		Result result = new Result();
+		try {
+			checkCreateFillOpenParams(requset, params);
+			LotteryFillOpenSearch fillOpenModel = mLotteryFillOpenService
+					.getFillOpenModelByTypeId(params.getLotteryTypeId());
+
+			if (fillOpenModel == null) {
+				throw new LotteryException("当前没有彩票模型对象");
+			}
+
+			result.setCode(Code.SUCCESS);
+			result.setData(fillOpenModel);
+		} catch (Exception e) {
+			logger.error("createSameFillOpenLotteryModelByTypeId", e);
+			ResultHintUtils.setSystemError(result, e);
+		}
+		return result;
+	}
+
+	private void checkCreateFillOpenParams(HttpServletRequest requset,
+			LotteryFillOpenSearch params) {
+		HttpSession session = requset.getSession();
+		Integer userId = SessionUtils.getId(session);
+		if (NumberUtils.isZero(userId)) {
+			throw new LotteryException("请登录");
+		}
+
+		UserManager userService = mUserServiceManagerService
+				.findUserById(userId);
+		if (userService == null) {
+			throw new LotteryException("请登录");
+		}
+
+		if (!ServiceUserPowerUtils.isCanCreateFillOpen(userService.getPower())) {
+			throw new PowerException("权限不足，不能创建彩票");
+		}
+
+		if (NumberUtils.isZero(params.getLotteryTypeId())) {
+			throw new LotteryException("参数不正确");
+		}
+	}
 }

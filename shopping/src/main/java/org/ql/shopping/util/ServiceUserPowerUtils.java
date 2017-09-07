@@ -13,4 +13,17 @@ public class ServiceUserPowerUtils {
 		return C.UserManagerPower.POWER_ALL.equals(power);
 	}
 
+	/**
+	 * 权限判断是否可以创建彩票
+	 * @param power
+	 * @return
+	 */
+	public static boolean isCanCreateFillOpen(String power) {
+		if(C.UserManagerPower.POWER_ALL.equals(power)){
+			return true;
+		}
+		
+		return false;
+	}
+
 }

@@ -13,7 +13,7 @@
 	<select id="searchPageOrderByCreateDate" resultMap="SearchMap" parameterType="org.ql.shopping.pojo.manifest.ManifestIncomeSearch">
 		SELECT a.account,b.name,b.phone,c.income_id
 		,c.income_create_date
-		,c.zhifubao_doc
+		,IFNULL(c.zhifubao_doc,'') AS zhifubao_doc
 		,c.pay_money
 		,c.income_in_qty
 		,c.income_doc_no

@@ -103,7 +103,7 @@
 				AND phone = #{phone,jdbcType=VARCHAR}
 			</if>
 			<if test="clientId != null">
-				AND client_id = #{clientId,jdbcType=INTEGER}
+				AND client_id = #{clientId,jdbcType=VARCHAR}
 			</if>
 			<if test="name != null">
 				AND name = #{name,jdbcType=VARCHAR}

@@ -30,6 +30,26 @@
 		</where>
 	</select>
 
+	<!-- 通过彩票类型进行查询彩票集合 -->
+	<select id="selectByTypeId" resultMap="SearchResultMap"
+		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch">
+		SELECT
+		lottery_fill_open.fill_l_bi,
+		lottery_fill_open.award_l_bi,
+		lottery_fill_open.lottery_fill_unit_price,
+		lottery_fill_open.lottery_type_id,
+		lottery_fill_open.lottery_fill_name,
+		lottery_type.lottery_type_id,
+		lottery_type.lottery_rule,
+		lottery_type.lottery_type,
+		lottery_type.lottery_name,
+		lottery_type.lottery_remark
+		FROM
+		lottery_type
+		INNER JOIN lottery_fill_open ON lottery_fill_open.lottery_type_id =
+		lottery_type.lottery_type_id
+		WHERE lottery_type.lottery_type_id = #{lotteryTypeId,jdbcType=INTEGER}
+	</select>
 
 	<select id="selectSearchByParams" resultMap="SearchResultMap"
 		parameterType="org.ql.shopping.pojo.lottery.LotteryFillOpenSearch">
@@ -57,12 +77,14 @@
 		muser.address
 		FROM
 		lottery_fill_open AS a
-		LEFT JOIN (select
+		LEFT
+		JOIN (select
 		lottery_fill_open_id, sum(lottery_fill_buy_qty) qty
 		from
-		lottery_fill_user 
+		lottery_fill_user
 		WHERE lottery_fill_user.lottery_fill_status = '1'
-		group by lottery_fill_open_id ) AS b ON
+		group by
+		lottery_fill_open_id ) AS b ON
 		a.lottery_fill_open_id =
 		b.lottery_fill_open_id ,
 		user_manager AS muser
@@ -153,10 +175,10 @@
 
 			<if test="canSendAward != null">
 				<if test="canSendAward == 1">
-					AND  IFNULL(b.qty,0) = a.fill_l_bi
+					AND IFNULL(b.qty,0) = a.fill_l_bi
 				</if>
 				<if test="canSendAward == 0">
-					AND  IFNULL(b.qty,0) &lt; a.fill_l_bi
+					AND IFNULL(b.qty,0) &lt; a.fill_l_bi
 				</if>
 			</if>
 		</trim>

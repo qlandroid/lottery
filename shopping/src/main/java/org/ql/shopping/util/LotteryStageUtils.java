@@ -3,6 +3,7 @@ package org.ql.shopping.util;
 import java.text.SimpleDateFormat;
 
 public class LotteryStageUtils {
+	
 	public static  String createStage(String firstFlag,int count){
 		StringBuffer sb = new StringBuffer();
 		sb.append(firstFlag);

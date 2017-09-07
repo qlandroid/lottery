@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class ManifestLBiChangeSearch extends ManifestLBiChange {
 	private String phone;
-	private Integer clientId;
+	private String clientId;
 	private String name;
 	private String zhifubao;
 	private String account;
@@ -36,10 +36,10 @@ public class ManifestLBiChangeSearch extends ManifestLBiChange {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public Integer getClientId() {
+	public String getClientId() {
 		return clientId;
 	}
-	public void setClientId(Integer clientId) {
+	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
 	public String getName() {

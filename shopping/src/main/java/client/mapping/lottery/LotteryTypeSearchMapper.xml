@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ql.shopping.dao.lottery.LotteryTypeMapper">
+	<resultMap id="ClientResultMap" type="client.pojo.lottery.ClientLotteryTypeSearch"
+		extends="ResultMapWithBLOBs">
+	</resultMap>
+
+	<select id="selectAll" resultMap="ClientResultMap">
+		SELECT
+		lottery_type.lottery_rule,
+		lottery_type.lottery_type_id,
+		lottery_type.lottery_type,
+		lottery_type.lottery_name,
+		lottery_type.lottery_remark,
+		lottery_type.lottery_clazz_id
+		FROM
+		lottery_type
+	</select>
+	<select id="getAllCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		lottery_type
+	</select>
+</mapper>

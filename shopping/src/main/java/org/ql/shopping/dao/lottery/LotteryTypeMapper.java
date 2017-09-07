@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ql.shopping.pojo.lottery.LotteryClazzSearch;
 import org.ql.shopping.pojo.lottery.LotteryType;
+import org.ql.shopping.pojo.lottery.LotteryTypeSearch;
 import org.ql.shopping.pojo.lottery.LotteryTypeWithBLOBs;
 
 public interface LotteryTypeMapper {
@@ -69,6 +70,17 @@ public interface LotteryTypeMapper {
 	 * @param record
 	 * @return
 	 */
-	List<LotteryTypeWithBLOBs> selectByClazzTypeOrClazzId(LotteryClazzSearch record);
+	List<LotteryTypeWithBLOBs> selectByClazzTypeOrClazzId(
+			LotteryClazzSearch record);
+
+	/***********************************************************************/
+	/***************************** 客户端查询 ***********************************/
+
+	List<LotteryTypeSearch> selectAll();
+
+	Integer getAllCount();
+	
+	/***********************************************************************/
+	/***********************************************************************/
 
 }

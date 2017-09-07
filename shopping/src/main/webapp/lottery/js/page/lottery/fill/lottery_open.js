@@ -5,6 +5,8 @@ $(document).ready(
 			layui.use([ 'table', 'layer' ], function() {
 				table = layui.table, layer = layui.layer;
 				var tableD = { // 其它参数在此省略
+					page : true,
+					limit : 10,
 					cols : [ [ {
 						field : 'id',
 						title : '序号',
@@ -79,6 +81,7 @@ $(document).ready(
 					} ] ],
 					elem : '#lotteryList',
 					id : 'lotteryList',
+
 					url : $("#params").attr("url")
 				// where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
 				// method: 'post' //如果无需自定义HTTP类型，可不加该参数
@@ -96,14 +99,29 @@ $(document).ready(
 					all : function() {
 						tableReload();
 					},
+					// 查看不可以开奖
 					notAward : function() {
 						tableReload({
 							canSendAward : '0'
 						});
 					},
+					// 查看可以开奖
 					canAward : function() {
 						tableReload({
 							canSendAward : '1'
+						});
+					},
+					addLottery : function() {
+						// 用于添加彩票
+						layer.open({
+							type : 2,
+							title : '购买彩票用户列表',
+							shadeClose : true,
+							shade : 0.8,
+							area : [ '100%', '100%' ],
+							content : $("#params").attr("add-lottery")
+									+ "?lotteryTypeId="
+									+ $(this).attr('type-id') // iframe的url
 						});
 					}
 				}
@@ -129,16 +147,18 @@ $(document).ready(
 					var data = obj.data;
 					console.log(obj);
 					if (obj.event == "openAward") {
-						layer.open({
-							type : 2,
-							title : '购买彩票用户列表',
-							shadeClose : true,
-							shade : 0.8,
-							area : [ '100%', '100%' ],
-							content : $("#params").attr("open-award")
-									+ "?lotteryFillOpenId="
-									+ obj.data.lotteryFillOpenId // iframe的url
-						});
+						if (obj.data.status == 1) {
+							layer.open({
+								type : 2,
+								title : '开奖',
+								shadeClose : true,
+								shade : 0.8,
+								area : [ '100%', '100%' ],
+								content : $("#params").attr("open-award")
+										+ "?lotteryFillOpenId="
+										+ obj.data.lotteryFillOpenId // iframe的url
+							});
+						}
 					} else if (obj.event == "sendAward") {
 						// 发放奖金
 						if (data.sendStatus == 1) {
@@ -157,8 +177,9 @@ $(document).ready(
 										+ "?lotteryFillOpenId="
 										+ obj.data.lotteryFillOpenId // iframe的url
 							});
-						}else{
-							layer.msg("奖励积分已经发放",function(){});
+						} else {
+							layer.msg("奖励积分已经发放", function() {
+							});
 						}
 
 					} else if (obj.event == "seeBugUser") {

@@ -69,13 +69,6 @@ public class IncomeManfestController {
 	public TabelResult operateList(HttpServletRequest request, Model model, ManifestIncomeSearch params) {
 		TabelResult result = new TabelResult();
 
-		if (params.getPage() == null) {
-			params.setPage(1);
-		}
-		if (params.getPageSize() == null) {
-			params.setPageSize(10);
-		}
-		params.initPageSize();
 		try {
 
 			List<ManifestIncomeSearch> list = mIncomeManifestManagerService.searchPageOrderByCreateDate(params);

@@ -173,7 +173,7 @@ public class ManifestIncomeManagerServiceImpl implements
 
 	public List<ManifestIncomeSearch> searchPageOrderByCreateDate(
 			ManifestIncomeSearch params) {
-
+		ModelUtils.initPageParams(params);
 		return mManifestIncomeMapper.searchPageOrderByCreateDate(params);
 	}
 
