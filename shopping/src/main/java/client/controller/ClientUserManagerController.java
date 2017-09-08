@@ -3,10 +3,12 @@ package client.controller;
 import javax.annotation.Resource;
 
 import org.ql.shopping.code.Code;
+import org.ql.shopping.exception.LotteryException;
 import org.ql.shopping.exception.ParamsErrorException;
 import org.ql.shopping.exception.PasswordErrorException;
 import org.ql.shopping.pojo.result.Result;
 import org.ql.shopping.pojo.user.UserLogin;
+import org.ql.shopping.util.MatcherUtils;
 import org.ql.shopping.util.ResultHintUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +26,12 @@ import client.utils.TokenUtils;
 @RequestMapping("/user/manager")
 public class ClientUserManagerController {
 
-	private Logger logger = LoggerFactory.getLogger(ClientUserManagerController.class);
+	private Logger logger = LoggerFactory
+			.getLogger(ClientUserManagerController.class);
 
 	@Resource
 	private IUserManagerService mUserManagerService;
 
-	
-	
 	@RequestMapping("/details")
 	@ResponseBody
 	public Result userDetails(UserClientSearch params) {
@@ -38,7 +39,8 @@ public class ClientUserManagerController {
 		try {
 			String token = params.getToken();
 			Integer userId = TokenUtils.getUserId(token);
-			UserClientSearch selectDetailsByUserId = mUserManagerService.selectDetailsByUserId(userId);
+			UserClientSearch selectDetailsByUserId = mUserManagerService
+					.selectDetailsByUserId(userId);
 			UserClientSearch r = new UserClientSearch();
 			r.setName(selectDetailsByUserId.getName());
 			result.setData(r);
@@ -47,6 +49,47 @@ public class ClientUserManagerController {
 			logger.error("userDetails", e);
 			ResultHintUtils.setSystemError(result, e);
 		}
+		return result;
+	}
+
+	/**
+	 * 客户端注册
+	 * 
+	 * @param params
+	 * @return
+	 */
+	@RequestMapping("/reg")
+	@ResponseBody
+	public Result userReg(UserClientSearch params) {
+		Result result = new Result();
+
+		try {
+			String account = params.getAccount();
+			String pw = params.getPw();
+			if (StringUtils.isEmpty(account) || StringUtils.isEmpty(pw)) {
+				throw new LotteryException("参数不正确");
+			}
+			account = account.trim();
+			if(!MatcherUtils.isAccountMatcher(account)){
+				throw new LotteryException("账号格式不正确");
+			}
+			//检测账号是否存在
+			UserClientSearch selectByAccount = mUserManagerService.selectByAccount(account);
+			if(selectByAccount != null){
+				throw new LotteryException("账号已存在，请重新填写账号");
+			}
+			
+			mUserManagerService.insert(params);
+			String token = TokenUtils.createToken(params);
+			result.setCode(Code.SUCCESS);
+			UserClientSearch r = new UserClientSearch();
+			r.setToken(token);
+			result.setData(r);
+		} catch (Exception e) {
+			logger.error("userReg", e);
+			ResultHintUtils.setSystemError(result, e);
+		}
+
 		return result;
 	}
 
@@ -60,15 +103,16 @@ public class ClientUserManagerController {
 
 			String account = params.getAccount();
 			String pw = params.getPw();
-
-			UserClientSearch user = mUserManagerService.selectyByAccountAndPw(account, pw);
+			
+			UserClientSearch user = mUserManagerService.selectyByAccountAndPw(
+					account, pw);
 			if (user == null) {
 				throw new PasswordErrorException("账号或密码不正确");
 			}
 			result.setCode(Code.SUCCESS);
 
 			UserLoginSearch token = new UserLoginSearch();
-			String tokenStr = TokenUtils.createToken(account, pw, user.getUserId());
+			String tokenStr = TokenUtils.createToken(user);
 
 			token.setToken(tokenStr);
 
@@ -89,6 +133,5 @@ public class ClientUserManagerController {
 			throw new ParamsErrorException("参数不正确");
 		}
 	}
-	
 
 }

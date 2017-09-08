@@ -1,5 +1,7 @@
 package client.utils;
 
+import org.ql.shopping.pojo.user.UserClient;
+
 public class TokenUtils {
 
 	public final static int ERROR_USER_ID = -1;
@@ -27,9 +29,9 @@ public class TokenUtils {
 		}
 	}
 
-	public static String createToken(String account, String pw, long id) {
+	public static String createToken(UserClient user) {
 		long time = System.currentTimeMillis();
-		String token = String.valueOf(time)+ TAG_ID + String.valueOf(id)+TAG_ACCOUNT + account;
+		String token = String.valueOf(time)+ TAG_ID + String.valueOf(user.getUserId())+TAG_ACCOUNT + user.getAccount();
 		return token ;
 	}
 	

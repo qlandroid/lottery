@@ -22,6 +22,7 @@ public class UserClient extends Model{
     private String payPw;
     
     private String account;
+    
     private String pw;
     
     private Double expendQty;

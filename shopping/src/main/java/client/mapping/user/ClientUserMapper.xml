@@ -8,9 +8,56 @@
 
 	<insert id="insertLogin" parameterType="client.pojo.user.UserClientSearch"
 		useGeneratedKeys="true" keyProperty="userId">
-		INSERTE INTO
+		INSERT INTO
 		user_login(account,pw)
 		values(#{account,jdbcType=VARCHAR},#{pw,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertClient" parameterType="client.pojo.user.UserClientSearch"
+		useGeneratedKeys="true" keyProperty="userId">
+		insert into user_client
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			user_id,
+			<if test="id != null">
+				id,
+			</if>
+			<if test="zhifubao != null">
+				zhifubao,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="clientId != null">
+				client_id,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="lBi != null">
+				l_bi,
+			</if>
+			<if test="payPw != null">
+				pay_pw,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{userId,jdbcType=INTEGER},
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="zhifubao != null">
+				#{zhifubao,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="clientId != null">
+				#{clientId,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+		</trim>
 	</insert>
 
 	<!-- 更新登陆密码 -->
@@ -36,9 +83,10 @@
 		login.id =
 		client.user_id
 		WHERE
-		login.account =#{account,jdbcType=VARCHAR} AND login.pw = #{pw,jdbcType=VARCHAR}
+		login.account
+		=#{account,jdbcType=VARCHAR} AND login.pw = #{pw,jdbcType=VARCHAR}
 	</select>
-	
+
 	<!-- 通过 账号查询用户详情 -->
 	<select id="selectDetailsByAccount" resultMap="SearchClientResultMap"
 		parameterType="java.lang.String">
@@ -69,7 +117,8 @@
 	<select id="selectPayPwByUserId" resultMap="SearchClientResultMap"
 		parameterType="java.lang.Integer">
 		SELECT user_client.pay_pw,user_client.user_id
-		FROM user_client
+		FROM
+		user_client
 		WHERE
 		user_client.user_id = #{userId};
 	</select>
